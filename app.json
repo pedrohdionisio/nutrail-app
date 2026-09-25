@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "Nutrail",
+    "slug": "nutrail",
+    "scheme": "nutrail",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "bundleIdentifier": "com.nutrail.app",
+      "supportsTablet": false
+    },
+    "android": {
+      "package": "com.nutrail.app",
+      "predictiveBackGestureEnabled": false
+    },
+    "experiments": {
+      "tsconfigPaths": true
+    },
+    "plugins": ["expo-font", "expo-splash-screen"]
+  }
+}
