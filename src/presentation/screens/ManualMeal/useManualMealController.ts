@@ -17,7 +17,7 @@ import { useForm, useWatch } from 'react-hook-form';
 import { Alert } from 'react-native';
 import type { AppRoutesParamList } from 'shared/navigation/AppRoutesTypes';
 import { toBrazilianDate } from 'shared/utils/toBrazilianDate';
-import { toTimeInputValue } from './utils/toTimeInputValue';
+import { toLocalTime } from 'shared/utils/toLocalTime';
 
 export function useManualMealController() {
   const navigation = useNavigation();
@@ -36,7 +36,7 @@ export function useManualMealController() {
     defaultValues: {
       text: '',
       date: toBrazilianDate(params.date),
-      time: toTimeInputValue(new Date()),
+      time: toLocalTime(new Date()),
       pictureUri: null
     }
   });

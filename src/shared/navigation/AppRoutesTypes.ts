@@ -8,6 +8,9 @@ export type AppRoutesParamList = {
   Goals: undefined;
   Profile: undefined;
   ManualMeal: { date: string };
+  PictureMeal: { date: string };
+  MealDetails: { mealId: string };
+  EditMeal: { mealId: string };
 };
 
 declare global {

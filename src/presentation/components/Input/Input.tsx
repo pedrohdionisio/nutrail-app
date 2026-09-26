@@ -57,7 +57,7 @@ export function Input<
         />
 
         {!!unit && (
-          <View className='h-13 w-14 items-center justify-center rounded-xl bg-gray-100'>
+          <View className='h-13 min-w-14 items-center justify-center rounded-xl bg-gray-100 px-3'>
             <AppText color='muted'>{unit}</AppText>
           </View>
         )}

@@ -27,6 +27,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "expo": "~57.0.25",
+    "expo-camera": "~57.0.5",
     "expo-font": "~57.0.2",
     "expo-image-manipulator": "~57.0.20",
     "expo-image-picker": "~57.0.20",

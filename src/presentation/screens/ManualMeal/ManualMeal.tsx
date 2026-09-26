@@ -1,6 +1,6 @@
+import { AnalyzingMeal } from 'presentation/components/AnalyzingMeal/AnalyzingMeal';
 import { ScreenHeader } from 'presentation/components/ScreenHeader/ScreenHeader';
 import { KeyboardAvoidingView, Platform } from 'react-native';
-import { AnalyzingMeal } from './components/AnalyzingMeal/AnalyzingMeal';
 import { ManualMealFooter } from './components/ManualMealFooter/ManualMealFooter';
 import { ManualMealForm } from './components/ManualMealForm/ManualMealForm';
 import { useManualMealController } from './useManualMealController';

@@ -1,3 +1,6 @@
+import type { IMacros } from 'shared/entities/IMacros';
+import type { IMealItem } from 'shared/entities/IMealItem';
+
 export interface IListMealsPayload {
   date: string;
 }
@@ -29,4 +32,38 @@ export interface ICreatePictureUploadResponse {
 export interface IUploadPicturePayload {
   upload: IUploadSignature;
   pictureUri: string;
+}
+
+export interface ICreateMealPayload {
+  date: string;
+  time: string;
+  inputType: 'PICTURE';
+}
+
+export interface ICreateMealResponse {
+  mealId: string;
+  upload: IUploadSignature;
+}
+
+export interface IGetMealPayload {
+  mealId: string;
+}
+
+export interface IUpdateMealPayload {
+  mealId: string;
+  name: string;
+  items: IMealItem[];
+}
+
+export interface IUpdateMealResponse extends IMacros {
+  name: string;
+  items: IMealItem[];
+}
+
+export interface IAnalyzeMealItemsPayload {
+  text: string;
+}
+
+export interface IAnalyzeMealItemsResponse {
+  items: IMealItem[];
 }

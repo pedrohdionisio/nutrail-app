@@ -34,6 +34,7 @@ export function Home() {
     handleOpenGoals,
     handleOpenNewMeal,
     handleSelectMealSource,
+    handleOpenMeal,
     handleRetryMe,
     handleRetryMeals,
     handleSignOut
@@ -89,7 +90,7 @@ export function Home() {
               </AppText>
             </View>
           }
-          renderItem={({ item }) => <MealCard meal={item} />}
+          renderItem={({ item }) => <MealCard meal={item} onPress={handleOpenMeal} />}
           showsVerticalScrollIndicator={false}
         />
       </View>

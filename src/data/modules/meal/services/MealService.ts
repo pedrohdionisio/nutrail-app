@@ -1,11 +1,19 @@
 import { api, publicApi } from 'data/config/api';
+import type { IMealDetails } from 'shared/entities/IMealDetails';
 import type { IMealsOfDay } from 'shared/entities/IMealsOfDay';
 import type {
+  IAnalyzeMealItemsPayload,
+  IAnalyzeMealItemsResponse,
   ICreateManualMealPayload,
   ICreateManualMealResponse,
+  ICreateMealPayload,
+  ICreateMealResponse,
   ICreatePictureUploadPayload,
   ICreatePictureUploadResponse,
+  IGetMealPayload,
   IListMealsPayload,
+  IUpdateMealPayload,
+  IUpdateMealResponse,
   IUploadPicturePayload
 } from '../types/MealTypes';
 
@@ -13,6 +21,30 @@ async function list({ date }: IListMealsPayload): Promise<IMealsOfDay> {
   const { data } = await api.get<IMealsOfDay>('/meals', { params: { date } });
 
   return data;
+}
+
+async function getById({ mealId }: IGetMealPayload): Promise<IMealDetails> {
+  const { data } = await api.get<IMealDetails>(`/meals/${mealId}`);
+
+  return data;
+}
+
+async function create(payload: ICreateMealPayload): Promise<ICreateMealResponse> {
+  const { data } = await api.post<ICreateMealResponse>('/meals', payload);
+
+  return data;
+}
+
+async function update({ mealId, ...payload }: IUpdateMealPayload): Promise<IUpdateMealResponse> {
+  const { data } = await api.put<IUpdateMealResponse>(`/meals/${mealId}`, payload);
+
+  return data;
+}
+
+async function analyzeItems(payload: IAnalyzeMealItemsPayload) {
+  const { data } = await api.post<IAnalyzeMealItemsResponse>('/meals/items/analysis', payload);
+
+  return data.items;
 }
 
 async function createManual(payload: ICreateManualMealPayload): Promise<ICreateManualMealResponse> {
@@ -43,6 +75,10 @@ async function uploadPicture({ upload, pictureUri }: IUploadPicturePayload): Pro
 
 export const MealService = {
   list,
+  getById,
+  create,
+  update,
+  analyzeItems,
   createManual,
   createPictureUpload,
   uploadPicture

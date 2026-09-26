@@ -22,6 +22,15 @@
       "expo-splash-screen",
       "expo-secure-store",
       [
+        "expo-camera",
+        {
+          "cameraPermission": "O Nutrail usa a câmera para fotografar suas refeições e calcular os macros.",
+          "microphonePermission": false,
+          "recordAudioAndroid": false,
+          "barcodeScannerEnabled": false
+        }
+      ],
+      [
         "expo-image-picker",
         {
           "photosPermission": "O Nutrail usa suas fotos para anexar a imagem da refeição.",

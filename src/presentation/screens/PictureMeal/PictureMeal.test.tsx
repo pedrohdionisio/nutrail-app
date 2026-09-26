@@ -1,0 +1,241 @@
+import { act, screen, waitFor } from '@testing-library/react-native';
+import { PermissionStatus } from 'expo';
+import type { CameraViewProps, PermissionResponse } from 'expo-camera';
+import { launchImageLibraryAsync } from 'expo-image-picker';
+import { HttpResponse, http } from 'msw';
+import type { Ref } from 'react';
+import type { IMealDetails } from 'shared/entities/IMealDetails';
+import type { IMealSummary } from 'shared/entities/IMealSummary';
+import { spyOnAlert } from 'tests/alert';
+import { apiUrl } from 'tests/apiUrl';
+import { buildMeal, buildMealDetails, buildMealsOfDay } from 'tests/fixtures/meal';
+import { renderApp, seedSession } from 'tests/render';
+import { waitForHome } from 'tests/screens';
+import { server } from 'tests/server';
+
+interface ICameraHandle {
+  takePictureAsync: () => Promise<{ uri: string; width: number; height: number }>;
+}
+
+const mockCameraPermission: { current: PermissionResponse } = {
+  current: { status: PermissionStatus.GRANTED, granted: true, canAskAgain: true, expires: 'never' }
+};
+
+jest.mock('expo-camera', () => {
+  const { useEffect, useImperativeHandle } = jest.requireActual<typeof import('react')>('react');
+  const { View } = jest.requireActual<typeof import('react-native')>('react-native');
+
+  function CameraView({ ref, onCameraReady }: CameraViewProps & { ref?: Ref<ICameraHandle> }) {
+    useImperativeHandle(ref, () => ({
+      takePictureAsync: async () => ({ uri: 'file:///camera.jpg', width: 3024, height: 4032 })
+    }));
+
+    useEffect(() => {
+      onCameraReady?.();
+    }, [onCameraReady]);
+
+    return <View testID='camera' />;
+  }
+
+  return {
+    CameraView,
+    useCameraPermissions: () => [mockCameraPermission.current, jest.fn(), jest.fn()]
+  };
+});
+jest.mock('expo-image-picker', () => ({ launchImageLibraryAsync: jest.fn() }));
+jest.mock('expo-image-manipulator', () => ({
+  SaveFormat: { JPEG: 'jpeg' },
+  ImageManipulator: {
+    manipulate: () => ({
+      resize: () => undefined,
+      renderAsync: async () => ({ saveAsync: async () => ({ uri: 'file:///meal.jpg' }) })
+    })
+  }
+}));
+
+const UPLOAD_URL = 'https://uploads.test/';
+
+const ANALYZED_MEAL = buildMealDetails({ id: 'meal-9' });
+
+interface IMockPictureMealApiParams {
+  statuses?: IMealDetails['status'][];
+}
+
+function mockPictureMealApi({ statuses = ['SUCCESS'] }: IMockPictureMealApiParams = {}) {
+  const calls = { created: [] as unknown[], s3Uploads: 0, polls: 0 };
+  let meals: IMealSummary[] = [];
+
+  server.use(
+    http.get(apiUrl('/meals'), ({ request }) =>
+      HttpResponse.json(buildMealsOfDay(new URL(request.url).searchParams.get('date') ?? '', meals))
+    ),
+    http.post(apiUrl('/meals'), async ({ request }) => {
+      calls.created.push(await request.json());
+
+      return HttpResponse.json(
+        { mealId: 'meal-9', upload: { url: UPLOAD_URL, fields: { key: 'pictures/meal-9.jpg' } } },
+        { status: 201 }
+      );
+    }),
+    http.post(UPLOAD_URL, () => {
+      calls.s3Uploads += 1;
+
+      return new HttpResponse(null, { status: 204 });
+    }),
+    http.get(apiUrl('/meals/:mealId'), () => {
+      const status = statuses[Math.min(calls.polls, statuses.length - 1)] ?? 'SUCCESS';
+      calls.polls += 1;
+
+      if (status === 'SUCCESS') {
+        meals = [buildMeal({ id: 'meal-9', name: ANALYZED_MEAL.name ?? '', calories: 630 })];
+      }
+
+      return HttpResponse.json({ ...ANALYZED_MEAL, status });
+    })
+  );
+
+  return calls;
+}
+
+async function openPictureMeal() {
+  await seedSession();
+  const rendered = await renderApp();
+  await waitForHome();
+
+  await rendered.user.press(screen.getByRole('button', { name: 'Cadastrar refeição por foto' }));
+  await screen.findByRole('button', { name: 'Tirar foto' });
+
+  return rendered;
+}
+
+describe('PictureMeal', () => {
+  beforeEach(() => {
+    jest.useFakeTimers({ now: new Date(2026, 8, 26, 10, 0), advanceTimers: true });
+    mockCameraPermission.current = {
+      status: PermissionStatus.GRANTED,
+      granted: true,
+      canAskAgain: true,
+      expires: 'never'
+    };
+    jest.mocked(launchImageLibraryAsync).mockResolvedValue({
+      canceled: false,
+      assets: [{ uri: 'file:///original.heic', width: 4032, height: 3024 }]
+    });
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  it('should upload the picture, wait for the analysis and open the meal', async () => {
+    const calls = mockPictureMealApi({ statuses: ['PROCESSING', 'SUCCESS'] });
+    const { user } = await openPictureMeal();
+
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Tirar foto' })).toBeEnabled());
+    await user.press(screen.getByRole('button', { name: 'Tirar foto' }));
+    expect(await screen.findByLabelText('Foto da refeição')).toBeOnTheScreen();
+
+    await user.press(screen.getByRole('button', { name: 'Confirmar foto' }));
+
+    expect(
+      await screen.findByText('Estamos calculando seus macros com ajuda da inteligência artificial')
+    ).toBeOnTheScreen();
+    await waitFor(() => expect(calls.polls).toBe(1));
+
+    await act(() => jest.advanceTimersByTimeAsync(2000));
+
+    expect(await screen.findByText('Almoço Fitness')).toBeOnTheScreen();
+    expect(screen.getByText('630kcal')).toBeOnTheScreen();
+    expect(screen.getByText('56g (49%)')).toBeOnTheScreen();
+    expect(screen.getByText('120g Arroz')).toBeOnTheScreen();
+    expect(calls.created).toEqual([{ date: '2026-09-26', time: '10:00', inputType: 'PICTURE' }]);
+    expect(calls.s3Uploads).toBe(1);
+
+    await user.press(screen.getByRole('button', { name: 'Voltar' }));
+
+    await waitForHome();
+    expect(await screen.findByText('Almoço Fitness')).toBeOnTheScreen();
+  });
+
+  it('should send a picture chosen from the gallery', async () => {
+    const calls = mockPictureMealApi();
+    const { user } = await openPictureMeal();
+
+    await user.press(screen.getByRole('button', { name: 'Escolher foto da galeria' }));
+    await screen.findByLabelText('Foto da refeição');
+    await user.press(screen.getByRole('button', { name: 'Confirmar foto' }));
+
+    expect(await screen.findByText('Almoço Fitness')).toBeOnTheScreen();
+    expect(calls.s3Uploads).toBe(1);
+  });
+
+  it('should go back to the camera when the picture is discarded', async () => {
+    const calls = mockPictureMealApi();
+    const { user } = await openPictureMeal();
+
+    await user.press(screen.getByRole('button', { name: 'Escolher foto da galeria' }));
+    await screen.findByLabelText('Foto da refeição');
+    await user.press(screen.getByRole('button', { name: 'Descartar foto' }));
+
+    expect(await screen.findByRole('button', { name: 'Tirar foto' })).toBeOnTheScreen();
+    expect(screen.queryByLabelText('Foto da refeição')).not.toBeOnTheScreen();
+    expect(calls.created).toEqual([]);
+  });
+
+  it('should keep the picture and warn when the analysis fails', async () => {
+    const { alertSpy } = spyOnAlert();
+    mockPictureMealApi({ statuses: ['FAILED'] });
+    const { user } = await openPictureMeal();
+
+    await user.press(screen.getByRole('button', { name: 'Escolher foto da galeria' }));
+    await screen.findByLabelText('Foto da refeição');
+    await user.press(screen.getByRole('button', { name: 'Confirmar foto' }));
+
+    await waitFor(() =>
+      expect(alertSpy).toHaveBeenCalledWith(
+        'Não conseguimos analisar a foto',
+        'Tente outra foto, com os alimentos bem visíveis.'
+      )
+    );
+    expect(await screen.findByRole('button', { name: 'Confirmar foto' })).toBeOnTheScreen();
+  });
+
+  it('should show the API error when the upload cannot start', async () => {
+    const { alertSpy } = spyOnAlert();
+    mockPictureMealApi();
+    server.use(http.post(apiUrl('/meals'), () => HttpResponse.error()));
+    const { user } = await openPictureMeal();
+
+    await user.press(screen.getByRole('button', { name: 'Escolher foto da galeria' }));
+    await screen.findByLabelText('Foto da refeição');
+    await user.press(screen.getByRole('button', { name: 'Confirmar foto' }));
+
+    await waitFor(() =>
+      expect(alertSpy).toHaveBeenCalledWith(
+        'Não foi possível enviar a foto',
+        'Não foi possível falar com o servidor. Verifique sua conexão.'
+      )
+    );
+    expect(await screen.findByRole('button', { name: 'Confirmar foto' })).toBeOnTheScreen();
+  });
+
+  it('should offer the gallery when the camera is not allowed', async () => {
+    mockCameraPermission.current = {
+      status: PermissionStatus.DENIED,
+      granted: false,
+      canAskAgain: false,
+      expires: 'never'
+    };
+    mockPictureMealApi();
+    await openPictureMeal();
+
+    expect(
+      screen.getByText(
+        'Permita o acesso à câmera para fotografar sua refeição, ou escolha uma foto da galeria.'
+      )
+    ).toBeOnTheScreen();
+    expect(screen.getByRole('button', { name: 'Abrir ajustes' })).toBeOnTheScreen();
+    expect(screen.getByRole('button', { name: 'Tirar foto' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Escolher foto da galeria' })).toBeEnabled();
+  });
+});
