@@ -17,6 +17,18 @@
     "experiments": {
       "tsconfigPaths": true
     },
-    "plugins": ["expo-font", "expo-splash-screen", "expo-secure-store"]
+    "plugins": [
+      "expo-font",
+      "expo-splash-screen",
+      "expo-secure-store",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "O Nutrail usa suas fotos para anexar a imagem da refeição.",
+          "cameraPermission": false,
+          "microphonePermission": false
+        }
+      ]
+    ]
   }
 }

@@ -1,5 +1,6 @@
 import type { UpdateProfileFormType } from 'data/modules/profile/useCases/updateProfile/schemas/updateProfileSchema';
 import type { IUserProfile } from 'shared/entities/IUserProfile';
+import { toBrazilianDate } from 'shared/utils/toBrazilianDate';
 
 export function toProfileFormValues({
   name,
@@ -8,11 +9,9 @@ export function toProfileFormValues({
   weight,
   gender
 }: IUserProfile): UpdateProfileFormType {
-  const [year, month, day] = birthDate.split('-');
-
   return {
     name,
-    birthDate: `${day}/${month}/${year}`,
+    birthDate: toBrazilianDate(birthDate),
     height: String(height),
     weight: String(weight).replace('.', ','),
     gender

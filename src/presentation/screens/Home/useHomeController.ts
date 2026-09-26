@@ -7,6 +7,7 @@ import { useRef, useState } from 'react';
 import { useScreenPadding } from 'shared/hooks/useScreenPadding';
 import { getInitials } from 'shared/utils/getInitials';
 import { toLocalIsoDate } from 'shared/utils/toLocalIsoDate';
+import type { IHandleSelectMealSourceParams } from './components/MealSourceOptions/MealSourceOptionsTypes';
 import { addDays } from './utils/addDays';
 import { formatDayLabel } from './utils/formatDayLabel';
 
@@ -54,8 +55,12 @@ export function useHomeController() {
     newMealSheetRef.current?.present();
   }
 
-  function handleSelectMealSource() {
+  function handleSelectMealSource({ source }: IHandleSelectMealSourceParams) {
     newMealSheetRef.current?.dismiss();
+
+    if (source === 'MANUAL') {
+      navigation.navigate('ManualMeal', { date: toLocalIsoDate(selectedDate) });
+    }
   }
 
   function handleRetryMe() {
