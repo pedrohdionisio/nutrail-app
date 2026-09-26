@@ -22,12 +22,13 @@ describe('Navigation', () => {
     await waitForWelcome();
   });
 
-  it('should restore the stored session and sign out from the home', async () => {
+  it('should restore the stored session and sign out from the profile', async () => {
     await seedSession();
     const { user } = await renderApp();
 
     await waitForHome();
-    await user.press(screen.getByRole('button', { name: 'Sair' }));
+    await user.press(screen.getByRole('button', { name: 'Perfil' }));
+    await user.press(await screen.findByRole('button', { name: 'Sair' }));
 
     await waitForWelcome();
     expect(await AuthTokensManager.load()).toBeNull();

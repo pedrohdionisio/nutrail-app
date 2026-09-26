@@ -1,6 +1,6 @@
 import { useController } from 'react-hook-form';
+import { maskDate } from 'shared/utils/maskDate';
 import type { IUseBirthDateFieldControllerParams } from './BirthDateFieldTypes';
-import { maskDate } from './utils/maskDate';
 
 export function useBirthDateFieldController({ control }: IUseBirthDateFieldControllerParams) {
   const { field, fieldState } = useController({ control, name: 'birthDate' });

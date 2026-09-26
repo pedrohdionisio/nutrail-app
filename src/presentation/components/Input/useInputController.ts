@@ -7,13 +7,17 @@ export function useInputController<
   TFieldValues extends FieldValues,
   TName extends FieldPathByValue<TFieldValues, string>,
   TTransformedValues = TFieldValues
->({ control, name }: IUseInputControllerParams<TFieldValues, TName, TTransformedValues>) {
+>({ control, name, mask }: IUseInputControllerParams<TFieldValues, TName, TTransformedValues>) {
   const { field, fieldState } = useController({ control, name });
   const [isFocused, setIsFocused] = useState(false);
   const isInsideBottomSheet = useBottomSheetInternal(true) !== null;
 
   function handleFocus() {
     setIsFocused(true);
+  }
+
+  function handleChangeText(text: string) {
+    field.onChange(mask ? mask(text) : text);
   }
 
   function handleBlur() {
@@ -26,7 +30,7 @@ export function useInputController<
     errorMessage: fieldState.error?.message,
     isFocused,
     isInsideBottomSheet,
-    handleChangeText: field.onChange,
+    handleChangeText,
     handleFocus,
     handleBlur
   };

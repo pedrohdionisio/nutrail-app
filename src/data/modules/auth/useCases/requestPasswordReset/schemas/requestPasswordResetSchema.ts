@@ -1,8 +1,7 @@
-import { emailSchema } from 'data/modules/auth/schemas/emailSchema';
 import { z } from 'zod';
 
 export const requestPasswordResetSchema = z.object({
-  email: emailSchema
+  email: z.email('Formato de e-mail inválido').max(254, 'O e-mail é muito longo')
 });
 
 export type RequestPasswordResetFormType = z.infer<typeof requestPasswordResetSchema>;

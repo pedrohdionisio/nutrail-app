@@ -1,5 +1,4 @@
 import type { SignUpFormType } from 'data/modules/auth/useCases/signUp/schemas/signUpSchema';
-import type { LucideIcon } from 'lucide-react-native';
 import type { FieldPath } from 'react-hook-form';
 
 import type { ONBOARDING_STEP_IDS } from './constants/onboardingSteps';
@@ -13,11 +12,4 @@ export interface IOnboardingStep {
   description?: string;
   fields: FieldPath<SignUpFormType>[];
   contentAlignment: OnboardingContentAlignment;
-}
-
-export interface IOnboardingOption {
-  value: string;
-  label: string;
-  description?: string;
-  icon: LucideIcon;
 }

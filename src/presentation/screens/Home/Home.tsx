@@ -30,6 +30,7 @@ export function Home() {
     newMealSheetRef,
     handlePreviousDay,
     handleNextDay,
+    handleOpenProfile,
     handleOpenGoals,
     handleOpenNewMeal,
     handleSelectMealSource,
@@ -54,7 +55,7 @@ export function Home() {
         firstName={firstName}
         initials={initials}
         onOpenGoals={handleOpenGoals}
-        onSignOut={handleSignOut}
+        onOpenProfile={handleOpenProfile}
       />
 
       <View className='flex-1 overflow-hidden rounded-t-3xl bg-white'>

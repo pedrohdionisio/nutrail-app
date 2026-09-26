@@ -1,21 +1,30 @@
 import { z } from 'zod';
 
-const INTEGER_MESSAGE = 'Informe um número inteiro';
-
-function goalSchema(min: number, minMessage: string) {
-  return z
+export const updateGoalsSchema = z.object({
+  calories: z
     .string()
     .trim()
-    .regex(/^\d{1,5}$/, INTEGER_MESSAGE)
+    .regex(/^\d{1,5}$/, 'Informe um número inteiro')
     .transform(Number)
-    .pipe(z.number().int().min(min, minMessage));
-}
-
-export const updateGoalsSchema = z.object({
-  calories: goalSchema(1, 'A meta de calorias precisa ser maior que zero'),
-  carbohydrate: goalSchema(0, INTEGER_MESSAGE),
-  protein: goalSchema(0, INTEGER_MESSAGE),
-  fat: goalSchema(0, INTEGER_MESSAGE)
+    .pipe(z.number().int().min(1, 'A meta de calorias precisa ser maior que zero')),
+  carbohydrate: z
+    .string()
+    .trim()
+    .regex(/^\d{1,5}$/, 'Informe um número inteiro')
+    .transform(Number)
+    .pipe(z.number().int().min(0, 'Informe um número inteiro')),
+  protein: z
+    .string()
+    .trim()
+    .regex(/^\d{1,5}$/, 'Informe um número inteiro')
+    .transform(Number)
+    .pipe(z.number().int().min(0, 'Informe um número inteiro')),
+  fat: z
+    .string()
+    .trim()
+    .regex(/^\d{1,5}$/, 'Informe um número inteiro')
+    .transform(Number)
+    .pipe(z.number().int().min(0, 'Informe um número inteiro'))
 });
 
 export type UpdateGoalsFormType = z.input<typeof updateGoalsSchema>;

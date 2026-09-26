@@ -19,6 +19,7 @@ export function Input<
   name,
   label,
   unit,
+  mask,
   className,
   ...props
 }: IInputProps<TFieldValues, TName, TTransformedValues>) {
@@ -30,7 +31,7 @@ export function Input<
     handleChangeText,
     handleFocus,
     handleBlur
-  } = useInputController({ control, name });
+  } = useInputController({ control, name, mask });
   const TextInputComponent = isInsideBottomSheet ? StyledBottomSheetTextInput : TextInput;
 
   return (

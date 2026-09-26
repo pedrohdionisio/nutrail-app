@@ -5,10 +5,10 @@ import { useGetMe } from 'data/modules/me/useCases/getMe/useGetMe';
 import { useListMealsByDay } from 'data/modules/meal/useCases/listMealsByDay/useListMealsByDay';
 import { useRef, useState } from 'react';
 import { useScreenPadding } from 'shared/hooks/useScreenPadding';
+import { getInitials } from 'shared/utils/getInitials';
 import { toLocalIsoDate } from 'shared/utils/toLocalIsoDate';
 import { addDays } from './utils/addDays';
 import { formatDayLabel } from './utils/formatDayLabel';
-import { getInitials } from './utils/getInitials';
 
 const ADD_MEAL_BUTTON_SPACE = 96;
 
@@ -40,6 +40,10 @@ export function useHomeController() {
     if (canGoToNextDay) {
       setSelectedDate((date) => addDays(date, 1));
     }
+  }
+
+  function handleOpenProfile() {
+    navigation.navigate('Profile');
   }
 
   function handleOpenGoals() {
@@ -80,6 +84,7 @@ export function useHomeController() {
     newMealSheetRef,
     handlePreviousDay,
     handleNextDay,
+    handleOpenProfile,
     handleOpenGoals,
     handleOpenNewMeal,
     handleSelectMealSource,

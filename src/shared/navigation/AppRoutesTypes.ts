@@ -6,6 +6,7 @@ export type AuthRoutesParamList = {
 export type AppRoutesParamList = {
   Home: undefined;
   Goals: undefined;
+  Profile: undefined;
 };
 
 declare global {

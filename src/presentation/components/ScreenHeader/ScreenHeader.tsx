@@ -3,32 +3,43 @@ import { AppText } from 'presentation/components/AppText/AppText';
 import { Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS } from 'shared/constants/colors';
-import type { IGoalsHeaderProps } from './GoalsHeaderTypes';
+import type { IScreenHeaderProps } from './ScreenHeaderTypes';
 
 const HEADER_TOP_SPACING = 8;
 
-export function GoalsHeader({ onBack }: IGoalsHeaderProps) {
+export function ScreenHeader({ title, onBack, action }: IScreenHeaderProps) {
   const { top } = useSafeAreaInsets();
 
   return (
     <View
-      className='h-11 flex-row items-center px-5'
+      className='h-11 flex-row items-center justify-between px-3'
       style={{ marginTop: top + HEADER_TOP_SPACING }}
     >
       <Pressable
         accessibilityLabel='Voltar'
         accessibilityRole='button'
-        className='-ml-2 h-11 w-11 items-center justify-center rounded-lg active:opacity-60'
+        className='h-11 w-11 items-center justify-center rounded-lg active:opacity-60'
         onPress={onBack}
       >
         <ChevronLeftIcon color={COLORS.black[700]} size={24} strokeWidth={2} />
       </Pressable>
 
       <AppText accessibilityRole='header' align='center' className='flex-1'>
-        Suas Metas
+        {title}
       </AppText>
 
-      <View className='w-9' />
+      {action ? (
+        <Pressable
+          accessibilityLabel={action.accessibilityLabel}
+          accessibilityRole='button'
+          className='h-11 w-11 items-center justify-center rounded-lg active:opacity-60'
+          onPress={action.onPress}
+        >
+          <action.icon color={COLORS.black[700]} size={22} strokeWidth={2} />
+        </Pressable>
+      ) : (
+        <View className='w-11' />
+      )}
     </View>
   );
 }

@@ -120,7 +120,7 @@ Medidas da tela de referência ("Suas Metas"):
   react-hook-form), com rótulo em `bodySm` como no login. Dentro de bottom sheet ele troca sozinho
   para `BottomSheetTextInput`;
 - chip de unidade ao lado do input: `h-13 w-14 rounded-xl bg-gray-100`, texto `body` `muted`,
-  separado por `gap-2` — é a prop `unit` do `Input`;
+  separado por `gap-2` — é a prop `unit` do `Input`. Máscara de digitação (data) é a prop `mask`;
 - rótulo do campo: `body` `medium`;
 - botão: `h-13 rounded-xl`, texto `body` `medium`;
 - rodapé de ação: `border-t border-gray-400`, `pt-5`, dois botões `flex-1` com `gap-4`,
@@ -184,7 +184,8 @@ bg-gray-200`. Uma biblioteca de ícones só.
 
 ## Card de opção (escolha única)
 
-Molde em `Onboarding/components/OptionCard`: `rounded-2xl border`, `border-gray-300 bg-white`
+Molde em `presentation/components/OptionCard`, montado em grupo pelo `OptionsField` (ligado ao
+react-hook-form): `rounded-2xl border`, `border-gray-300 bg-white`
 normal; selecionado `border-lime-700 bg-lime-700/10` (o verde-claro do Figma não é token — é o
 lime-700 a 10% sobre branco) com o chip em `bg-white/60`. Grupo com `accessibilityRole='radiogroup'`,
 card com `radio` e `accessibilityState.checked`.

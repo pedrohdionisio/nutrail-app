@@ -73,6 +73,13 @@ export function useSignIn() {
 
 O useCase não guarda estado de tela, não navega e não mostra mensagem — isso é do controller.
 
+### Schema de formulário
+
+Cada caso de uso tem **um** schema, e todos os campos são escritos dentro dele. Sem schema por
+campo (`emailSchema`, `birthDateSchema`), sem pasta `schemas/` no nível do módulo e sem helper que
+gera campo (`goalSchema(min)`): se dois formulários validam o mesmo campo, a regra aparece escrita
+nos dois.
+
 ## DTO x entidade
 
 O DTO espelha a API; a entidade é o que o resto do app consome, em `shared/entities/`. O mapper é

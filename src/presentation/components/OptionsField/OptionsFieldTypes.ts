@@ -1,25 +1,27 @@
 import type { Control, FieldPathByValue, FieldValues } from 'react-hook-form';
-import type { TextInputProps } from 'react-native';
+import type { IOption, OptionCardOrientation } from '../OptionCard/OptionCardTypes';
 
-export interface IInputProps<
-  TFieldValues extends FieldValues,
-  TName extends FieldPathByValue<TFieldValues, string>,
-  TTransformedValues = TFieldValues
-> extends Omit<TextInputProps, 'value' | 'onChangeText' | 'onFocus' | 'onBlur'> {
-  control: Control<TFieldValues, unknown, TTransformedValues>;
-  name: TName;
-  label: string;
-  unit?: string;
-  mask?: (text: string) => string;
-  className?: string;
-}
-
-export interface IUseInputControllerParams<
+export interface IOptionsFieldProps<
   TFieldValues extends FieldValues,
   TName extends FieldPathByValue<TFieldValues, string>,
   TTransformedValues = TFieldValues
 > {
   control: Control<TFieldValues, unknown, TTransformedValues>;
   name: TName;
-  mask?: (text: string) => string;
+  options: IOption[];
+  orientation: OptionCardOrientation;
+  label?: string;
+}
+
+export interface IUseOptionsFieldControllerParams<
+  TFieldValues extends FieldValues,
+  TName extends FieldPathByValue<TFieldValues, string>,
+  TTransformedValues = TFieldValues
+> {
+  control: Control<TFieldValues, unknown, TTransformedValues>;
+  name: TName;
+}
+
+export interface IHandleSelectOptionParams {
+  value: string;
 }
