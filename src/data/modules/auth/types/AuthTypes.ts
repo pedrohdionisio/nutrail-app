@@ -1,3 +1,5 @@
+import type { IUserProfile } from 'shared/entities/IUserProfile';
+
 export interface IAuthTokensResponse {
   accessToken: string;
   refreshToken: string;
@@ -20,4 +22,12 @@ export interface IResetPasswordPayload {
   email: string;
   code: string;
   password: string;
+}
+
+export interface ISignUpPayload {
+  account: {
+    email: string;
+    password: string;
+  };
+  profile: Omit<IUserProfile, 'email'>;
 }

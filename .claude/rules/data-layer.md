@@ -116,7 +116,7 @@ no módulo `auth` — recuperação de senha inclusa:
 | Ação                  | Endpoint                          | Resposta                         |
 | --------------------- | --------------------------------- | -------------------------------- |
 | Entrar                | `POST /auth/sign-in`              | `{ accessToken, refreshToken }`  |
-| Cadastrar             | `POST /auth/sign-up`              | 201, `{ accessToken, refreshToken }` — body `{ account, profile }` |
+| Cadastrar             | `POST /auth/sign-up`              | 201, `{ accessToken, refreshToken }` — body `{ account, profile }`; as metas são calculadas pela API e lidas em `GET /me` |
 | Renovar               | `POST /auth/refresh-token`        | `{ accessToken, refreshToken }`  |
 | Pedir código          | `POST /auth/forgot-password`      | 204                              |
 | Redefinir senha       | `POST /auth/forgot-password/confirm` | 204 — body `{ email, code, password }` |
@@ -130,8 +130,11 @@ os dois JWT num JSON só.
 O refresh **sempre** regrava o par que voltou: hoje o Cognito devolve o mesmo refresh token, mas o
 contrato da API permite rotação.
 
-A sessão vive em `data/contexts/AuthProvider`: `startSession(tokens)` grava, liga o header e o
-interceptor; `signOut()` desfaz tudo e limpa o cache do React Query. No boot, token guardado já
+A sessão vive em `data/contexts/AuthProvider`, em dois passos: `activateSession(tokens)` grava, liga
+o header e o interceptor; `enterApp()` troca para o `AppStack`. O login chama os dois em sequência;
+o cadastro chama só o primeiro, busca `GET /me` para o resumo do plano e deixa o `enterApp()` para
+o "Começar meu plano" — senão a navegação troca de stack antes do resumo aparecer. `signOut()`
+desfaz tudo e limpa o cache do React Query. No boot, token guardado já
 abre a sessão — o primeiro 401 é quem descobre se ela ainda vale.
 
 O interceptor de 401 em `api.ts` é instalado pelo `AuthProvider` só enquanto existe sessão, e tem

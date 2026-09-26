@@ -15,6 +15,7 @@ export function Welcome() {
     forgotPasswordSheetRef,
     resetPasswordSheetRef,
     resetPasswordEmail,
+    handleCreateAccount,
     handleOpenSignIn,
     handleOpenForgotPassword,
     handleCodeSent,
@@ -30,7 +31,7 @@ export function Welcome() {
         </AppText>
 
         <View className='gap-8'>
-          <Button title='Criar Conta' />
+          <Button onPress={handleCreateAccount} title='Criar Conta' />
 
           <View className='gap-4'>
             <AuthPrompt

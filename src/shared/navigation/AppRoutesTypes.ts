@@ -1,5 +1,6 @@
 export type AuthRoutesParamList = {
   Welcome: undefined;
+  Onboarding: undefined;
 };
 
 export type AppRoutesParamList = {

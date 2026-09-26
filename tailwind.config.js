@@ -52,6 +52,7 @@ module.exports = {
       fontSize: {
         caption: ['16px', { lineHeight: '16px', letterSpacing: '1.28px' }],
         'title-1': ['32px', { lineHeight: '32px', letterSpacing: '-0.32px' }],
+        'title-1-input': ['32px', { letterSpacing: '-0.32px' }],
         'title-2': ['16px', { lineHeight: '24px' }],
         'body-xl': ['20px', { lineHeight: '24px' }],
         body: ['16px', { lineHeight: '24px' }],

@@ -58,37 +58,41 @@ export function AuthProvider({ children }: PropsWithChildren) {
     }
   }, [signOut]);
 
-  const startSession = useCallback(
+  const activateSession = useCallback(
     async (tokens: IAuthTokens) => {
       await AuthTokensManager.save(tokens);
 
       setAccessToken(tokens.accessToken);
       setSessionHandlers({ refreshAccessToken, signOut });
-      setSignedIn(true);
     },
     [refreshAccessToken, signOut]
   );
+
+  const enterApp = useCallback(() => {
+    setSignedIn(true);
+  }, []);
 
   useEffect(() => {
     async function restoreSession() {
       const tokens = await AuthTokensManager.load();
 
       if (tokens) {
-        await startSession(tokens);
+        await activateSession(tokens);
+        enterApp();
       }
 
       setIsRestoringSession(false);
     }
 
     restoreSession();
-  }, [startSession]);
+  }, [activateSession, enterApp]);
 
   if (isRestoringSession) {
     return null;
   }
 
   return (
-    <AuthContext.Provider value={{ signedIn, startSession, signOut }}>
+    <AuthContext.Provider value={{ signedIn, activateSession, enterApp, signOut }}>
       {children}
     </AuthContext.Provider>
   );

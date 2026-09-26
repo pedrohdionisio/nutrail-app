@@ -10,7 +10,7 @@ import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 
 export function useSignInSheetController() {
-  const { startSession } = useAuth();
+  const { activateSession, enterApp } = useAuth();
   const { signIn, isSigningIn } = useSignIn();
   const [apiErrorMessage, setApiErrorMessage] = useState<string | null>(null);
 
@@ -28,7 +28,8 @@ export function useSignInSheetController() {
     setApiErrorMessage(null);
 
     try {
-      await startSession(await signIn(formData));
+      await activateSession(await signIn(formData));
+      enterApp();
     } catch (error) {
       setApiErrorMessage(getApiErrorMessage(error));
     }

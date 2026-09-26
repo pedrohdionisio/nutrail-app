@@ -20,6 +20,7 @@ export const appTextVariants = cva('', {
       default: 'text-black-700',
       muted: 'text-gray-700',
       inverse: 'text-white',
+      inverseMuted: 'text-gray-600',
       brand: 'text-lime-500',
       error: 'text-support-red'
     },

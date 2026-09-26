@@ -14,7 +14,7 @@ pasta `app/` competindo com `presentation/screens/`.
 ```
 src/shared/navigation/
 ├── AppRoutesTypes.ts    # os param lists e a augmentação global
-├── AuthStack.tsx        # sem sessão: Welcome (login e recuperação são sheets dela; SignUp virá com o onboarding)
+├── AuthStack.tsx        # sem sessão: Welcome (login e recuperação são sheets dela) e Onboarding
 ├── AppStack.tsx         # com sessão
 └── Navigation.tsx       # NavigationContainer + a escolha entre os stacks
 ```
@@ -56,6 +56,13 @@ sem runtime.
 
 Conteúdo que cobre parte da tela atual é bottom sheet (`components.md`), não `Stack.Screen` — nem
 com `presentation: 'modal'`/`'formSheet'`. Rota nova só para tela inteira.
+
+## Fluxo em etapas numa rota só
+
+O `Onboarding` é **uma** rota com as etapas em estado do controller (`stepId`), porque todas
+alimentam um formulário só (`signUpSchema`), validado etapa a etapa com `trigger(fields)`. O voltar
+do header e o voltar do sistema recuam uma etapa via `usePreventRemove`; da primeira etapa, saem da
+rota. Depois do cadastro o voltar fica bloqueado — a conta já existe.
 
 ## Rota nova
 

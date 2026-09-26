@@ -11,6 +11,7 @@ const TRANSFORMED_PACKAGES = [
   '@react-navigation',
   'nativewind',
   '@gorhom',
+  'lucide-react-native',
   'msw',
   '@mswjs',
   'rettime',

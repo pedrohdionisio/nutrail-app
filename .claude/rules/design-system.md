@@ -28,7 +28,8 @@ Todo texto passa por `AppText` — nunca `<Text>` do React Native direto.
 - `weight`: `regular` · `medium` · `semibold`. Omitido, vale o peso padrão do tamanho
   (`DEFAULT_WEIGHT_BY_SIZE`). Passe `weight` só quando o Figma usa outra variante daquele tamanho
   (`body/medium`, `body-sm/semibold`…).
-- `color`: `default` (black-700) · `muted` (gray-700) · `inverse` (branco) · `brand` (lime-500) ·
+- `color`: `default` (black-700) · `muted` (gray-700) · `inverse` (branco) · `inverseMuted`
+  (gray-600, texto secundário sobre fundo escuro) · `brand` (lime-500) ·
   `error` (support-red). `brand` é para texto sobre fundo escuro (link da tela de boas-vindas);
   sobre branco o lime não tem contraste para texto.
 - `align`: `left` · `center` · `right`.
@@ -39,6 +40,13 @@ escolhe o arquivo é `weight`.
 
 A família é uma só: **Host Grotesk**, pesos 400, 500 e 600, carregados no `App.tsx`. Precisou de
 tamanho ou peso fora da escala → **pare e pergunte**. Não escreva `text-[15px]` solto.
+
+### `TextInput` não usa tamanho com line-height apertado
+
+No iOS, `TextInput` com `lineHeight` igual ao tamanho da fonte corta a parte de cima e de baixo dos
+glifos — e o `title-1` do Figma é 32/32. Campo editável nesse tamanho usa `text-title-1-input`
+(mesmo tamanho e tracking, **sem** line-height) com altura explícita (`h-14`), e o iOS centraliza o
+texto. `text-body` (16/24) não tem o problema porque a linha é maior que a fonte.
 
 ### Tamanho novo entra em três lugares
 
@@ -158,8 +166,19 @@ Componente de biblioteca (`expo-image`, `GestureHandlerRootView`, `Animated.View
 
 ## Ícones
 
-Quando entrar a primeira tela com ícone: `lucide-react-native`, com `size` e `color` explícitos e
-`strokeWidth` entre 1.8 e 2, import nomeado. Uma biblioteca de ícones só.
+`lucide-react-native`, com `size` e `color` explícitos e `strokeWidth` entre 1.8 e 2, importado
+**pelo subpath do ícone**: `import SaladIcon from 'lucide-react-native/icons/salad'`. O Metro não
+faz tree-shaking de barrel — `import { SaladIcon } from 'lucide-react-native'` puxa os ~1.600
+ícones e dobrou o bundle (1.805 → 3.637 módulos). Do barrel só entra `import type { LucideIcon }`. **Nunca emoji** no lugar de ícone, mesmo que o Figma use:
+o Pedro pediu lucide. Ícone de opção fica em `black-700` sobre chip `h-12 w-12 rounded-xl
+bg-gray-200`. Uma biblioteca de ícones só.
+
+## Card de opção (escolha única)
+
+Molde em `Onboarding/components/OptionCard`: `rounded-2xl border`, `border-gray-300 bg-white`
+normal; selecionado `border-lime-700 bg-lime-700/10` (o verde-claro do Figma não é token — é o
+lime-700 a 10% sobre branco) com o chip em `bg-white/60`. Grupo com `accessibilityRole='radiogroup'`,
+card com `radio` e `accessibilityState.checked`.
 
 ## Acessibilidade
 

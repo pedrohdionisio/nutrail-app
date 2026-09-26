@@ -1,12 +1,18 @@
 import type { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useNavigation } from '@react-navigation/native';
 import { useRef, useState } from 'react';
 import type { IHandleCodeSentParams } from './WelcomeTypes';
 
 export function useWelcomeController() {
+  const navigation = useNavigation();
   const signInSheetRef = useRef<BottomSheetModal>(null);
   const forgotPasswordSheetRef = useRef<BottomSheetModal>(null);
   const resetPasswordSheetRef = useRef<BottomSheetModal>(null);
   const [resetPasswordEmail, setResetPasswordEmail] = useState('');
+
+  function handleCreateAccount() {
+    navigation.navigate('Onboarding');
+  }
 
   function handleOpenSignIn() {
     signInSheetRef.current?.present();
@@ -30,6 +36,7 @@ export function useWelcomeController() {
     forgotPasswordSheetRef,
     resetPasswordSheetRef,
     resetPasswordEmail,
+    handleCreateAccount,
     handleOpenSignIn,
     handleOpenForgotPassword,
     handleCodeSent,
