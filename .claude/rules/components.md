@@ -76,6 +76,31 @@ dentro de `components/`.
   controller. Ver `controllers.md`.
 - O componente não busca dado próprio direto de `data/` — quem chama é o controller.
 
+## Bottom sheet
+
+Todo conteúdo que desliza sobre a tela atual — login, filtro, seletor, confirmação — é
+`BottomSheetModal` do `@gorhom/bottom-sheet`. **Nunca** uma rota cuja screen desenha um cartão por
+cima de um fundo: trocar de rota tira o usuário da tela que o sheet deveria cobrir.
+
+```
+Welcome/
+├── useWelcomeController.ts        # useRef<BottomSheetModal>, present() e dismiss()
+└── components/SignInSheet/
+    ├── SignInSheet.tsx            # recebe sheetRef + callbacks
+    └── useSignInSheetController.ts
+```
+
+- O ref mora no controller da screen, que abre e fecha; o sheet recebe `sheetRef` por prop
+  (`RefObject<BottomSheetModal | null>`).
+- Sheet que leva a outro avisa por callback (`onCodeSent({ email })`); quem decide qual abrir é o
+  controller da screen.
+- Conteúdo em `BottomSheetScrollView` quando pode não caber com o teclado aberto; campo de texto é o
+  `Input`, que usa `BottomSheetTextInput` sozinho dentro de sheet — sem ele o sheet não acompanha o
+  teclado.
+- `BottomSheetModalProvider` e `GestureHandlerRootView` já estão no `App.tsx`.
+- Nos testes, `tests/mocks/bottomSheet.tsx` só renderiza o sheet depois do `present()` e respeita
+  o `stackBehavior='replace'` — dá para afirmar o que está aberto.
+
 ## Toda screen precisa resolver três estados
 
 Antes de considerar uma screen pronta:

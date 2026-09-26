@@ -17,6 +17,6 @@
     "experiments": {
       "tsconfigPaths": true
     },
-    "plugins": ["expo-font", "expo-splash-screen"]
+    "plugins": ["expo-font", "expo-splash-screen", "expo-secure-store"]
   }
 }

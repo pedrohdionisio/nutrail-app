@@ -14,7 +14,7 @@ pasta `app/` competindo com `presentation/screens/`.
 ```
 src/shared/navigation/
 ├── AppRoutesTypes.ts    # os param lists e a augmentação global
-├── AuthStack.tsx        # sem sessão: SignIn, SignUp, ForgotPassword, ResetPassword
+├── AuthStack.tsx        # sem sessão: Welcome (login e recuperação são sheets dela; SignUp virá com o onboarding)
 ├── AppStack.tsx         # com sessão
 └── Navigation.tsx       # NavigationContainer + a escolha entre os stacks
 ```
@@ -51,6 +51,11 @@ O param list é `type`, **não** `interface`: o React Navigation exige index sig
 trocar para `interface` quebra o `createNativeStackNavigator` com `TS2344`. A augmentação é o que
 faz `useNavigation()` vir tipado, e é a única exceção ao "sem `namespace`" — declaração ambiente,
 sem runtime.
+
+## Sheet não é rota
+
+Conteúdo que cobre parte da tela atual é bottom sheet (`components.md`), não `Stack.Screen` — nem
+com `presentation: 'modal'`/`'formSheet'`. Rota nova só para tela inteira.
 
 ## Rota nova
 

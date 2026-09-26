@@ -110,7 +110,8 @@ não der, encerra.
 
 ## Sessão
 
-Login é obrigatório. Endpoints (todos pelo `publicApi`, a instância sem interceptor que nasce junto com a auth, exceto `/me`):
+Login é obrigatório. Endpoints (todos pelo `publicApi`, a instância sem interceptor, exceto `/me`),
+no módulo `auth` — recuperação de senha inclusa:
 
 | Ação                  | Endpoint                          | Resposta                         |
 | --------------------- | --------------------------------- | -------------------------------- |
@@ -128,6 +129,10 @@ os dois JWT num JSON só.
 
 O refresh **sempre** regrava o par que voltou: hoje o Cognito devolve o mesmo refresh token, mas o
 contrato da API permite rotação.
+
+A sessão vive em `data/contexts/AuthProvider`: `startSession(tokens)` grava, liga o header e o
+interceptor; `signOut()` desfaz tudo e limpa o cache do React Query. No boot, token guardado já
+abre a sessão — o primeiro 401 é quem descobre se ela ainda vale.
 
 O interceptor de 401 em `api.ts` é instalado pelo `AuthProvider` só enquanto existe sessão, e tem
 três detalhes obrigatórios:

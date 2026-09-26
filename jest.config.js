@@ -9,13 +9,24 @@ const TRANSFORMED_PACKAGES = [
   '@expo-google-fonts',
   'react-navigation',
   '@react-navigation',
-  'nativewind'
+  'nativewind',
+  '@gorhom',
+  'msw',
+  '@mswjs',
+  'rettime',
+  'until-async',
+  '@open-draft'
 ];
+
+const expoPreset = require('jest-expo/jest-preset');
 
 module.exports = {
   preset: 'jest-expo',
   setupFiles: ['<rootDir>/tests/env.ts'],
   setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
+  transform: {
+    '\\.mjs$': expoPreset.transform['\\.[jt]sx?$']
+  },
   collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.test.{ts,tsx}', '!src/**/*Types.ts'],
   transformIgnorePatterns: [
     `/node_modules/(?!(${TRANSFORMED_PACKAGES.join('|')}))`,

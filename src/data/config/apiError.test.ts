@@ -1,5 +1,5 @@
 import { AxiosError, AxiosHeaders } from 'axios';
-import { getApiErrorCode, getApiErrorMessage } from './apiError';
+import { getApiErrorCode, getApiErrorMessage, isRejectedByApi } from './apiError';
 
 function buildResponseError(status: number, data: unknown) {
   const config = { headers: new AxiosHeaders() };
@@ -49,5 +49,11 @@ describe('apiError', () => {
     expect(getApiErrorMessage(new Error('boom'))).toBe(
       'Não foi possível concluir a ação. Tente novamente.'
     );
+  });
+
+  it('should treat only 4xx responses as rejected by the API', () => {
+    expect(isRejectedByApi(buildResponseError(401, {}))).toBe(true);
+    expect(isRejectedByApi(buildResponseError(503, {}))).toBe(false);
+    expect(isRejectedByApi(networkError)).toBe(false);
   });
 });

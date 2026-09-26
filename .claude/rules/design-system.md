@@ -28,7 +28,9 @@ Todo texto passa por `AppText` — nunca `<Text>` do React Native direto.
 - `weight`: `regular` · `medium` · `semibold`. Omitido, vale o peso padrão do tamanho
   (`DEFAULT_WEIGHT_BY_SIZE`). Passe `weight` só quando o Figma usa outra variante daquele tamanho
   (`body/medium`, `body-sm/semibold`…).
-- `color`: `default` (black-700) · `muted` (gray-700) · `inverse` (branco) · `error` (support-red).
+- `color`: `default` (black-700) · `muted` (gray-700) · `inverse` (branco) · `brand` (lime-500) ·
+  `error` (support-red). `brand` é para texto sobre fundo escuro (link da tela de boas-vindas);
+  sobre branco o lime não tem contraste para texto.
 - `align`: `left` · `center` · `right`.
 
 Cada `size` já carrega tamanho, `line-height` e `letter-spacing`. Não empilhe `leading-*` nem
@@ -96,7 +98,10 @@ Escala do Tailwind, mais um token: `13` = 52px, a altura de input e botão (`h-1
 Medidas da tela de referência ("Suas Metas"):
 
 - margem lateral da tela: 20px (`px-5`, já no `ScreenLayout`);
-- input: `h-13 rounded-xl border border-gray-400 bg-white px-4`, texto `body`;
+- input: `h-13 rounded-xl border border-gray-400 bg-white px-4`, texto `body`; em foco a borda vira
+  `black-700`, com erro `support-red`. É o `presentation/components/Input` (ligado ao
+  react-hook-form), com rótulo em `bodySm` como no login. Dentro de bottom sheet ele troca sozinho
+  para `BottomSheetTextInput`;
 - chip de unidade ao lado do input: `h-13 w-14 rounded-xl bg-gray-100`, texto `body` `muted`,
   separado por `gap-2`;
 - rótulo do campo: `body` `medium`;
@@ -107,6 +112,27 @@ Medidas da tela de referência ("Suas Metas"):
 
 Valor arbitrário (`py-[14px]`) é aceito quando o design pede um número fora da escala, mas é
 exceção. Safe area vem de `react-native-safe-area-context`, nunca de constante chutada.
+
+## Telas de autenticação
+
+Sem sessão existe **uma** tela, `Welcome`: foto de fundo (`shared/assets/login-bg.png`), degradê
+escuro, logo fixo no topo e status bar clara (`Welcome/components/WelcomeBackground`). Login,
+recuperação e nova senha **não são rotas**: são bottom sheets abertos sobre ela
+(`Welcome/components/*Sheet`), todos pelo `AuthSheet` — `BottomSheetModal` sem handle, backdrop
+transparente que fecha no toque, `stackBehavior='replace'` (abrir um fecha o outro), `topInset`
+que para abaixo do logo, título `title1`, descrição opcional em `bodySm` `muted`, `gap-6` entre
+campos.
+
+O botão de envio fica desabilitado (`opacity-50`) até os campos obrigatórios terem valor; formato
+inválido só aparece no envio, pelo Zod.
+
+## Logo
+
+Metro não importa `.svg` como componente. O arquivo original fica em `src/shared/assets/logo.svg`
+como fonte, e a versão consumível é `src/shared/assets/svgs/Logo.tsx` (`react-native-svg`), com o
+`fill` vindo de `COLORS` (`gray[100]` e `lime[500]`, os mesmos hex do arquivo). O Biome ignora
+`**/*.svg` para não exigir edição do asset de marca. Tamanho padrão: 24 de altura, medido na tela
+de boas-vindas.
 
 ## Estilo
 
