@@ -1,4 +1,5 @@
 import type { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useNavigation } from '@react-navigation/native';
 import { useAuth } from 'data/contexts/AuthProvider/AuthProvider';
 import { useGetMe } from 'data/modules/me/useCases/getMe/useGetMe';
 import { useListMealsByDay } from 'data/modules/meal/useCases/listMealsByDay/useListMealsByDay';
@@ -12,6 +13,7 @@ import { getInitials } from './utils/getInitials';
 const ADD_MEAL_BUTTON_SPACE = 96;
 
 export function useHomeController() {
+  const navigation = useNavigation();
   const { signOut } = useAuth();
   const { paddingBottom } = useScreenPadding();
   const newMealSheetRef = useRef<BottomSheetModal>(null);
@@ -40,7 +42,9 @@ export function useHomeController() {
     }
   }
 
-  function handleOpenGoals() {}
+  function handleOpenGoals() {
+    navigation.navigate('Goals');
+  }
 
   function handleOpenNewMeal() {
     newMealSheetRef.current?.present();

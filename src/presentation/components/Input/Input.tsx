@@ -18,6 +18,7 @@ export function Input<
   control,
   name,
   label,
+  unit,
   className,
   ...props
 }: IInputProps<TFieldValues, TName, TTransformedValues>) {
@@ -36,22 +37,30 @@ export function Input<
     <View className='gap-2'>
       <AppText size='bodySm'>{label}</AppText>
 
-      <TextInputComponent
-        accessibilityLabel={label}
-        className={cn(
-          'h-13 rounded-xl border border-gray-400 bg-white px-4 font-host-grotesk-regular text-black-700 text-body',
-          isFocused && 'border-black-700',
-          !!errorMessage && 'border-support-red',
-          className
+      <View className='flex-row gap-2'>
+        <TextInputComponent
+          accessibilityLabel={label}
+          className={cn(
+            'h-13 flex-1 rounded-xl border border-gray-400 bg-white px-4 font-host-grotesk-regular text-black-700 text-body',
+            isFocused && 'border-black-700',
+            !!errorMessage && 'border-support-red',
+            className
+          )}
+          onBlur={handleBlur}
+          onChangeText={handleChangeText}
+          onFocus={handleFocus}
+          placeholderTextColor={COLORS.gray[600]}
+          selectionColor={COLORS.black[700]}
+          value={value}
+          {...props}
+        />
+
+        {!!unit && (
+          <View className='h-13 w-14 items-center justify-center rounded-xl bg-gray-100'>
+            <AppText color='muted'>{unit}</AppText>
+          </View>
         )}
-        onBlur={handleBlur}
-        onChangeText={handleChangeText}
-        onFocus={handleFocus}
-        placeholderTextColor={COLORS.gray[600]}
-        selectionColor={COLORS.black[700]}
-        value={value}
-        {...props}
-      />
+      </View>
 
       {!!errorMessage && (
         <AppText color='error' size='bodySm'>

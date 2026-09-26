@@ -9,6 +9,7 @@ export interface IInputProps<
   control: Control<TFieldValues, unknown, TTransformedValues>;
   name: TName;
   label: string;
+  unit?: string;
   className?: string;
 }
 

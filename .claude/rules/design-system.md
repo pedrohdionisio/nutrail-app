@@ -120,7 +120,7 @@ Medidas da tela de referência ("Suas Metas"):
   react-hook-form), com rótulo em `bodySm` como no login. Dentro de bottom sheet ele troca sozinho
   para `BottomSheetTextInput`;
 - chip de unidade ao lado do input: `h-13 w-14 rounded-xl bg-gray-100`, texto `body` `muted`,
-  separado por `gap-2`;
+  separado por `gap-2` — é a prop `unit` do `Input`;
 - rótulo do campo: `body` `medium`;
 - botão: `h-13 rounded-xl`, texto `body` `medium`;
 - rodapé de ação: `border-t border-gray-400`, `pt-5`, dois botões `flex-1` com `gap-4`,
