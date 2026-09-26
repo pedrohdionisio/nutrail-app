@@ -1,17 +1,101 @@
 import { AppText } from 'presentation/components/AppText/AppText';
-import { Button } from 'presentation/components/Button/Button';
-import { ScreenLayout } from 'presentation/layouts/ScreenLayout/ScreenLayout';
+import { FlatList, View } from 'react-native';
+import { AddMealButton } from './components/AddMealButton/AddMealButton';
+import { DailySummary } from './components/DailySummary/DailySummary';
+import { DayNavigator } from './components/DayNavigator/DayNavigator';
+import { HomeError } from './components/HomeError/HomeError';
+import { HomeHeader } from './components/HomeHeader/HomeHeader';
+import { HomeSplash } from './components/HomeSplash/HomeSplash';
+import { MealCard } from './components/MealCard/MealCard';
+import { MealsListEmpty } from './components/MealsListEmpty/MealsListEmpty';
+import { NewMealSheet } from './components/NewMealSheet/NewMealSheet';
 import { useHomeController } from './useHomeController';
 
 export function Home() {
-  const { handleSignOut } = useHomeController();
+  const {
+    me,
+    shouldShowSplash,
+    isRefetchingMe,
+    firstName,
+    initials,
+    dayLabel,
+    canGoToNextDay,
+    meals,
+    totals,
+    isLoadingMeals,
+    isMealsError,
+    isRefetchingMeals,
+    shouldShowAddMealButton,
+    listPaddingBottom,
+    newMealSheetRef,
+    handlePreviousDay,
+    handleNextDay,
+    handleOpenGoals,
+    handleOpenNewMeal,
+    handleSelectMealSource,
+    handleRetryMe,
+    handleRetryMeals,
+    handleSignOut
+  } = useHomeController();
+
+  if (shouldShowSplash) {
+    return <HomeSplash />;
+  }
+
+  if (!me) {
+    return (
+      <HomeError isRetrying={isRefetchingMe} onRetry={handleRetryMe} onSignOut={handleSignOut} />
+    );
+  }
 
   return (
-    <ScreenLayout className='gap-2'>
-      <AppText size='caption'>Nutrail</AppText>
-      <AppText size='title1'>Olá!</AppText>
+    <View className='flex-1 bg-lime-400'>
+      <HomeHeader
+        firstName={firstName}
+        initials={initials}
+        onOpenGoals={handleOpenGoals}
+        onSignOut={handleSignOut}
+      />
 
-      <Button className='mt-auto' onPress={handleSignOut} title='Sair' variant='secondary' />
-    </ScreenLayout>
+      <View className='flex-1 overflow-hidden rounded-t-3xl bg-white'>
+        <FlatList
+          contentContainerClassName='gap-4 px-5 pt-3'
+          contentContainerStyle={{ paddingBottom: listPaddingBottom }}
+          data={meals}
+          keyExtractor={(meal) => meal.id}
+          ListEmptyComponent={
+            <MealsListEmpty
+              isError={isMealsError}
+              isLoading={isLoadingMeals}
+              isRetrying={isRefetchingMeals}
+              onRetry={handleRetryMeals}
+              onSelectSource={handleSelectMealSource}
+            />
+          }
+          ListHeaderComponent={
+            <View className='gap-4'>
+              <DayNavigator
+                canGoToNextDay={canGoToNextDay}
+                label={dayLabel}
+                onNextDay={handleNextDay}
+                onPreviousDay={handlePreviousDay}
+              />
+
+              {totals && <DailySummary consumed={totals} goals={me.goals} />}
+
+              <AppText accessibilityRole='header' className='pt-2' size='caption'>
+                Refeições
+              </AppText>
+            </View>
+          }
+          renderItem={({ item }) => <MealCard meal={item} />}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
+
+      {shouldShowAddMealButton && <AddMealButton onPress={handleOpenNewMeal} />}
+
+      <NewMealSheet onSelectSource={handleSelectMealSource} sheetRef={newMealSheetRef} />
+    </View>
   );
 }

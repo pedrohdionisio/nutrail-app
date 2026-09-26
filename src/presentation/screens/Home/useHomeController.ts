@@ -1,9 +1,86 @@
+import type { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useAuth } from 'data/contexts/AuthProvider/AuthProvider';
+import { useGetMe } from 'data/modules/me/useCases/getMe/useGetMe';
+import { useListMealsByDay } from 'data/modules/meal/useCases/listMealsByDay/useListMealsByDay';
+import { useRef, useState } from 'react';
+import { useScreenPadding } from 'shared/hooks/useScreenPadding';
+import { toLocalIsoDate } from 'shared/utils/toLocalIsoDate';
+import { addDays } from './utils/addDays';
+import { formatDayLabel } from './utils/formatDayLabel';
+import { getInitials } from './utils/getInitials';
+
+const ADD_MEAL_BUTTON_SPACE = 96;
 
 export function useHomeController() {
   const { signOut } = useAuth();
+  const { paddingBottom } = useScreenPadding();
+  const newMealSheetRef = useRef<BottomSheetModal>(null);
+  const [selectedDate, setSelectedDate] = useState(() => new Date());
+  const [isStarting, setIsStarting] = useState(true);
+  const { me, isLoadingMe, isRefetchingMe, refetchMe } = useGetMe();
+  const { mealsOfDay, isLoadingMeals, isMealsError, isRefetchingMeals, refetchMeals } =
+    useListMealsByDay({ date: toLocalIsoDate(selectedDate) });
+
+  if (isStarting && !isLoadingMe && !isLoadingMeals) {
+    setIsStarting(false);
+  }
+
+  const today = new Date();
+  const canGoToNextDay = toLocalIsoDate(selectedDate) < toLocalIsoDate(today);
+  const name = me?.profile.name ?? '';
+  const meals = mealsOfDay?.meals ?? [];
+
+  function handlePreviousDay() {
+    setSelectedDate((date) => addDays(date, -1));
+  }
+
+  function handleNextDay() {
+    if (canGoToNextDay) {
+      setSelectedDate((date) => addDays(date, 1));
+    }
+  }
+
+  function handleOpenGoals() {}
+
+  function handleOpenNewMeal() {
+    newMealSheetRef.current?.present();
+  }
+
+  function handleSelectMealSource() {
+    newMealSheetRef.current?.dismiss();
+  }
+
+  function handleRetryMe() {
+    refetchMe();
+  }
+
+  function handleRetryMeals() {
+    refetchMeals();
+  }
 
   return {
+    me,
+    shouldShowSplash: isStarting,
+    isRefetchingMe,
+    firstName: name.split(' ')[0] ?? '',
+    initials: getInitials(name),
+    dayLabel: formatDayLabel(selectedDate, today),
+    canGoToNextDay,
+    meals,
+    totals: mealsOfDay?.totals ?? null,
+    isLoadingMeals,
+    isMealsError,
+    isRefetchingMeals,
+    shouldShowAddMealButton: meals.length > 0,
+    listPaddingBottom: paddingBottom + ADD_MEAL_BUTTON_SPACE,
+    newMealSheetRef,
+    handlePreviousDay,
+    handleNextDay,
+    handleOpenGoals,
+    handleOpenNewMeal,
+    handleSelectMealSource,
+    handleRetryMe,
+    handleRetryMeals,
     handleSignOut: signOut
   };
 }

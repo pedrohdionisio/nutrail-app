@@ -1,0 +1,39 @@
+import { AppText } from 'presentation/components/AppText/AppText';
+import { View } from 'react-native';
+import { COLORS } from 'shared/constants/colors';
+import { MealStat } from './components/MealStat/MealStat';
+import { MEAL_INPUT_ICONS } from './constants/mealInputIcons';
+import type { IMealCardProps } from './MealCardTypes';
+import { formatMealTime } from './utils/formatMealTime';
+
+export function MealCard({ meal }: IMealCardProps) {
+  const { name, inputType, createdAt, calories, protein, carbohydrate, fat } = meal;
+  const InputIcon = MEAL_INPUT_ICONS[inputType];
+
+  return (
+    <View className='gap-4 rounded-2xl border border-gray-400 bg-white p-4'>
+      <View className='flex-row items-center gap-3'>
+        <View className='h-12 w-12 items-center justify-center rounded-xl bg-gray-200'>
+          <InputIcon color={COLORS.black[700]} size={20} strokeWidth={1.8} />
+        </View>
+
+        <View className='flex-1 gap-0.5'>
+          <AppText color='muted' size='bodySm'>
+            {formatMealTime(createdAt)}
+          </AppText>
+
+          <AppText numberOfLines={2} weight='medium'>
+            {name}
+          </AppText>
+        </View>
+      </View>
+
+      <View className='flex-row rounded-xl bg-gray-100 py-3'>
+        <MealStat dotClassName='bg-support-tomato' label='kcal' value={`${calories}`} />
+        <MealStat dotClassName='bg-support-teal' label='Proteínas' value={`${protein}g`} />
+        <MealStat dotClassName='bg-support-yellow' label='Carbos' value={`${carbohydrate}g`} />
+        <MealStat dotClassName='bg-support-orange' label='Gorduras' value={`${fat}g`} />
+      </View>
+    </View>
+  );
+}

@@ -100,7 +100,7 @@ describe('Onboarding', () => {
       accessToken: 'access',
       refreshToken: 'refresh'
     });
-    expect(screen.queryByText('Olá!')).not.toBeOnTheScreen();
+    expect(screen.queryByText('Refeições')).not.toBeOnTheScreen();
 
     await user.press(screen.getByRole('button', { name: 'Começar meu plano' }));
 

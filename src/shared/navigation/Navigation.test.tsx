@@ -1,8 +1,8 @@
-import { act, screen } from '@testing-library/react-native';
-import { api } from 'data/config/api';
+import { screen } from '@testing-library/react-native';
 import { AuthTokensManager } from 'data/libs/AuthTokensManager';
 import { HttpResponse, http } from 'msw';
 import { apiUrl } from 'tests/apiUrl';
+import { buildMe } from 'tests/fixtures/me';
 import { renderApp, seedSession } from 'tests/render';
 import { waitForHome, waitForWelcome } from 'tests/screens';
 import { server } from 'tests/server';
@@ -10,7 +10,7 @@ import { server } from 'tests/server';
 function acceptOnly(validToken: string) {
   return http.get(apiUrl('/me'), ({ request }) =>
     request.headers.get('Authorization') === `Bearer ${validToken}`
-      ? HttpResponse.json({ ok: true })
+      ? HttpResponse.json(buildMe())
       : new HttpResponse(null, { status: 401 })
   );
 }
@@ -42,11 +42,8 @@ describe('Navigation', () => {
     );
     await seedSession();
     await renderApp();
+
     await waitForHome();
-
-    const { data } = await api.get('/me');
-
-    expect(data).toEqual({ ok: true });
     expect(await AuthTokensManager.load()).toEqual({
       accessToken: 'new-access',
       refreshToken: 'new-refresh'
@@ -67,11 +64,6 @@ describe('Navigation', () => {
     );
     await seedSession();
     await renderApp();
-    await waitForHome();
-
-    await act(async () => {
-      await expect(api.get('/me')).rejects.toMatchObject({ response: { status: 401 } });
-    });
 
     await waitForWelcome();
     expect(await AuthTokensManager.load()).toBeNull();

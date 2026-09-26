@@ -17,13 +17,13 @@ Todo texto passa por `AppText` — nunca `<Text>` do React Native direto.
 
 | `size`   | Token do Figma      | Tamanho / altura      | Peso padrão |
 | -------- | ------------------- | --------------------- | ----------- |
-| `caption` | caption            | 16 / 16, upper, +8%   | medium      |
-| `title1` | title/title1        | 32 / 32, -1%          | semibold    |
+| `caption` | caption            | 16 / 22, upper, +8%   | medium      |
+| `title1` | title/title1        | 32 / 42, -1%          | semibold    |
 | `title2` | title/title2        | 16 / 24               | semibold    |
-| `bodyXl` | body/xl             | 20 / 24               | medium      |
+| `bodyXl` | body/xl             | 20 / 26               | medium      |
 | `body`   | body/base           | 16 / 24               | regular     |
 | `bodySm` | body-sm             | 14 / 20               | regular     |
-| `bodyXs` | body-xs             | 12 / 12               | regular     |
+| `bodyXs` | body-xs             | 12 / 16               | regular     |
 
 - `weight`: `regular` · `medium` · `semibold`. Omitido, vale o peso padrão do tamanho
   (`DEFAULT_WEIGHT_BY_SIZE`). Passe `weight` só quando o Figma usa outra variante daquele tamanho
@@ -40,6 +40,15 @@ escolhe o arquivo é `weight`.
 
 A família é uma só: **Host Grotesk**, pesos 400, 500 e 600, carregados no `App.tsx`. Precisou de
 tamanho ou peso fora da escala → **pare e pergunte**. Não escreva `text-[15px]` solto.
+
+### Line-height mínimo: 1,27× o tamanho
+
+A Host Grotesk tem ascent 1,015em e descent 0,315em. Com `lineHeight` menor que a altura natural,
+o iOS guarda o descent e sobra só `lineHeight − 0,315 × tamanho` acima da baseline; o que passa
+disso é cortado no topo da caixa do texto. A maiúscula acentuada (`É`, `Á`) chega a 0,952em, então
+o `lineHeight` precisa ser pelo menos **1,27×** o tamanho. Por isso `caption`, `title1`, `bodyXl` e
+`bodyXs` fogem da altura do Figma (16/16, 32/32, 20/24, 12/12 cortavam). Tamanho novo segue a
+mesma conta.
 
 ### `TextInput` não usa tamanho com line-height apertado
 

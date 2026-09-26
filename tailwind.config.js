@@ -50,14 +50,14 @@ module.exports = {
         'host-grotesk-semibold': ['HostGrotesk_600SemiBold']
       },
       fontSize: {
-        caption: ['16px', { lineHeight: '16px', letterSpacing: '1.28px' }],
-        'title-1': ['32px', { lineHeight: '32px', letterSpacing: '-0.32px' }],
+        caption: ['16px', { lineHeight: '22px', letterSpacing: '1.28px' }],
+        'title-1': ['32px', { lineHeight: '42px', letterSpacing: '-0.32px' }],
         'title-1-input': ['32px', { letterSpacing: '-0.32px' }],
         'title-2': ['16px', { lineHeight: '24px' }],
-        'body-xl': ['20px', { lineHeight: '24px' }],
+        'body-xl': ['20px', { lineHeight: '26px' }],
         body: ['16px', { lineHeight: '24px' }],
         'body-sm': ['14px', { lineHeight: '20px' }],
-        'body-xs': ['12px', { lineHeight: '12px' }]
+        'body-xs': ['12px', { lineHeight: '16px' }]
       }
     }
   },

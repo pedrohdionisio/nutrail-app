@@ -5,5 +5,5 @@ export async function waitForWelcome() {
 }
 
 export async function waitForHome() {
-  await screen.findByText('Olá!');
+  await screen.findByText('Refeições');
 }
