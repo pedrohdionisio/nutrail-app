@@ -1,11 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { DeleteMealSheet } from 'presentation/components/DeleteMealSheet/DeleteMealSheet';
+import { MacrosPanel } from 'presentation/components/MacrosPanel/MacrosPanel';
 import { FlatList, View } from 'react-native';
 import { MealDetailsError } from './components/MealDetailsError/MealDetailsError';
 import { MealItemRow } from './components/MealItemRow/MealItemRow';
 import { MealItemsHeader } from './components/MealItemsHeader/MealItemsHeader';
 import { MealItemsSkeleton } from './components/MealItemsSkeleton/MealItemsSkeleton';
-import { MealMacros } from './components/MealMacros/MealMacros';
 import { MealPicture } from './components/MealPicture/MealPicture';
 import { useMealDetailsController } from './useMealDetailsController';
 
@@ -64,7 +64,7 @@ export function MealDetails() {
         ListEmptyComponent={isLoadingMeal ? <MealItemsSkeleton /> : null}
         ListHeaderComponent={
           <View className='-mx-5'>
-            <MealMacros macros={meal} />
+            <MacrosPanel macros={meal} />
             <MealItemsHeader name={mealName} />
           </View>
         }

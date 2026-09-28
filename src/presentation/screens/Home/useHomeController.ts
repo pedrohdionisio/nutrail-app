@@ -57,6 +57,10 @@ export function useHomeController() {
     navigation.navigate('Goals');
   }
 
+  function handleOpenRecipes() {
+    navigation.navigate('Recipes');
+  }
+
   function handleOpenNewMeal() {
     newMealSheetRef.current?.present();
   }
@@ -120,6 +124,7 @@ export function useHomeController() {
     handleNextDay,
     handleOpenProfile,
     handleOpenGoals,
+    handleOpenRecipes,
     handleOpenNewMeal,
     handleSelectMealSource,
     handleOpenMeal,

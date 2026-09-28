@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import XIcon from 'lucide-react-native/icons/x';
 import { ActionButton } from 'presentation/components/ActionButton/ActionButton';
-import { AnalyzingMeal } from 'presentation/components/AnalyzingMeal/AnalyzingMeal';
+import { AiLoading } from 'presentation/components/AiLoading/AiLoading';
 import { ReviewActions } from 'presentation/components/ReviewActions/ReviewActions';
 import { View } from 'react-native';
 import { CaptureActions } from './components/CaptureActions/CaptureActions';
@@ -29,7 +29,9 @@ export function PictureMeal() {
   } = usePictureMealController();
 
   if (shouldShowAnalyzing) {
-    return <AnalyzingMeal />;
+    return (
+      <AiLoading title='Estamos calculando seus macros com ajuda da inteligência artificial' />
+    );
   }
 
   return (

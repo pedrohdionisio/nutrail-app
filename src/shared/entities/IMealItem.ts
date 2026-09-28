@@ -1,7 +1,4 @@
+import type { IIngredient } from './IIngredient';
 import type { IMacros } from './IMacros';
 
-export interface IMealItem extends IMacros {
-  name: string;
-  quantity: number;
-  unit: string;
-}
+export interface IMealItem extends IIngredient, IMacros {}

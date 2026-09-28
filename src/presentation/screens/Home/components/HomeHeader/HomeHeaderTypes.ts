@@ -3,4 +3,5 @@ export interface IHomeHeaderProps {
   initials: string;
   onOpenProfile: () => void;
   onOpenGoals: () => void;
+  onOpenRecipes: () => void;
 }

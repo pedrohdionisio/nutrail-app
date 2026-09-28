@@ -1,14 +1,21 @@
+import ChefHatIcon from 'lucide-react-native/icons/chef-hat';
 import TargetIcon from 'lucide-react-native/icons/target';
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Avatar } from 'presentation/components/Avatar/Avatar';
 import { Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { COLORS } from 'shared/constants/colors';
+import { HomeHeaderAction } from './components/HomeHeaderAction/HomeHeaderAction';
 import type { IHomeHeaderProps } from './HomeHeaderTypes';
 
 const HEADER_TOP_SPACING = 16;
 
-export function HomeHeader({ firstName, initials, onOpenProfile, onOpenGoals }: IHomeHeaderProps) {
+export function HomeHeader({
+  firstName,
+  initials,
+  onOpenProfile,
+  onOpenGoals,
+  onOpenRecipes
+}: IHomeHeaderProps) {
   const { top } = useSafeAreaInsets();
 
   return (
@@ -35,16 +42,10 @@ export function HomeHeader({ firstName, initials, onOpenProfile, onOpenGoals }: 
         </View>
       </Pressable>
 
-      <Pressable
-        accessibilityRole='button'
-        className='h-10 flex-row items-center gap-2 rounded-full bg-white/60 px-4 active:opacity-70'
-        onPress={onOpenGoals}
-      >
-        <TargetIcon color={COLORS.black[700]} size={18} strokeWidth={2} />
-        <AppText size='bodySm' weight='medium'>
-          Metas
-        </AppText>
-      </Pressable>
+      <View className='flex-row gap-2'>
+        <HomeHeaderAction icon={ChefHatIcon} label='Receitas' onPress={onOpenRecipes} />
+        <HomeHeaderAction icon={TargetIcon} label='Metas' onPress={onOpenGoals} />
+      </View>
     </View>
   );
 }

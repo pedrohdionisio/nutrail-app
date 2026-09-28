@@ -1,5 +1,5 @@
+import { Skeleton } from 'presentation/components/Skeleton/Skeleton';
 import { View } from 'react-native';
-import { Skeleton } from '../Skeleton/Skeleton';
 
 const SKELETON_ROWS = ['first', 'second', 'third'];
 

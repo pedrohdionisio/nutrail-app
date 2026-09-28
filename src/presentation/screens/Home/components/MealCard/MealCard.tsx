@@ -1,16 +1,16 @@
 import { AppText } from 'presentation/components/AppText/AppText';
+import { MacroStats } from 'presentation/components/MacroStats/MacroStats';
 import { Pressable, View } from 'react-native';
 import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import { COLORS } from 'shared/constants/colors';
 import { MealCardDeleteAction } from './components/MealCardDeleteAction/MealCardDeleteAction';
-import { MealStat } from './components/MealStat/MealStat';
 import { MEAL_INPUT_ICONS } from './constants/mealInputIcons';
 import type { IMealCardProps } from './MealCardTypes';
 import { useMealCardController } from './useMealCardController';
 import { formatMealTime } from './utils/formatMealTime';
 
 export function MealCard({ meal, onPress, onDelete }: IMealCardProps) {
-  const { id, name, inputType, createdAt, calories, protein, carbohydrate, fat } = meal;
+  const { id, name, inputType, createdAt } = meal;
   const InputIcon = MEAL_INPUT_ICONS[inputType];
   const { swipeableRef, handlePress, handleDelete } = useMealCardController({
     mealId: id,
@@ -48,12 +48,7 @@ export function MealCard({ meal, onPress, onDelete }: IMealCardProps) {
           </View>
         </View>
 
-        <View className='flex-row rounded-xl bg-gray-100 py-3'>
-          <MealStat dotClassName='bg-support-tomato' label='kcal' value={`${calories}`} />
-          <MealStat dotClassName='bg-support-teal' label='Proteínas' value={`${protein}g`} />
-          <MealStat dotClassName='bg-support-yellow' label='Carbos' value={`${carbohydrate}g`} />
-          <MealStat dotClassName='bg-support-orange' label='Gorduras' value={`${fat}g`} />
-        </View>
+        <MacroStats macros={meal} />
       </Pressable>
     </ReanimatedSwipeable>
   );

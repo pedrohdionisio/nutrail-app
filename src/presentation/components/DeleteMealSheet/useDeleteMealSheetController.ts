@@ -1,7 +1,6 @@
 import { getApiErrorMessage } from 'data/config/apiError';
 import { useDeleteMeal } from 'data/modules/meal/useCases/deleteMeal/useDeleteMeal';
 import { useState } from 'react';
-import { useScreenPadding } from 'shared/hooks/useScreenPadding';
 import type { IUseDeleteMealSheetControllerParams } from './DeleteMealSheetTypes';
 
 export function useDeleteMealSheetController({
@@ -9,7 +8,6 @@ export function useDeleteMealSheetController({
   mealId,
   onDeleted
 }: IUseDeleteMealSheetControllerParams) {
-  const { paddingBottom } = useScreenPadding();
   const { deleteMeal, isDeletingMeal } = useDeleteMeal();
   const [apiErrorMessage, setApiErrorMessage] = useState<string | null>(null);
 
@@ -38,7 +36,6 @@ export function useDeleteMealSheetController({
   }
 
   return {
-    paddingBottom,
     apiErrorMessage,
     isDeletingMeal,
     handleConfirm,

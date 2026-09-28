@@ -12,6 +12,9 @@ export type AppRoutesParamList = {
   AudioMeal: { date: string };
   MealDetails: { mealId: string };
   EditMeal: { mealId: string };
+  Recipes: undefined;
+  SuggestRecipe: undefined;
+  RecipeDetails: { recipeId: string };
 };
 
 declare global {

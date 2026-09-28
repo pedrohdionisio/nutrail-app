@@ -7,6 +7,9 @@ import { ManualMeal } from 'presentation/screens/ManualMeal/ManualMeal';
 import { MealDetails } from 'presentation/screens/MealDetails/MealDetails';
 import { PictureMeal } from 'presentation/screens/PictureMeal/PictureMeal';
 import { Profile } from 'presentation/screens/Profile/Profile';
+import { RecipeDetails } from 'presentation/screens/RecipeDetails/RecipeDetails';
+import { Recipes } from 'presentation/screens/Recipes/Recipes';
+import { SuggestRecipe } from 'presentation/screens/SuggestRecipe/SuggestRecipe';
 import type { AppRoutesParamList } from './AppRoutesTypes';
 
 const Stack = createNativeStackNavigator<AppRoutesParamList>();
@@ -22,6 +25,9 @@ export function AppStack() {
       <Stack.Screen component={AudioMeal} name='AudioMeal' />
       <Stack.Screen component={MealDetails} name='MealDetails' />
       <Stack.Screen component={EditMeal} name='EditMeal' />
+      <Stack.Screen component={Recipes} name='Recipes' />
+      <Stack.Screen component={SuggestRecipe} name='SuggestRecipe' />
+      <Stack.Screen component={RecipeDetails} name='RecipeDetails' />
     </Stack.Navigator>
   );
 }

@@ -1,0 +1,9 @@
+export const RECIPE_QUERY_KEYS = {
+  RECIPES: 'RECIPES'
+} as const;
+
+export const RECIPE_MUTATION_KEYS = {
+  SUGGEST_RECIPE: 'SUGGEST_RECIPE',
+  SAVE_RECIPE: 'SAVE_RECIPE',
+  DELETE_RECIPE: 'DELETE_RECIPE'
+} as const;

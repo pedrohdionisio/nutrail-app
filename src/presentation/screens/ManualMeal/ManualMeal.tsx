@@ -1,4 +1,4 @@
-import { AnalyzingMeal } from 'presentation/components/AnalyzingMeal/AnalyzingMeal';
+import { AiLoading } from 'presentation/components/AiLoading/AiLoading';
 import { ScreenHeader } from 'presentation/components/ScreenHeader/ScreenHeader';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import { ManualMealFooter } from './components/ManualMealFooter/ManualMealFooter';
@@ -18,7 +18,9 @@ export function ManualMeal() {
   } = useManualMealController();
 
   if (shouldShowAnalyzing) {
-    return <AnalyzingMeal />;
+    return (
+      <AiLoading title='Estamos calculando seus macros com ajuda da inteligência artificial' />
+    );
   }
 
   return (

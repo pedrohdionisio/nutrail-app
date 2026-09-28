@@ -1,6 +1,6 @@
 import { AppText } from 'presentation/components/AppText/AppText';
+import { Skeleton } from 'presentation/components/Skeleton/Skeleton';
 import { View } from 'react-native';
-import { Skeleton } from '../Skeleton/Skeleton';
 import type { IMealItemsHeaderProps } from './MealItemsHeaderTypes';
 
 export function MealItemsHeader({ name }: IMealItemsHeaderProps) {

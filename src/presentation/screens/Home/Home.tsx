@@ -35,6 +35,7 @@ export function Home() {
     handleNextDay,
     handleOpenProfile,
     handleOpenGoals,
+    handleOpenRecipes,
     handleOpenNewMeal,
     handleSelectMealSource,
     handleOpenMeal,
@@ -61,6 +62,7 @@ export function Home() {
         firstName={firstName}
         initials={initials}
         onOpenGoals={handleOpenGoals}
+        onOpenRecipes={handleOpenRecipes}
         onOpenProfile={handleOpenProfile}
       />
 
