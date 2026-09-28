@@ -1,17 +1,17 @@
 import { Button } from 'presentation/components/Button/Button';
 import { Input } from 'presentation/components/Input/Input';
 import { OptionsField } from 'presentation/components/OptionsField/OptionsField';
+import {
+  ACTIVITY_LEVEL_OPTIONS,
+  GENDER_OPTIONS,
+  GOAL_OPTIONS
+} from 'presentation/constants/profileOptions';
 import { AccountFields } from './components/AccountFields/AccountFields';
 import { BirthDateField } from './components/BirthDateField/BirthDateField';
 import { NextButton } from './components/NextButton/NextButton';
 import { OnboardingStep } from './components/OnboardingStep/OnboardingStep';
 import { Personalizing } from './components/Personalizing/Personalizing';
 import { PlanSummary } from './components/PlanSummary/PlanSummary';
-import {
-  ACTIVITY_LEVEL_OPTIONS,
-  GENDER_OPTIONS,
-  GOAL_OPTIONS
-} from './constants/onboardingOptions';
 import { useOnboardingController } from './useOnboardingController';
 
 export function Onboarding() {

@@ -6,6 +6,7 @@ import { HttpResponse, http } from 'msw';
 import type { Ref } from 'react';
 import { spyOnAlert } from 'tests/alert';
 import { apiUrl } from 'tests/apiUrl';
+import { pickDateTime } from 'tests/dateTimePicker';
 import { mockMealAnalysisApi } from 'tests/mealAnalysisApi';
 import { renderApp, seedSession } from 'tests/render';
 import { waitForHome } from 'tests/screens';
@@ -210,5 +211,45 @@ describe('PictureMeal', () => {
     expect(screen.getByRole('button', { name: 'Abrir ajustes' })).toBeOnTheScreen();
     expect(screen.getByRole('button', { name: 'Tirar foto' })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Escolher foto da galeria' })).toBeEnabled();
+  });
+
+  it('should register the meal at the time chosen by the user', async () => {
+    const calls = mockMealAnalysisApi();
+    const { user } = await openPictureMeal();
+
+    await user.press(screen.getByRole('button', { name: 'Escolher foto da galeria' }));
+    await screen.findByLabelText('Foto da refeição');
+    await user.press(screen.getByRole('button', { name: 'Horário da refeição: 10:00' }));
+    await screen.findByRole('header', { name: 'Horário da refeição' });
+    await pickDateTime(new Date(2026, 8, 26, 8, 15));
+    await user.press(screen.getByRole('button', { name: 'Confirmar' }));
+
+    expect(
+      await screen.findByRole('button', { name: 'Horário da refeição: 08:15' })
+    ).toBeOnTheScreen();
+
+    await user.press(screen.getByRole('button', { name: 'Confirmar foto' }));
+
+    expect(await screen.findByText('Almoço Fitness')).toBeOnTheScreen();
+    expect(calls.created).toEqual([{ date: '2026-09-26', time: '08:15', inputType: 'PICTURE' }]);
+  });
+
+  it('should refuse a time in the future', async () => {
+    const { alertSpy } = spyOnAlert();
+    mockMealAnalysisApi();
+    const { user } = await openPictureMeal();
+
+    await user.press(screen.getByRole('button', { name: 'Escolher foto da galeria' }));
+    await screen.findByLabelText('Foto da refeição');
+    await user.press(screen.getByRole('button', { name: 'Horário da refeição: 10:00' }));
+    await screen.findByRole('header', { name: 'Horário da refeição' });
+    await pickDateTime(new Date(2026, 8, 26, 11, 30));
+    await user.press(screen.getByRole('button', { name: 'Confirmar' }));
+
+    expect(alertSpy).toHaveBeenCalledWith(
+      'Horário inválido',
+      'O horário da refeição não pode estar no futuro.'
+    );
+    expect(screen.getByRole('button', { name: 'Horário da refeição: 10:00' })).toBeOnTheScreen();
   });
 });

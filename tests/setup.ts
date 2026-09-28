@@ -6,6 +6,10 @@ import { server } from './server';
 
 jest.mock('expo-secure-store', () => jest.requireActual('./mocks/secureStore').secureStoreMock);
 jest.mock('expo-audio', () => jest.requireActual('./mocks/audio').audioMock);
+jest.mock(
+  '@react-native-community/datetimepicker',
+  () => jest.requireActual('./mocks/dateTimePicker').dateTimePickerMock
+);
 jest.mock('@gorhom/bottom-sheet', () => jest.requireActual('./mocks/bottomSheet').bottomSheetMock);
 jest.mock(
   'react-native-gesture-handler/ReanimatedSwipeable',

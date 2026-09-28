@@ -1,3 +1,4 @@
+import CalendarIcon from 'lucide-react-native/icons/calendar';
 import ChevronLeftIcon from 'lucide-react-native/icons/chevron-left';
 import ChevronRightIcon from 'lucide-react-native/icons/chevron-right';
 import { AppText } from 'presentation/components/AppText/AppText';
@@ -12,7 +13,8 @@ export function DayNavigator({
   label,
   canGoToNextDay,
   onPreviousDay,
-  onNextDay
+  onNextDay,
+  onOpenDatePicker
 }: IDayNavigatorProps) {
   return (
     <View className='flex-row items-center justify-between py-2'>
@@ -26,9 +28,18 @@ export function DayNavigator({
         <ChevronLeftIcon color={COLORS.black[700]} size={20} strokeWidth={2} />
       </Pressable>
 
-      <AppText accessibilityRole='header' color='muted' size='caption'>
-        {label}
-      </AppText>
+      <Pressable
+        accessibilityHint='Abre o calendário para escolher o dia'
+        accessibilityLabel={`Escolher dia: ${label}`}
+        accessibilityRole='button'
+        className='h-10 flex-row items-center gap-2 rounded-full px-3 active:bg-gray-200'
+        onPress={onOpenDatePicker}
+      >
+        <CalendarIcon color={COLORS.gray[700]} size={16} strokeWidth={2} />
+        <AppText color='muted' size='caption'>
+          {label}
+        </AppText>
+      </Pressable>
 
       <Pressable
         accessibilityLabel='Próximo dia'

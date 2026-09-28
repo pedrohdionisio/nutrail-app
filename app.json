@@ -44,7 +44,8 @@
           "microphonePermission": "O Nutrail usa o microfone para gravar a descrição das suas refeições e calcular os macros.",
           "enableBackgroundPlayback": false
         }
-      ]
+      ],
+      "@react-native-community/datetimepicker"
     ]
   }
 }

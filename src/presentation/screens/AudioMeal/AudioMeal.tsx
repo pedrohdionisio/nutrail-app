@@ -2,6 +2,8 @@ import { StatusBar } from 'expo-status-bar';
 import XIcon from 'lucide-react-native/icons/x';
 import { ActionButton } from 'presentation/components/ActionButton/ActionButton';
 import { AiLoading } from 'presentation/components/AiLoading/AiLoading';
+import { DateTimePickerSheet } from 'presentation/components/DateTimePickerSheet/DateTimePickerSheet';
+import { MealTimeButton } from 'presentation/components/MealTimeButton/MealTimeButton';
 import { ReviewActions } from 'presentation/components/ReviewActions/ReviewActions';
 import { View } from 'react-native';
 import { RecordActions } from './components/RecordActions/RecordActions';
@@ -14,6 +16,8 @@ export function AudioMeal() {
     microphoneStatus,
     canAskPermission,
     recordingStep,
+    timeLabel,
+    timePickerSheetBindings,
     durationLabel,
     isPlaying,
     isStartingRecording,
@@ -25,7 +29,8 @@ export function AudioMeal() {
     handleStopRecording,
     handleTogglePlayback,
     handleDiscard,
-    handleConfirm
+    handleConfirm,
+    handleOpenTimePicker
   } = useAudioMealController();
 
   if (shouldShowAnalyzing) {
@@ -53,12 +58,15 @@ export function AudioMeal() {
       />
 
       {recordingStep === 'RECORDED' ? (
-        <ReviewActions
-          confirmAccessibilityLabel='Confirmar áudio'
-          discardAccessibilityLabel='Descartar áudio'
-          onConfirm={handleConfirm}
-          onDiscard={handleDiscard}
-        />
+        <View className='gap-6'>
+          <MealTimeButton onPress={handleOpenTimePicker} time={timeLabel} />
+          <ReviewActions
+            confirmAccessibilityLabel='Confirmar áudio'
+            discardAccessibilityLabel='Descartar áudio'
+            onConfirm={handleConfirm}
+            onDiscard={handleDiscard}
+          />
+        </View>
       ) : (
         <RecordActions
           isDisabled={isRecordDisabled}
@@ -68,6 +76,8 @@ export function AudioMeal() {
           onStopRecording={handleStopRecording}
         />
       )}
+
+      <DateTimePickerSheet {...timePickerSheetBindings} title='Horário da refeição' />
     </View>
   );
 }

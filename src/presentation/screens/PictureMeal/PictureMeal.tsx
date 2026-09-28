@@ -2,6 +2,8 @@ import { StatusBar } from 'expo-status-bar';
 import XIcon from 'lucide-react-native/icons/x';
 import { ActionButton } from 'presentation/components/ActionButton/ActionButton';
 import { AiLoading } from 'presentation/components/AiLoading/AiLoading';
+import { DateTimePickerSheet } from 'presentation/components/DateTimePickerSheet/DateTimePickerSheet';
+import { MealTimeButton } from 'presentation/components/MealTimeButton/MealTimeButton';
 import { ReviewActions } from 'presentation/components/ReviewActions/ReviewActions';
 import { View } from 'react-native';
 import { CaptureActions } from './components/CaptureActions/CaptureActions';
@@ -15,6 +17,8 @@ export function PictureMeal() {
     cameraStatus,
     canAskPermission,
     pictureUri,
+    timeLabel,
+    timePickerSheetBindings,
     isCaptureDisabled,
     isCapturing,
     isPicking,
@@ -25,7 +29,8 @@ export function PictureMeal() {
     handleCapture,
     handlePickFromGallery,
     handleDiscard,
-    handleConfirm
+    handleConfirm,
+    handleOpenTimePicker
   } = usePictureMealController();
 
   if (shouldShowAnalyzing) {
@@ -52,12 +57,15 @@ export function PictureMeal() {
       />
 
       {pictureUri ? (
-        <ReviewActions
-          confirmAccessibilityLabel='Confirmar foto'
-          discardAccessibilityLabel='Descartar foto'
-          onConfirm={handleConfirm}
-          onDiscard={handleDiscard}
-        />
+        <View className='gap-6'>
+          <MealTimeButton onPress={handleOpenTimePicker} time={timeLabel} />
+          <ReviewActions
+            confirmAccessibilityLabel='Confirmar foto'
+            discardAccessibilityLabel='Descartar foto'
+            onConfirm={handleConfirm}
+            onDiscard={handleDiscard}
+          />
+        </View>
       ) : (
         <CaptureActions
           isCaptureDisabled={isCaptureDisabled}
@@ -67,6 +75,8 @@ export function PictureMeal() {
           onPickFromGallery={handlePickFromGallery}
         />
       )}
+
+      <DateTimePickerSheet {...timePickerSheetBindings} title='Horário da refeição' />
     </View>
   );
 }

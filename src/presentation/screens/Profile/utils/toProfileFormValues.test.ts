@@ -8,7 +8,9 @@ describe('toProfileFormValues', () => {
       birthDate: '07/03/1990',
       height: '165',
       weight: '62,5',
-      gender: 'FEMALE'
+      gender: 'FEMALE',
+      goal: 'LOSE',
+      activityLevel: 'LIGHT'
     });
   });
 });

@@ -1,4 +1,5 @@
 import { AppText } from 'presentation/components/AppText/AppText';
+import { DateTimePickerSheet } from 'presentation/components/DateTimePickerSheet/DateTimePickerSheet';
 import { DeleteMealSheet } from 'presentation/components/DeleteMealSheet/DeleteMealSheet';
 import { FlatList, View } from 'react-native';
 import { AddMealButton } from './components/AddMealButton/AddMealButton';
@@ -31,8 +32,10 @@ export function Home() {
     newMealSheetRef,
     deleteMealSheetRef,
     mealIdToDelete,
+    datePickerSheetBindings,
     handlePreviousDay,
     handleNextDay,
+    handleOpenDatePicker,
     handleOpenProfile,
     handleOpenGoals,
     handleOpenRecipes,
@@ -87,6 +90,7 @@ export function Home() {
                 canGoToNextDay={canGoToNextDay}
                 label={dayLabel}
                 onNextDay={handleNextDay}
+                onOpenDatePicker={handleOpenDatePicker}
                 onPreviousDay={handlePreviousDay}
               />
 
@@ -107,6 +111,8 @@ export function Home() {
       {shouldShowAddMealButton && <AddMealButton onPress={handleOpenNewMeal} />}
 
       <NewMealSheet onSelectSource={handleSelectMealSource} sheetRef={newMealSheetRef} />
+
+      <DateTimePickerSheet {...datePickerSheetBindings} title='Escolher dia' />
 
       <DeleteMealSheet
         mealId={mealIdToDelete}

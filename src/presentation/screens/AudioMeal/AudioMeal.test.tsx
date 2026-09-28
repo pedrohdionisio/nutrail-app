@@ -3,6 +3,7 @@ import { PermissionStatus } from 'expo';
 import { HttpResponse, http } from 'msw';
 import { spyOnAlert } from 'tests/alert';
 import { apiUrl } from 'tests/apiUrl';
+import { pickDateTime } from 'tests/dateTimePicker';
 import { mockMealAnalysisApi } from 'tests/mealAnalysisApi';
 import { audioPlayer, microphonePermission } from 'tests/mocks/audio';
 import { renderApp, seedSession } from 'tests/render';
@@ -184,5 +185,20 @@ describe('AudioMeal', () => {
     ).toBeOnTheScreen();
     expect(screen.getByRole('button', { name: 'Abrir ajustes' })).toBeOnTheScreen();
     expect(screen.getByRole('button', { name: 'Gravar áudio' })).toBeDisabled();
+  });
+
+  it('should register the meal at the time chosen by the user', async () => {
+    const calls = mockMealAnalysisApi();
+    const { user } = await openAudioMeal();
+
+    await recordAudio(user);
+    await user.press(screen.getByRole('button', { name: 'Horário da refeição: 20:30' }));
+    await screen.findByRole('header', { name: 'Horário da refeição' });
+    await pickDateTime(new Date(2026, 8, 26, 19, 45));
+    await user.press(screen.getByRole('button', { name: 'Confirmar' }));
+    await user.press(screen.getByRole('button', { name: 'Confirmar áudio' }));
+
+    expect(await screen.findByText('Almoço Fitness')).toBeOnTheScreen();
+    expect(calls.created).toEqual([{ date: '2026-09-26', time: '19:45', inputType: 'AUDIO' }]);
   });
 });

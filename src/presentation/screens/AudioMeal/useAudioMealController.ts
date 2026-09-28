@@ -19,10 +19,10 @@ import {
 import { useEffect, useState } from 'react';
 import { Alert, Linking } from 'react-native';
 import type { IMealDetails } from 'shared/entities/IMealDetails';
+import { useMealTimePicker } from 'shared/hooks/useMealTimePicker';
 import { useScreenPadding } from 'shared/hooks/useScreenPadding';
 import type { AppRoutesParamList } from 'shared/navigation/AppRoutesTypes';
 import { toDevicePermissionStatus } from 'shared/utils/toDevicePermissionStatus';
-import { toLocalTime } from 'shared/utils/toLocalTime';
 import type { IHandleReprocessMealParams, IRecording, RecordingStep } from './AudioMealTypes';
 import { formatRecordingDuration } from './utils/formatRecordingDuration';
 
@@ -34,6 +34,8 @@ export function useAudioMealController() {
   const recorderState = useAudioRecorderState(recorder);
   const { createAudioMeal } = useCreateAudioMeal();
   const { reprocessMeal } = useReprocessMeal();
+  const { timeLabel, timePickerSheetBindings, handleOpenTimePicker, getMealTime } =
+    useMealTimePicker({ date: params.date });
   const [permission, setPermission] = useState<PermissionResponse | null>(null);
   const [recording, setRecording] = useState<IRecording | null>(null);
   const [isStartingRecording, setIsStartingRecording] = useState(false);
@@ -146,7 +148,7 @@ export function useAudioMealController() {
     try {
       const meal = await createAudioMeal({
         date: params.date,
-        time: toLocalTime(new Date()),
+        time: getMealTime(),
         audioUri: recording.uri
       });
 
@@ -202,6 +204,8 @@ export function useAudioMealController() {
     microphoneStatus,
     canAskPermission: permission?.canAskAgain ?? true,
     recordingStep,
+    timeLabel,
+    timePickerSheetBindings,
     durationLabel: formatRecordingDuration(
       recording?.durationMillis ?? recorderState.durationMillis
     ),
@@ -215,6 +219,7 @@ export function useAudioMealController() {
     handleStopRecording,
     handleTogglePlayback,
     handleDiscard,
-    handleConfirm
+    handleConfirm,
+    handleOpenTimePicker
   };
 }

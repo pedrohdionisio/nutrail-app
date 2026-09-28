@@ -7,13 +7,17 @@ export function toProfileFormValues({
   birthDate,
   height,
   weight,
-  gender
+  gender,
+  goal,
+  activityLevel
 }: IUserProfile): UpdateProfileFormType {
   return {
     name,
     birthDate: toBrazilianDate(birthDate),
     height: String(height),
     weight: String(weight).replace('.', ','),
-    gender
+    gender,
+    goal,
+    activityLevel
   };
 }

@@ -2,6 +2,7 @@ import { screen, waitFor } from '@testing-library/react-native';
 import { HttpResponse, http } from 'msw';
 import type { IMealSummary } from 'shared/entities/IMealSummary';
 import { apiUrl } from 'tests/apiUrl';
+import { pickDateTime } from 'tests/dateTimePicker';
 import { buildMe } from 'tests/fixtures/me';
 import { buildMeal, buildMealsOfDay } from 'tests/fixtures/meal';
 import { renderApp, seedSession } from 'tests/render';
@@ -103,6 +104,24 @@ describe('Home', () => {
     expect(screen.getByText('2000 kcal restantes')).toBeOnTheScreen();
     expect(nextDay).toBeDisabled();
     expect(requestedDates).toEqual(['2026-09-26', '2026-09-25']);
+  });
+
+  it('should jump to the day picked in the calendar', async () => {
+    const requestedDates = mockMealsByDate({
+      '2026-09-12': [buildMeal({ id: 'meal-3', name: 'Tapioca com queijo', calories: 320 })]
+    });
+    await seedSession();
+    const { user } = await renderApp();
+    await waitForHome();
+
+    await user.press(screen.getByRole('button', { name: 'Escolher dia: Hoje, 26 de setembro' }));
+    await screen.findByRole('header', { name: 'Escolher dia' });
+    await pickDateTime(new Date(2026, 8, 12));
+    await user.press(screen.getByRole('button', { name: 'Confirmar' }));
+
+    expect(await screen.findByText('Tapioca com queijo')).toBeOnTheScreen();
+    expect(screen.getByRole('button', { name: 'Próximo dia' })).toBeEnabled();
+    expect(requestedDates).toEqual(['2026-09-26', '2026-09-12']);
   });
 
   it('should offer a retry when the meals fail to load', async () => {

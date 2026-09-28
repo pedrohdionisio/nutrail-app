@@ -1,4 +1,4 @@
-import { GENDERS } from 'shared/constants/profile';
+import { ACTIVITY_LEVELS, GENDERS, GOALS } from 'shared/constants/profile';
 import { parseBrazilianDate } from 'shared/utils/parseBrazilianDate';
 import { toLocalIsoDate } from 'shared/utils/toLocalIsoDate';
 import { z } from 'zod';
@@ -37,7 +37,9 @@ export const updateProfileSchema = z.object({
     .regex(/^\d{2,3}([.,]\d{1,2})?$/, 'Informe o peso em quilos')
     .transform((value) => Number(value.replace(',', '.')))
     .pipe(z.number().min(20, 'Informe o peso em quilos').max(400, 'Informe o peso em quilos')),
-  gender: z.enum(GENDERS, 'Escolha um gênero')
+  gender: z.enum(GENDERS, 'Escolha um gênero'),
+  goal: z.enum(GOALS, 'Escolha um objetivo'),
+  activityLevel: z.enum(ACTIVITY_LEVELS, 'Escolha um nível de atividade')
 });
 
 export type UpdateProfileFormType = z.input<typeof updateProfileSchema>;

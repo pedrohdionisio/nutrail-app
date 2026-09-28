@@ -4,6 +4,8 @@ import { useAuth } from 'data/contexts/AuthProvider/AuthProvider';
 import { useGetMe } from 'data/modules/me/useCases/getMe/useGetMe';
 import { useListMealsByDay } from 'data/modules/meal/useCases/listMealsByDay/useListMealsByDay';
 import { useRef, useState } from 'react';
+import type { IHandleSelectDateTimeParams } from 'shared/hooks/UseDateTimePickerTypes';
+import { useDateTimePicker } from 'shared/hooks/useDateTimePicker';
 import { useScreenPadding } from 'shared/hooks/useScreenPadding';
 import { getInitials } from 'shared/utils/getInitials';
 import { toLocalIsoDate } from 'shared/utils/toLocalIsoDate';
@@ -38,6 +40,18 @@ export function useHomeController() {
   const canGoToNextDay = toLocalIsoDate(selectedDate) < toLocalIsoDate(today);
   const name = me?.profile.name ?? '';
   const meals = mealsOfDay?.meals ?? [];
+
+  const { sheetBindings: datePickerSheetBindings, openPicker: handleOpenDatePicker } =
+    useDateTimePicker({
+      mode: 'date',
+      value: selectedDate,
+      maximumDate: today,
+      onSelect: handleSelectDate
+    });
+
+  function handleSelectDate({ date }: IHandleSelectDateTimeParams) {
+    setSelectedDate(date);
+  }
 
   function handlePreviousDay() {
     setSelectedDate((date) => addDays(date, -1));
@@ -120,8 +134,10 @@ export function useHomeController() {
     newMealSheetRef,
     deleteMealSheetRef,
     mealIdToDelete,
+    datePickerSheetBindings,
     handlePreviousDay,
     handleNextDay,
+    handleOpenDatePicker,
     handleOpenProfile,
     handleOpenGoals,
     handleOpenRecipes,

@@ -3,4 +3,5 @@ export interface IDayNavigatorProps {
   canGoToNextDay: boolean;
   onPreviousDay: () => void;
   onNextDay: () => void;
+  onOpenDatePicker: () => void;
 }

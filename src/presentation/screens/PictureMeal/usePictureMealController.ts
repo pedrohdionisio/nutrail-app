@@ -13,10 +13,10 @@ import { type CameraView, useCameraPermissions } from 'expo-camera';
 import { useEffect, useRef, useState } from 'react';
 import { Alert, Linking } from 'react-native';
 import type { IMealDetails } from 'shared/entities/IMealDetails';
+import { useMealTimePicker } from 'shared/hooks/useMealTimePicker';
 import { useScreenPadding } from 'shared/hooks/useScreenPadding';
 import type { AppRoutesParamList } from 'shared/navigation/AppRoutesTypes';
 import { toDevicePermissionStatus } from 'shared/utils/toDevicePermissionStatus';
-import { toLocalTime } from 'shared/utils/toLocalTime';
 import type { IHandleReprocessMealParams } from './PictureMealTypes';
 
 export function usePictureMealController() {
@@ -27,6 +27,8 @@ export function usePictureMealController() {
   const [permission, requestPermission] = useCameraPermissions();
   const { createPictureMeal } = useCreatePictureMeal();
   const { reprocessMeal } = useReprocessMeal();
+  const { timeLabel, timePickerSheetBindings, handleOpenTimePicker, getMealTime } =
+    useMealTimePicker({ date: params.date });
   const [pictureUri, setPictureUri] = useState<string | null>(null);
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [isCapturing, setIsCapturing] = useState(false);
@@ -123,7 +125,7 @@ export function usePictureMealController() {
     try {
       const meal = await createPictureMeal({
         date: params.date,
-        time: toLocalTime(new Date()),
+        time: getMealTime(),
         pictureUri
       });
 
@@ -180,6 +182,8 @@ export function usePictureMealController() {
     cameraStatus: toDevicePermissionStatus(permission),
     canAskPermission: permission?.canAskAgain ?? true,
     pictureUri,
+    timeLabel,
+    timePickerSheetBindings,
     isCaptureDisabled: !isCameraReady || isPicking,
     isCapturing,
     isPicking,
@@ -190,6 +194,7 @@ export function usePictureMealController() {
     handleCapture,
     handlePickFromGallery,
     handleDiscard,
-    handleConfirm
+    handleConfirm,
+    handleOpenTimePicker
   };
 }

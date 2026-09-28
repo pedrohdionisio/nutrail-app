@@ -39,18 +39,10 @@ export function useProfileController() {
   });
 
   async function onSubmit(profile: UpdateProfilePayloadType) {
-    if (!me) {
-      return;
-    }
-
     setApiErrorMessage(null);
 
     try {
-      await updateProfile({
-        ...profile,
-        goal: me.profile.goal,
-        activityLevel: me.profile.activityLevel
-      });
+      await updateProfile(profile);
       navigation.goBack();
     } catch (error) {
       setApiErrorMessage(getApiErrorMessage(error));

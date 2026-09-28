@@ -3,9 +3,13 @@ import { Avatar } from 'presentation/components/Avatar/Avatar';
 import { Button } from 'presentation/components/Button/Button';
 import { Input } from 'presentation/components/Input/Input';
 import { OptionsField } from 'presentation/components/OptionsField/OptionsField';
+import {
+  ACTIVITY_LEVEL_OPTIONS,
+  GENDER_OPTIONS,
+  GOAL_OPTIONS
+} from 'presentation/constants/profileOptions';
 import { ScrollView, View } from 'react-native';
 import { maskDate } from 'shared/utils/maskDate';
-import { GENDER_OPTIONS } from '../../constants/genderOptions';
 import type { IProfileFormProps } from './ProfileFormTypes';
 
 export function ProfileForm({
@@ -52,6 +56,24 @@ export function ProfileForm({
         options={GENDER_OPTIONS}
         orientation='column'
       />
+      <OptionsField
+        control={control}
+        label='Objetivo'
+        name='goal'
+        options={GOAL_OPTIONS}
+        orientation='column'
+      />
+      <OptionsField
+        control={control}
+        label='Nível de atividade'
+        name='activityLevel'
+        options={ACTIVITY_LEVEL_OPTIONS}
+        orientation='column'
+      />
+
+      <AppText color='muted' size='bodySm'>
+        Ao salvar, suas metas de calorias e macros são recalculadas a partir destes dados.
+      </AppText>
 
       {!!apiErrorMessage && (
         <AppText color='error' size='bodySm'>

@@ -1,10 +1,46 @@
-import { screen } from '@testing-library/react-native';
+import { screen, waitFor } from '@testing-library/react-native';
+import { launchImageLibraryAsync } from 'expo-image-picker';
 import { HttpResponse, http } from 'msw';
+import { spyOnAlert } from 'tests/alert';
 import { apiUrl } from 'tests/apiUrl';
 import { buildMeal, buildMealDetails, buildMealsOfDay } from 'tests/fixtures/meal';
 import { renderApp, seedSession } from 'tests/render';
 import { waitForHome } from 'tests/screens';
 import { server } from 'tests/server';
+
+jest.mock('expo-image-picker', () => ({ launchImageLibraryAsync: jest.fn() }));
+jest.mock('expo-image-manipulator', () => ({
+  SaveFormat: { JPEG: 'jpeg' },
+  ImageManipulator: {
+    manipulate: () => ({
+      resize: () => undefined,
+      renderAsync: async () => ({ saveAsync: async () => ({ uri: 'file:///meal.jpg' }) })
+    })
+  }
+}));
+
+const UPLOAD_URL = 'https://uploads.test/';
+
+function mockPictureUploadApi() {
+  const calls = { pictureUploads: [] as string[], s3Uploads: 0 };
+
+  server.use(
+    http.post(apiUrl('/meals/:mealId/picture'), ({ params }) => {
+      calls.pictureUploads.push(String(params.mealId));
+
+      return HttpResponse.json({
+        upload: { url: UPLOAD_URL, fields: { key: 'pictures/meal-1.jpg' } }
+      });
+    }),
+    http.post(UPLOAD_URL, () => {
+      calls.s3Uploads += 1;
+
+      return new HttpResponse(null, { status: 204 });
+    })
+  );
+
+  return calls;
+}
 
 async function openMealFromHome() {
   server.use(
@@ -147,5 +183,67 @@ describe('MealDetails', () => {
     await user.press(screen.getByRole('button', { name: 'Excluir' }));
 
     await waitForHome();
+  });
+
+  it('should add a picture to an audio meal', async () => {
+    jest.mocked(launchImageLibraryAsync).mockResolvedValue({
+      canceled: false,
+      assets: [{ uri: 'file:///original.heic', width: 1200, height: 900 }]
+    });
+    server.use(
+      http.get(apiUrl('/meals/:mealId'), () =>
+        HttpResponse.json(buildMealDetails({ inputType: 'AUDIO', pictureUrl: null }))
+      )
+    );
+    const calls = mockPictureUploadApi();
+    const { user } = await openMealFromHome();
+    await screen.findByRole('header', { name: 'Almoço Fitness' });
+
+    await user.press(screen.getByRole('button', { name: 'Adicionar foto' }));
+
+    expect(await screen.findByLabelText('Foto da refeição')).toBeOnTheScreen();
+    expect(screen.getByRole('button', { name: 'Trocar foto' })).toBeOnTheScreen();
+    expect(calls.pictureUploads).toEqual(['meal-1']);
+    expect(calls.s3Uploads).toBe(1);
+  });
+
+  it('should warn when the picture cannot be sent', async () => {
+    const { alertSpy } = spyOnAlert();
+    jest.mocked(launchImageLibraryAsync).mockResolvedValue({
+      canceled: false,
+      assets: [{ uri: 'file:///original.heic', width: 1200, height: 900 }]
+    });
+    server.use(
+      http.get(apiUrl('/meals/:mealId'), () =>
+        HttpResponse.json(buildMealDetails({ inputType: 'MANUAL', pictureUrl: null }))
+      ),
+      http.post(apiUrl('/meals/:mealId/picture'), () =>
+        HttpResponse.json(
+          { error: { code: 'MEAL_PICTURE_NOT_ALLOWED', message: 'Not allowed.' } },
+          { status: 409 }
+        )
+      )
+    );
+    const { user } = await openMealFromHome();
+    await screen.findByRole('header', { name: 'Almoço Fitness' });
+
+    await user.press(screen.getByRole('button', { name: 'Adicionar foto' }));
+
+    await waitFor(() =>
+      expect(alertSpy).toHaveBeenCalledWith(
+        'Não foi possível enviar a foto',
+        'Não é possível trocar a foto desta refeição agora.'
+      )
+    );
+    expect(screen.getByRole('button', { name: 'Adicionar foto' })).toBeOnTheScreen();
+  });
+
+  it('should not offer a new picture for a meal registered by picture', async () => {
+    server.use(http.get(apiUrl('/meals/:mealId'), () => HttpResponse.json(buildMealDetails())));
+    await openMealFromHome();
+    await screen.findByRole('header', { name: 'Almoço Fitness' });
+
+    expect(screen.queryByRole('button', { name: 'Adicionar foto' })).not.toBeOnTheScreen();
+    expect(screen.queryByRole('button', { name: 'Trocar foto' })).not.toBeOnTheScreen();
   });
 });

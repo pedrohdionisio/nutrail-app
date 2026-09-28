@@ -19,6 +19,8 @@ export function MealDetails() {
     isLoadingMeal,
     canEdit,
     canDelete,
+    canChangePicture,
+    isChangingPicture,
     shouldShowError,
     errorMessage,
     isRefetchingMeal,
@@ -28,6 +30,7 @@ export function MealDetails() {
     handleEdit,
     handleDelete,
     handleMealDeleted,
+    handleChangePicture,
     handleRetry
   } = useMealDetailsController();
 
@@ -47,10 +50,13 @@ export function MealDetails() {
       <StatusBar style='light' />
 
       <MealPicture
+        canChangePicture={canChangePicture}
         canDelete={canDelete}
         canEdit={canEdit}
+        isChangingPicture={isChangingPicture}
         isLoading={isLoadingMeal}
         onBack={handleGoBack}
+        onChangePicture={handleChangePicture}
         onDelete={handleDelete}
         onEdit={handleEdit}
         pictureUrl={pictureUrl}

@@ -43,6 +43,8 @@ describe('Profile', () => {
     expect(screen.getByDisplayValue('165')).toBeOnTheScreen();
     expect(screen.getByDisplayValue('62,5')).toBeOnTheScreen();
     expect(screen.getByRole('radio', { name: 'Feminino' })).toBeChecked();
+    expect(screen.getByRole('radio', { name: 'Perder peso' })).toBeChecked();
+    expect(screen.getByRole('radio', { name: /Leve/ })).toBeChecked();
 
     const name = screen.getByDisplayValue('Ana Souza');
     await user.clear(name);
@@ -51,6 +53,8 @@ describe('Profile', () => {
     await user.clear(birthDate);
     await user.type(birthDate, '19022000');
     await user.press(screen.getByRole('radio', { name: 'Masculino' }));
+    await user.press(screen.getByRole('radio', { name: 'Manter peso' }));
+    await user.press(screen.getByRole('radio', { name: /Moderado/ }));
     await user.press(screen.getByRole('button', { name: 'Salvar' }));
 
     await waitForHome();
@@ -64,8 +68,8 @@ describe('Profile', () => {
         height: 165,
         weight: 62.5,
         gender: 'MALE',
-        goal: 'LOSE',
-        activityLevel: 'LIGHT'
+        goal: 'MAINTAIN',
+        activityLevel: 'MODERATE'
       }
     ]);
   });
