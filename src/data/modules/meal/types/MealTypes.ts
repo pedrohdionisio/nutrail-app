@@ -59,6 +59,10 @@ export interface IDeleteMealPayload {
   mealId: string;
 }
 
+export interface IReprocessMealPayload {
+  mealId: string;
+}
+
 export interface IUpdateMealPayload {
   mealId: string;
   name: string;

@@ -14,7 +14,7 @@ interface IMockMealAnalysisApiParams {
 }
 
 export function mockMealAnalysisApi({ statuses = ['SUCCESS'] }: IMockMealAnalysisApiParams = {}) {
-  const calls = { created: [] as unknown[], s3Uploads: 0, polls: 0 };
+  const calls = { created: [] as unknown[], s3Uploads: 0, polls: 0, reprocessed: [] as string[] };
   let meals: IMealSummary[] = [];
 
   server.use(
@@ -33,6 +33,11 @@ export function mockMealAnalysisApi({ statuses = ['SUCCESS'] }: IMockMealAnalysi
       calls.s3Uploads += 1;
 
       return new HttpResponse(null, { status: 204 });
+    }),
+    http.post(apiUrl('/meals/:mealId/reprocess'), ({ params }) => {
+      calls.reprocessed.push(String(params.mealId));
+
+      return HttpResponse.json({ id: params.mealId, status: 'QUEUED' }, { status: 202 });
     }),
     http.get(apiUrl('/meals/:mealId'), () => {
       const status = statuses[Math.min(calls.polls, statuses.length - 1)] ?? 'SUCCESS';

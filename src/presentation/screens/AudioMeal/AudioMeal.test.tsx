@@ -97,7 +97,53 @@ describe('AudioMeal', () => {
     await waitFor(() =>
       expect(alertSpy).toHaveBeenCalledWith(
         'Não conseguimos entender o áudio',
-        'Grave de novo, dizendo os alimentos e as quantidades.'
+        'Tente de novo ou grave outra vez, dizendo os alimentos e as quantidades.',
+        expect.any(Array)
+      )
+    );
+    expect(await screen.findByRole('button', { name: 'Confirmar áudio' })).toBeOnTheScreen();
+  });
+
+  it('should reprocess the same meal when the user tries again after a failure', async () => {
+    const { alertSpy, pressAlertButton } = spyOnAlert();
+    const calls = mockMealAnalysisApi({ statuses: ['FAILED', 'SUCCESS'] });
+    const { user } = await openAudioMeal();
+
+    await recordAudio(user);
+    await user.press(screen.getByRole('button', { name: 'Confirmar áudio' }));
+    await waitFor(() => expect(alertSpy).toHaveBeenCalled());
+
+    await pressAlertButton('Tentar de novo');
+
+    expect(await screen.findByText('Almoço Fitness')).toBeOnTheScreen();
+    expect(calls.reprocessed).toEqual(['meal-9']);
+    expect(calls.created).toHaveLength(1);
+    expect(calls.s3Uploads).toBe(1);
+  });
+
+  it('should keep the recording when the meal cannot be reprocessed', async () => {
+    const { alertSpy, pressAlertButton } = spyOnAlert();
+    mockMealAnalysisApi({ statuses: ['FAILED'] });
+    server.use(
+      http.post(apiUrl('/meals/:mealId/reprocess'), () =>
+        HttpResponse.json(
+          { error: { code: 'INVALID_MEAL_TRANSITION', message: 'Invalid transition.' } },
+          { status: 409 }
+        )
+      )
+    );
+    const { user } = await openAudioMeal();
+
+    await recordAudio(user);
+    await user.press(screen.getByRole('button', { name: 'Confirmar áudio' }));
+    await waitFor(() => expect(alertSpy).toHaveBeenCalled());
+
+    await pressAlertButton('Tentar de novo');
+
+    await waitFor(() =>
+      expect(alertSpy).toHaveBeenCalledWith(
+        'Não foi possível tentar de novo',
+        'Esta refeição não pode ser alterada agora.'
       )
     );
     expect(await screen.findByRole('button', { name: 'Confirmar áudio' })).toBeOnTheScreen();

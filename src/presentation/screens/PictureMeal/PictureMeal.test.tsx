@@ -148,10 +148,29 @@ describe('PictureMeal', () => {
     await waitFor(() =>
       expect(alertSpy).toHaveBeenCalledWith(
         'Não conseguimos analisar a foto',
-        'Tente outra foto, com os alimentos bem visíveis.'
+        'Tente de novo ou use outra foto, com os alimentos bem visíveis.',
+        expect.any(Array)
       )
     );
     expect(await screen.findByRole('button', { name: 'Confirmar foto' })).toBeOnTheScreen();
+  });
+
+  it('should reprocess the same meal when the user tries again after a failure', async () => {
+    const { alertSpy, pressAlertButton } = spyOnAlert();
+    const calls = mockMealAnalysisApi({ statuses: ['FAILED', 'SUCCESS'] });
+    const { user } = await openPictureMeal();
+
+    await user.press(screen.getByRole('button', { name: 'Escolher foto da galeria' }));
+    await screen.findByLabelText('Foto da refeição');
+    await user.press(screen.getByRole('button', { name: 'Confirmar foto' }));
+    await waitFor(() => expect(alertSpy).toHaveBeenCalled());
+
+    await pressAlertButton('Tentar de novo');
+
+    expect(await screen.findByText('Almoço Fitness')).toBeOnTheScreen();
+    expect(calls.reprocessed).toEqual(['meal-9']);
+    expect(calls.created).toHaveLength(1);
+    expect(calls.s3Uploads).toBe(1);
   });
 
   it('should show the API error when the upload cannot start', async () => {

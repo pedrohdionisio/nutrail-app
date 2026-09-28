@@ -1,8 +1,9 @@
 import { screen } from '@testing-library/react-native';
+import { AuthTokensManager } from 'data/libs/AuthTokensManager';
 import { HttpResponse, http } from 'msw';
 import { apiUrl } from 'tests/apiUrl';
 import { renderApp, seedSession } from 'tests/render';
-import { waitForHome } from 'tests/screens';
+import { waitForHome, waitForWelcome } from 'tests/screens';
 import { server } from 'tests/server';
 
 const RECALCULATED_GOALS = { calories: 1800, protein: 150, carbohydrate: 180, fat: 50 };
@@ -100,5 +101,39 @@ describe('Profile', () => {
 
     expect(await screen.findByText('Usuário não encontrado.')).toBeOnTheScreen();
     expect(screen.getByRole('header', { name: 'Perfil' })).toBeOnTheScreen();
+  });
+
+  it('should delete the account after confirming and sign out', async () => {
+    let deletions = 0;
+    server.use(
+      http.delete(apiUrl('/me'), () => {
+        deletions += 1;
+
+        return new HttpResponse(null, { status: 204 });
+      })
+    );
+    const { user } = await openProfile();
+
+    await user.press(screen.getByRole('button', { name: 'Excluir conta' }));
+    await screen.findByRole('header', { name: 'Excluir conta?' });
+    await user.press(screen.getByRole('button', { name: 'Excluir' }));
+
+    await waitForWelcome();
+    expect(deletions).toBe(1);
+    expect(await AuthTokensManager.load()).toBeNull();
+  });
+
+  it('should keep the session when the account cannot be deleted', async () => {
+    server.use(http.delete(apiUrl('/me'), () => HttpResponse.error()));
+    const { user } = await openProfile();
+
+    await user.press(screen.getByRole('button', { name: 'Excluir conta' }));
+    await screen.findByRole('header', { name: 'Excluir conta?' });
+    await user.press(screen.getByRole('button', { name: 'Excluir' }));
+
+    expect(
+      await screen.findByText('Não foi possível falar com o servidor. Verifique sua conexão.')
+    ).toBeOnTheScreen();
+    expect(await AuthTokensManager.load()).not.toBeNull();
   });
 });

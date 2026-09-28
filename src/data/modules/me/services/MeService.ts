@@ -7,6 +7,11 @@ async function get(): Promise<IMe> {
   return data;
 }
 
+async function remove(): Promise<void> {
+  await api.delete('/me');
+}
+
 export const MeService = {
-  get
+  get,
+  remove
 };

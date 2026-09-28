@@ -1,6 +1,7 @@
 import LogOutIcon from 'lucide-react-native/icons/log-out';
 import { ScreenHeader } from 'presentation/components/ScreenHeader/ScreenHeader';
 import { KeyboardAvoidingView, Platform } from 'react-native';
+import { DeleteAccountSheet } from './components/DeleteAccountSheet/DeleteAccountSheet';
 import { ProfileFallback } from './components/ProfileFallback/ProfileFallback';
 import { ProfileFooter } from './components/ProfileFooter/ProfileFooter';
 import { ProfileForm } from './components/ProfileForm/ProfileForm';
@@ -21,7 +22,9 @@ export function Profile() {
     handleGoBack,
     handleRetry,
     handleSave,
-    handleSignOut
+    handleSignOut,
+    deleteAccountSheetRef,
+    handleDeleteAccount
   } = useProfileController();
 
   return (
@@ -34,7 +37,12 @@ export function Profile() {
 
       {shouldShowForm ? (
         <>
-          <ProfileForm apiErrorMessage={apiErrorMessage} control={control} initials={initials} />
+          <ProfileForm
+            apiErrorMessage={apiErrorMessage}
+            control={control}
+            initials={initials}
+            onDeleteAccount={handleDeleteAccount}
+          />
           <ProfileFooter
             isSaveDisabled={isSaveDisabled}
             isSaving={isUpdatingProfile}
@@ -48,6 +56,8 @@ export function Profile() {
           onRetry={handleRetry}
         />
       )}
+
+      <DeleteAccountSheet sheetRef={deleteAccountSheetRef} />
     </KeyboardAvoidingView>
   );
 }

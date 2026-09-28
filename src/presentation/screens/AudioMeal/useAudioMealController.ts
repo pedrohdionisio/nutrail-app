@@ -8,6 +8,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { getApiErrorMessage } from 'data/config/apiError';
 import { MEAL_RECORDING_OPTIONS, MealAudioManager } from 'data/libs/MealAudioManager';
 import { useCreateAudioMeal } from 'data/modules/meal/useCases/createAudioMeal/useCreateAudioMeal';
+import { useReprocessMeal } from 'data/modules/meal/useCases/reprocessMeal/useReprocessMeal';
 import type { PermissionResponse } from 'expo';
 import {
   useAudioPlayer,
@@ -17,11 +18,12 @@ import {
 } from 'expo-audio';
 import { useEffect, useState } from 'react';
 import { Alert, Linking } from 'react-native';
+import type { IMealDetails } from 'shared/entities/IMealDetails';
 import { useScreenPadding } from 'shared/hooks/useScreenPadding';
 import type { AppRoutesParamList } from 'shared/navigation/AppRoutesTypes';
 import { toDevicePermissionStatus } from 'shared/utils/toDevicePermissionStatus';
 import { toLocalTime } from 'shared/utils/toLocalTime';
-import type { IRecording, RecordingStep } from './AudioMealTypes';
+import type { IHandleReprocessMealParams, IRecording, RecordingStep } from './AudioMealTypes';
 import { formatRecordingDuration } from './utils/formatRecordingDuration';
 
 export function useAudioMealController() {
@@ -31,6 +33,7 @@ export function useAudioMealController() {
   const recorder = useAudioRecorder(MEAL_RECORDING_OPTIONS);
   const recorderState = useAudioRecorderState(recorder);
   const { createAudioMeal } = useCreateAudioMeal();
+  const { reprocessMeal } = useReprocessMeal();
   const [permission, setPermission] = useState<PermissionResponse | null>(null);
   const [recording, setRecording] = useState<IRecording | null>(null);
   const [isStartingRecording, setIsStartingRecording] = useState(false);
@@ -147,25 +150,51 @@ export function useAudioMealController() {
         audioUri: recording.uri
       });
 
-      if (meal.status === 'SUCCESS') {
-        setAnalyzedMealId(meal.id);
-      } else if (meal.status === 'FAILED') {
-        Alert.alert(
-          'Não conseguimos entender o áudio',
-          'Grave de novo, dizendo os alimentos e as quantidades.'
-        );
-      } else {
-        Alert.alert(
-          'A análise está demorando',
-          'Sua refeição vai aparecer na lista assim que ficar pronta.'
-        );
-        setShouldLeave(true);
-      }
+      showAnalysisResult(meal);
     } catch (error) {
       Alert.alert('Não foi possível enviar o áudio', getApiErrorMessage(error));
     } finally {
       setIsAnalyzing(false);
     }
+  }
+
+  async function handleReprocess({ mealId }: IHandleReprocessMealParams) {
+    setIsAnalyzing(true);
+
+    try {
+      showAnalysisResult(await reprocessMeal({ mealId }));
+    } catch (error) {
+      Alert.alert('Não foi possível tentar de novo', getApiErrorMessage(error));
+    } finally {
+      setIsAnalyzing(false);
+    }
+  }
+
+  function showAnalysisResult(meal: IMealDetails) {
+    if (meal.status === 'SUCCESS') {
+      setAnalyzedMealId(meal.id);
+
+      return;
+    }
+
+    if (meal.status === 'FAILED') {
+      Alert.alert(
+        'Não conseguimos entender o áudio',
+        'Tente de novo ou grave outra vez, dizendo os alimentos e as quantidades.',
+        [
+          { text: 'Cancelar', style: 'cancel' },
+          { text: 'Tentar de novo', onPress: () => handleReprocess({ mealId: meal.id }) }
+        ]
+      );
+
+      return;
+    }
+
+    Alert.alert(
+      'A análise está demorando',
+      'Sua refeição vai aparecer na lista assim que ficar pronta.'
+    );
+    setShouldLeave(true);
   }
 
   return {

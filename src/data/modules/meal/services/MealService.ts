@@ -13,6 +13,7 @@ import type {
   IDeleteMealPayload,
   IGetMealPayload,
   IListMealsPayload,
+  IReprocessMealPayload,
   IUpdateMealPayload,
   IUpdateMealResponse,
   IUploadAudioPayload,
@@ -52,6 +53,10 @@ async function update({ mealId, ...payload }: IUpdateMealPayload): Promise<IUpda
 
 async function remove({ mealId }: IDeleteMealPayload): Promise<void> {
   await api.delete(`/meals/${mealId}`);
+}
+
+async function reprocess({ mealId }: IReprocessMealPayload): Promise<void> {
+  await api.post(`/meals/${mealId}/reprocess`);
 }
 
 async function analyzeItems(payload: IAnalyzeMealItemsPayload) {
@@ -100,6 +105,7 @@ export const MealService = {
   create,
   update,
   remove,
+  reprocess,
   analyzeItems,
   createManual,
   createPictureUpload,

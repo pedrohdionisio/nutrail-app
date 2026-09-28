@@ -1,3 +1,4 @@
+import type { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation } from '@react-navigation/native';
 import { getApiErrorMessage } from 'data/config/apiError';
@@ -9,7 +10,7 @@ import {
   updateProfileSchema
 } from 'data/modules/profile/useCases/updateProfile/schemas/updateProfileSchema';
 import { useUpdateProfile } from 'data/modules/profile/useCases/updateProfile/useUpdateProfile';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { getInitials } from 'shared/utils/getInitials';
 import { toProfileFormValues } from './utils/toProfileFormValues';
@@ -20,6 +21,7 @@ export function useProfileController() {
   const { me, isLoadingMe, isRefetchingMe, refetchMe } = useGetMe();
   const { updateProfile, isUpdatingProfile } = useUpdateProfile();
   const [apiErrorMessage, setApiErrorMessage] = useState<string | null>(null);
+  const deleteAccountSheetRef = useRef<BottomSheetModal>(null);
 
   const { control, handleSubmit } = useForm<
     UpdateProfileFormType,
@@ -63,6 +65,10 @@ export function useProfileController() {
     refetchMe();
   }
 
+  function handleDeleteAccount() {
+    deleteAccountSheetRef.current?.present();
+  }
+
   return {
     control,
     shouldShowForm: !!me,
@@ -75,6 +81,8 @@ export function useProfileController() {
     handleGoBack,
     handleRetry,
     handleSave: handleSubmit(onSubmit),
-    handleSignOut: signOut
+    handleSignOut: signOut,
+    deleteAccountSheetRef,
+    handleDeleteAccount
   };
 }

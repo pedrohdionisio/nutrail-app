@@ -1,5 +1,6 @@
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Avatar } from 'presentation/components/Avatar/Avatar';
+import { Button } from 'presentation/components/Button/Button';
 import { Input } from 'presentation/components/Input/Input';
 import { OptionsField } from 'presentation/components/OptionsField/OptionsField';
 import { ScrollView, View } from 'react-native';
@@ -7,7 +8,12 @@ import { maskDate } from 'shared/utils/maskDate';
 import { GENDER_OPTIONS } from '../../constants/genderOptions';
 import type { IProfileFormProps } from './ProfileFormTypes';
 
-export function ProfileForm({ control, initials, apiErrorMessage }: IProfileFormProps) {
+export function ProfileForm({
+  control,
+  initials,
+  apiErrorMessage,
+  onDeleteAccount
+}: IProfileFormProps) {
   return (
     <ScrollView
       className='flex-1'
@@ -52,6 +58,8 @@ export function ProfileForm({ control, initials, apiErrorMessage }: IProfileForm
           {apiErrorMessage}
         </AppText>
       )}
+
+      <Button onPress={onDeleteAccount} title='Excluir conta' variant='ghost' />
     </ScrollView>
   );
 }

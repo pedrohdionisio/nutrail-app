@@ -8,13 +8,16 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { getApiErrorMessage } from 'data/config/apiError';
 import { MealPictureManager } from 'data/libs/MealPictureManager';
 import { useCreatePictureMeal } from 'data/modules/meal/useCases/createPictureMeal/useCreatePictureMeal';
+import { useReprocessMeal } from 'data/modules/meal/useCases/reprocessMeal/useReprocessMeal';
 import { type CameraView, useCameraPermissions } from 'expo-camera';
 import { useEffect, useRef, useState } from 'react';
 import { Alert, Linking } from 'react-native';
+import type { IMealDetails } from 'shared/entities/IMealDetails';
 import { useScreenPadding } from 'shared/hooks/useScreenPadding';
 import type { AppRoutesParamList } from 'shared/navigation/AppRoutesTypes';
 import { toDevicePermissionStatus } from 'shared/utils/toDevicePermissionStatus';
 import { toLocalTime } from 'shared/utils/toLocalTime';
+import type { IHandleReprocessMealParams } from './PictureMealTypes';
 
 export function usePictureMealController() {
   const navigation = useNavigation<NativeStackNavigationProp<AppRoutesParamList>>();
@@ -23,6 +26,7 @@ export function usePictureMealController() {
   const cameraRef = useRef<CameraView>(null);
   const [permission, requestPermission] = useCameraPermissions();
   const { createPictureMeal } = useCreatePictureMeal();
+  const { reprocessMeal } = useReprocessMeal();
   const [pictureUri, setPictureUri] = useState<string | null>(null);
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [isCapturing, setIsCapturing] = useState(false);
@@ -123,25 +127,51 @@ export function usePictureMealController() {
         pictureUri
       });
 
-      if (meal.status === 'SUCCESS') {
-        setAnalyzedMealId(meal.id);
-      } else if (meal.status === 'FAILED') {
-        Alert.alert(
-          'Não conseguimos analisar a foto',
-          'Tente outra foto, com os alimentos bem visíveis.'
-        );
-      } else {
-        Alert.alert(
-          'A análise está demorando',
-          'Sua refeição vai aparecer na lista assim que ficar pronta.'
-        );
-        setShouldLeave(true);
-      }
+      showAnalysisResult(meal);
     } catch (error) {
       Alert.alert('Não foi possível enviar a foto', getApiErrorMessage(error));
     } finally {
       setIsAnalyzing(false);
     }
+  }
+
+  async function handleReprocess({ mealId }: IHandleReprocessMealParams) {
+    setIsAnalyzing(true);
+
+    try {
+      showAnalysisResult(await reprocessMeal({ mealId }));
+    } catch (error) {
+      Alert.alert('Não foi possível tentar de novo', getApiErrorMessage(error));
+    } finally {
+      setIsAnalyzing(false);
+    }
+  }
+
+  function showAnalysisResult(meal: IMealDetails) {
+    if (meal.status === 'SUCCESS') {
+      setAnalyzedMealId(meal.id);
+
+      return;
+    }
+
+    if (meal.status === 'FAILED') {
+      Alert.alert(
+        'Não conseguimos analisar a foto',
+        'Tente de novo ou use outra foto, com os alimentos bem visíveis.',
+        [
+          { text: 'Cancelar', style: 'cancel' },
+          { text: 'Tentar de novo', onPress: () => handleReprocess({ mealId: meal.id }) }
+        ]
+      );
+
+      return;
+    }
+
+    Alert.alert(
+      'A análise está demorando',
+      'Sua refeição vai aparecer na lista assim que ficar pronta.'
+    );
+    setShouldLeave(true);
   }
 
   return {
