@@ -18,9 +18,7 @@ import { toEditMealFormValues } from './utils/toEditMealFormValues';
 export function useEditMealController() {
   const navigation = useNavigation();
   const { params } = useRoute<RouteProp<AppRoutesParamList, 'EditMeal'>>();
-  const { meal, isLoadingMeal, isRefetchingMeal, refetchMeal } = useGetMeal({
-    mealId: params.mealId
-  });
+  const { meal } = useGetMeal({ mealId: params.mealId });
   const { updateMeal, isUpdatingMeal } = useUpdateMeal();
   const [apiErrorMessage, setApiErrorMessage] = useState<string | null>(null);
 
@@ -48,10 +46,6 @@ export function useEditMealController() {
     navigation.goBack();
   }
 
-  function handleRetry() {
-    refetchMeal();
-  }
-
   function handleRemoveItem({ index }: IHandleRemoveItemParams) {
     remove(index);
   }
@@ -63,15 +57,11 @@ export function useEditMealController() {
   return {
     control,
     items: fields,
-    shouldShowForm: !!meal,
     shouldShowEmptyItems: fields.length === 0,
-    isLoadingMeal,
-    isRefetchingMeal,
     apiErrorMessage,
     isUpdatingMeal,
     isSaveDisabled: fields.length === 0 || !name?.trim() || !date || !time,
     handleGoBack,
-    handleRetry,
     handleRemoveItem,
     handleAddItems,
     handleSave: handleSubmit(onSubmit)

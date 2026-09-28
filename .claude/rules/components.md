@@ -98,7 +98,7 @@ Welcome/
   `Input`, que usa `BottomSheetTextInput` sozinho dentro de sheet — sem ele o sheet não acompanha o
   teclado.
 - `BottomSheetModalProvider` e `GestureHandlerRootView` já estão no `App.tsx`.
-- Nos testes, `tests/mocks/bottomSheet.tsx` só renderiza o sheet depois do `present()` e respeita
+- Nos testes, `tests/support/mocks/bottomSheet.tsx` só renderiza o sheet depois do `present()` e respeita
   o `stackBehavior='replace'` — dá para afirmar o que está aberto.
 
 ## Toda screen precisa resolver três estados
@@ -112,6 +112,12 @@ Antes de considerar uma screen pronta:
 
 Se o design não cobre um dos três, resolva com o padrão da screen mais próxima e **diga que você
 resolveu**. Não entregue tela que assume caminho feliz.
+
+Exceção: screen que só abre a partir de outra que já observa o mesmo dado no cache (Goals e
+Profile com o `/me` da Home, EditMeal com a meal da MealDetails, RecipeDetails com a lista de
+Recipes) não tem carregando nem erro de leitura — o dado já está lá, e o React Query o mantém mesmo
+se um refetch falhar. Esse estado não aconteceria, e código que não acontece não entra. O dia em que
+uma dessas telas abrir por outro caminho (deep link, push), os estados voltam.
 
 ## Listas
 

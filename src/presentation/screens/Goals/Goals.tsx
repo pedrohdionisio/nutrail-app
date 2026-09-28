@@ -1,6 +1,5 @@
 import { ScreenHeader } from 'presentation/components/ScreenHeader/ScreenHeader';
 import { KeyboardAvoidingView, Platform } from 'react-native';
-import { GoalsFallback } from './components/GoalsFallback/GoalsFallback';
 import { GoalsFooter } from './components/GoalsFooter/GoalsFooter';
 import { GoalsForm } from './components/GoalsForm/GoalsForm';
 import { useGoalsController } from './useGoalsController';
@@ -12,15 +11,11 @@ export function Goals() {
     control,
     mode,
     isCaloriesMode,
-    shouldShowForm,
-    isLoadingMe,
-    isRefetchingMe,
     apiErrorMessage,
     isUpdatingGoals,
     isSaveDisabled,
     handleSelectMode,
     handleGoBack,
-    handleRetry,
     handleSave
   } = useGoalsController();
 
@@ -28,25 +23,19 @@ export function Goals() {
     <KeyboardAvoidingView behavior={KEYBOARD_BEHAVIOR} className='flex-1 bg-white'>
       <ScreenHeader onBack={handleGoBack} title='Suas Metas' />
 
-      {shouldShowForm ? (
-        <>
-          <GoalsForm
-            apiErrorMessage={apiErrorMessage}
-            control={control}
-            isCaloriesMode={isCaloriesMode}
-            mode={mode}
-            onSelectMode={handleSelectMode}
-          />
-          <GoalsFooter
-            isSaveDisabled={isSaveDisabled}
-            isSaving={isUpdatingGoals}
-            onCancel={handleGoBack}
-            onSave={handleSave}
-          />
-        </>
-      ) : (
-        <GoalsFallback isLoading={isLoadingMe} isRetrying={isRefetchingMe} onRetry={handleRetry} />
-      )}
+      <GoalsForm
+        apiErrorMessage={apiErrorMessage}
+        control={control}
+        isCaloriesMode={isCaloriesMode}
+        mode={mode}
+        onSelectMode={handleSelectMode}
+      />
+      <GoalsFooter
+        isSaveDisabled={isSaveDisabled}
+        isSaving={isUpdatingGoals}
+        onCancel={handleGoBack}
+        onSave={handleSave}
+      />
     </KeyboardAvoidingView>
   );
 }

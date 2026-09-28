@@ -16,6 +16,7 @@ As regras detalhadas ficam em `.claude/rules/`, carregadas por caminho:
 | `data-layer.md`     | client, módulos, erros da API, datas, sessão               |
 | `design-system.md`  | tokens do Figma, `AppText`, papéis de cor, medidas         |
 | `navigation.md`     | stacks, param list, header                                 |
+| `tests.md`          | onde ficam os testes, `tests/support`, o que testar        |
 
 ## Verificação
 

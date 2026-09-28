@@ -15,7 +15,7 @@ import { toGoalsFormValues } from './utils/toGoalsFormValues';
 
 export function useGoalsController() {
   const navigation = useNavigation();
-  const { me, isLoadingMe, isRefetchingMe, refetchMe } = useGetMe();
+  const { me } = useGetMe();
   const { updateGoals, isUpdatingGoals } = useUpdateGoals();
   const [apiErrorMessage, setApiErrorMessage] = useState<string | null>(null);
 
@@ -52,15 +52,8 @@ export function useGoalsController() {
     navigation.goBack();
   }
 
-  function handleRetry() {
-    refetchMe();
-  }
-
   return {
     control,
-    shouldShowForm: !!me,
-    isLoadingMe,
-    isRefetchingMe,
     mode,
     isCaloriesMode,
     apiErrorMessage,
@@ -70,7 +63,6 @@ export function useGoalsController() {
       : !values.carbohydrate || !values.protein || !values.fat,
     handleSelectMode,
     handleGoBack,
-    handleRetry,
     handleSave: handleSubmit(onSubmit)
   };
 }

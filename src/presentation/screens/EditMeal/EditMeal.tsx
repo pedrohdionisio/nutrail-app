@@ -1,6 +1,5 @@
 import { ScreenHeader } from 'presentation/components/ScreenHeader/ScreenHeader';
 import { KeyboardAvoidingView, Platform } from 'react-native';
-import { EditMealFallback } from './components/EditMealFallback/EditMealFallback';
 import { EditMealFooter } from './components/EditMealFooter/EditMealFooter';
 import { EditMealForm } from './components/EditMealForm/EditMealForm';
 import { useEditMealController } from './useEditMealController';
@@ -11,15 +10,11 @@ export function EditMeal() {
   const {
     control,
     items,
-    shouldShowForm,
     shouldShowEmptyItems,
-    isLoadingMeal,
-    isRefetchingMeal,
     apiErrorMessage,
     isUpdatingMeal,
     isSaveDisabled,
     handleGoBack,
-    handleRetry,
     handleRemoveItem,
     handleAddItems,
     handleSave
@@ -29,30 +24,20 @@ export function EditMeal() {
     <KeyboardAvoidingView behavior={KEYBOARD_BEHAVIOR} className='flex-1 bg-white'>
       <ScreenHeader onBack={handleGoBack} title='Editar refeição' />
 
-      {shouldShowForm ? (
-        <>
-          <EditMealForm
-            apiErrorMessage={apiErrorMessage}
-            control={control}
-            items={items}
-            onAddItems={handleAddItems}
-            onRemoveItem={handleRemoveItem}
-            shouldShowEmptyItems={shouldShowEmptyItems}
-          />
-          <EditMealFooter
-            isSaveDisabled={isSaveDisabled}
-            isSaving={isUpdatingMeal}
-            onCancel={handleGoBack}
-            onSave={handleSave}
-          />
-        </>
-      ) : (
-        <EditMealFallback
-          isLoading={isLoadingMeal}
-          isRetrying={isRefetchingMeal}
-          onRetry={handleRetry}
-        />
-      )}
+      <EditMealForm
+        apiErrorMessage={apiErrorMessage}
+        control={control}
+        items={items}
+        onAddItems={handleAddItems}
+        onRemoveItem={handleRemoveItem}
+        shouldShowEmptyItems={shouldShowEmptyItems}
+      />
+      <EditMealFooter
+        isSaveDisabled={isSaveDisabled}
+        isSaving={isUpdatingMeal}
+        onCancel={handleGoBack}
+        onSave={handleSave}
+      />
     </KeyboardAvoidingView>
   );
 }

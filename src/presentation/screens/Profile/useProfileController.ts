@@ -18,7 +18,7 @@ import { toProfileFormValues } from './utils/toProfileFormValues';
 export function useProfileController() {
   const navigation = useNavigation();
   const { signOut } = useAuth();
-  const { me, isLoadingMe, isRefetchingMe, refetchMe } = useGetMe();
+  const { me } = useGetMe();
   const { updateProfile, isUpdatingProfile } = useUpdateProfile();
   const [apiErrorMessage, setApiErrorMessage] = useState<string | null>(null);
   const deleteAccountSheetRef = useRef<BottomSheetModal>(null);
@@ -54,10 +54,6 @@ export function useProfileController() {
     navigation.goBack();
   }
 
-  function handleRetry() {
-    refetchMe();
-  }
-
   function handleChangePassword() {
     changePasswordSheetRef.current?.present();
   }
@@ -68,15 +64,11 @@ export function useProfileController() {
 
   return {
     control,
-    shouldShowForm: !!me,
-    isLoadingMe,
-    isRefetchingMe,
     initials: getInitials(name ?? me?.profile.name ?? ''),
     apiErrorMessage,
     isUpdatingProfile,
     isSaveDisabled: !name?.trim() || !birthDate || !height || !weight,
     handleGoBack,
-    handleRetry,
     handleSave: handleSubmit(onSubmit),
     handleSignOut: signOut,
     deleteAccountSheetRef,

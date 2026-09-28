@@ -23,12 +23,12 @@ const expoPreset = require('jest-expo/jest-preset');
 
 module.exports = {
   preset: 'jest-expo',
-  setupFiles: ['<rootDir>/tests/env.ts'],
-  setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
+  setupFiles: ['<rootDir>/tests/support/env.ts'],
+  setupFilesAfterEnv: ['<rootDir>/tests/support/setup.ts'],
   transform: {
     '\\.mjs$': expoPreset.transform['\\.[jt]sx?$']
   },
-  collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.test.{ts,tsx}', '!src/**/*Types.ts'],
+  collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*Types.ts'],
   transformIgnorePatterns: [
     `/node_modules/(?!(${TRANSFORMED_PACKAGES.join('|')}))`,
     '/node_modules/react-native-reanimated/plugin/',

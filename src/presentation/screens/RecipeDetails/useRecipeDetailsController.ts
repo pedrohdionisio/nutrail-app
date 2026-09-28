@@ -9,8 +9,7 @@ export function useRecipeDetailsController() {
   const { params } = useRoute<RouteProp<AppRoutesParamList, 'RecipeDetails'>>();
   const deleteRecipeSheetRef = useRef<BottomSheetModal>(null);
   const logMealSheetRef = useRef<BottomSheetModal>(null);
-  const { recipes, isLoadingRecipes, isRecipesError, isRefetchingRecipes, refetchRecipes } =
-    useListRecipes();
+  const { recipes } = useListRecipes();
 
   const foundRecipe = recipes.find(({ id }) => id === params.recipeId) ?? null;
   const [lastRecipe, setLastRecipe] = useState(foundRecipe);
@@ -33,23 +32,12 @@ export function useRecipeDetailsController() {
     logMealSheetRef.current?.present();
   }
 
-  function handleRetry() {
-    refetchRecipes();
-  }
-
   return {
     recipeId: params.recipeId,
     recipe,
-    isLoadingRecipe: isLoadingRecipes,
-    fallbackMessage: isRecipesError
-      ? 'Não conseguimos carregar a receita. Verifique sua conexão e tente de novo.'
-      : 'Receita não encontrada.',
-    fallbackActionTitle: isRecipesError ? 'Tentar de novo' : 'Voltar',
-    isRefetchingRecipe: isRefetchingRecipes,
     deleteRecipeSheetRef,
     logMealSheetRef,
     handleGoBack,
-    handleFallbackAction: isRecipesError ? handleRetry : handleGoBack,
     handleDelete,
     handleRecipeDeleted: handleGoBack,
     handleLogMeal

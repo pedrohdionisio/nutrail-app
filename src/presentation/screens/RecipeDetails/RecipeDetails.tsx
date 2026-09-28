@@ -4,7 +4,6 @@ import { ScreenHeader } from 'presentation/components/ScreenHeader/ScreenHeader'
 import { View } from 'react-native';
 import { DeleteRecipeSheet } from './components/DeleteRecipeSheet/DeleteRecipeSheet';
 import { LogRecipeMealSheet } from './components/LogRecipeMealSheet/LogRecipeMealSheet';
-import { RecipeDetailsFallback } from './components/RecipeDetailsFallback/RecipeDetailsFallback';
 import { RecipeDetailsFooter } from './components/RecipeDetailsFooter/RecipeDetailsFooter';
 import { useRecipeDetailsController } from './useRecipeDetailsController';
 
@@ -14,30 +13,16 @@ export function RecipeDetails() {
   const {
     recipeId,
     recipe,
-    isLoadingRecipe,
-    fallbackMessage,
-    fallbackActionTitle,
-    isRefetchingRecipe,
     deleteRecipeSheetRef,
     logMealSheetRef,
     handleGoBack,
-    handleFallbackAction,
     handleDelete,
     handleRecipeDeleted,
     handleLogMeal
   } = useRecipeDetailsController();
 
   if (!recipe) {
-    return (
-      <RecipeDetailsFallback
-        actionTitle={fallbackActionTitle}
-        isActionLoading={isRefetchingRecipe}
-        isLoading={isLoadingRecipe}
-        message={fallbackMessage}
-        onAction={handleFallbackAction}
-        onBack={handleGoBack}
-      />
-    );
+    return null;
   }
 
   return (
