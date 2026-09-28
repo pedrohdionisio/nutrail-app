@@ -17,6 +17,7 @@ const API_ERROR_MESSAGES = {
   MEAL_PICTURE_NOT_ALLOWED: 'Não é possível trocar a foto desta refeição agora.',
   INVALID_MEAL_TRANSITION: 'Esta refeição não pode ser alterada agora.',
   NO_FOOD_INGREDIENTS: 'Não identificamos nenhum alimento na descrição.',
+  GOALS_BELOW_MACROS: 'As calorias não cobrem suas metas de proteína e gordura.',
   RECIPE_NOT_FOUND: 'Receita não encontrada.',
   RECIPE_GENERATION_FAILED: 'Não conseguimos gerar uma receita. Tente de novo.'
 } as const;

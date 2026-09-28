@@ -8,6 +8,7 @@ export function toGoalsFormValues({
   fat
 }: IGoals): UpdateGoalsFormType {
   return {
+    mode: 'calories',
     calories: String(calories),
     carbohydrate: String(carbohydrate),
     protein: String(protein),

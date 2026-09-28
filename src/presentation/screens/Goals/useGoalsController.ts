@@ -10,6 +10,7 @@ import { useUpdateGoals } from 'data/modules/goals/useCases/updateGoals/useUpdat
 import { useGetMe } from 'data/modules/me/useCases/getMe/useGetMe';
 import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
+import type { IHandleSelectModeParams } from './components/GoalsModeSelector/GoalsModeSelectorTypes';
 import { toGoalsFormValues } from './utils/toGoalsFormValues';
 
 export function useGoalsController() {
@@ -18,13 +19,19 @@ export function useGoalsController() {
   const { updateGoals, isUpdatingGoals } = useUpdateGoals();
   const [apiErrorMessage, setApiErrorMessage] = useState<string | null>(null);
 
-  const { control, handleSubmit } = useForm<UpdateGoalsFormType, unknown, UpdateGoalsPayloadType>({
+  const { control, handleSubmit, setValue } = useForm<
+    UpdateGoalsFormType,
+    unknown,
+    UpdateGoalsPayloadType
+  >({
     resolver: zodResolver(updateGoalsSchema),
     values: me ? toGoalsFormValues(me.goals) : undefined,
     resetOptions: { keepDirtyValues: true }
   });
 
   const values = useWatch({ control });
+  const mode = values.mode ?? 'calories';
+  const isCaloriesMode = mode === 'calories';
 
   async function onSubmit(goals: UpdateGoalsPayloadType) {
     setApiErrorMessage(null);
@@ -35,6 +42,10 @@ export function useGoalsController() {
     } catch (error) {
       setApiErrorMessage(getApiErrorMessage(error));
     }
+  }
+
+  function handleSelectMode({ mode }: IHandleSelectModeParams) {
+    setValue('mode', mode, { shouldDirty: true });
   }
 
   function handleGoBack() {
@@ -50,9 +61,14 @@ export function useGoalsController() {
     shouldShowForm: !!me,
     isLoadingMe,
     isRefetchingMe,
+    mode,
+    isCaloriesMode,
     apiErrorMessage,
     isUpdatingGoals,
-    isSaveDisabled: !values.calories || !values.carbohydrate || !values.protein || !values.fat,
+    isSaveDisabled: isCaloriesMode
+      ? !values.calories
+      : !values.carbohydrate || !values.protein || !values.fat,
+    handleSelectMode,
     handleGoBack,
     handleRetry,
     handleSave: handleSubmit(onSubmit)

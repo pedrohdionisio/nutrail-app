@@ -5,7 +5,9 @@ import { renderApp, seedSession } from 'tests/render';
 import { waitForHome } from 'tests/screens';
 import { server } from 'tests/server';
 
-function mockUpdateGoals(response = () => new HttpResponse(null, { status: 204 })) {
+const UPDATED_GOALS = { calories: 2200, protein: 175, carbohydrate: 250, fat: 56 };
+
+function mockUpdateGoals(response = () => HttpResponse.json({ goals: UPDATED_GOALS })) {
   const bodies: unknown[] = [];
 
   server.use(
@@ -31,13 +33,12 @@ async function openGoals() {
 }
 
 describe('Goals', () => {
-  it('should show the current goals, save the changes and update the home', async () => {
+  it('should save the calories and show the goals returned by the API', async () => {
     const bodies = mockUpdateGoals();
     const { user } = await openGoals();
 
-    expect(screen.getByDisplayValue('200')).toBeOnTheScreen();
-    expect(screen.getByDisplayValue('175')).toBeOnTheScreen();
-    expect(screen.getByDisplayValue('56')).toBeOnTheScreen();
+    expect(screen.getByRole('radio', { name: 'Por calorias' })).toBeChecked();
+    expect(screen.queryByDisplayValue('175')).not.toBeOnTheScreen();
 
     const calories = screen.getByDisplayValue('2000');
     await user.clear(calories);
@@ -47,13 +48,34 @@ describe('Goals', () => {
     await waitForHome();
     expect(screen.queryByRole('header', { name: 'Suas Metas' })).not.toBeOnTheScreen();
     expect(screen.getByText('2200 kcal restantes')).toBeOnTheScreen();
-    expect(bodies).toEqual([{ calories: 2200, carbohydrate: 200, protein: 175, fat: 56 }]);
+    expect(bodies).toEqual([{ calories: 2200 }]);
+  });
+
+  it('should save the macros', async () => {
+    const bodies = mockUpdateGoals();
+    const { user } = await openGoals();
+
+    await user.press(screen.getByRole('radio', { name: 'Por macros' }));
+
+    expect(screen.queryByDisplayValue('2000')).not.toBeOnTheScreen();
+    expect(screen.getByDisplayValue('200')).toBeOnTheScreen();
+    expect(screen.getByDisplayValue('56')).toBeOnTheScreen();
+
+    const carbohydrate = screen.getByDisplayValue('200');
+    await user.clear(carbohydrate);
+    await user.type(carbohydrate, '250');
+    await user.press(screen.getByRole('button', { name: 'Salvar' }));
+
+    await waitForHome();
+    expect(screen.getByText('2200 kcal restantes')).toBeOnTheScreen();
+    expect(bodies).toEqual([{ carbohydrate: 250, protein: 175, fat: 56 }]);
   });
 
   it('should validate the fields before sending', async () => {
     const bodies = mockUpdateGoals();
     const { user } = await openGoals();
 
+    await user.press(screen.getByRole('radio', { name: 'Por macros' }));
     const protein = screen.getByDisplayValue('175');
     await user.clear(protein);
     expect(screen.getByRole('button', { name: 'Salvar' })).toBeDisabled();
@@ -68,8 +90,8 @@ describe('Goals', () => {
   it('should show the API error and stay on the screen', async () => {
     mockUpdateGoals(() =>
       HttpResponse.json(
-        { error: { code: 'VALIDATION', message: 'Invalid body.' } },
-        { status: 400 }
+        { error: { code: 'GOALS_BELOW_MACROS', message: 'Calories are too low.' } },
+        { status: 422 }
       )
     );
     const { user } = await openGoals();
@@ -77,7 +99,7 @@ describe('Goals', () => {
     await user.press(screen.getByRole('button', { name: 'Salvar' }));
 
     expect(
-      await screen.findByText('Confira os dados informados e tente de novo.')
+      await screen.findByText('As calorias não cobrem suas metas de proteína e gordura.')
     ).toBeOnTheScreen();
     expect(screen.getByRole('header', { name: 'Suas Metas' })).toBeOnTheScreen();
   });

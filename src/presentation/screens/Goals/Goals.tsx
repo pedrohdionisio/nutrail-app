@@ -10,12 +10,15 @@ const KEYBOARD_BEHAVIOR = Platform.OS === 'ios' ? 'padding' : undefined;
 export function Goals() {
   const {
     control,
+    mode,
+    isCaloriesMode,
     shouldShowForm,
     isLoadingMe,
     isRefetchingMe,
     apiErrorMessage,
     isUpdatingGoals,
     isSaveDisabled,
+    handleSelectMode,
     handleGoBack,
     handleRetry,
     handleSave
@@ -27,7 +30,13 @@ export function Goals() {
 
       {shouldShowForm ? (
         <>
-          <GoalsForm apiErrorMessage={apiErrorMessage} control={control} />
+          <GoalsForm
+            apiErrorMessage={apiErrorMessage}
+            control={control}
+            isCaloriesMode={isCaloriesMode}
+            mode={mode}
+            onSelectMode={handleSelectMode}
+          />
           <GoalsFooter
             isSaveDisabled={isSaveDisabled}
             isSaving={isUpdatingGoals}

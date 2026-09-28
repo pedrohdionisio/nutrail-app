@@ -69,7 +69,7 @@ export function ProfileForm({
         label='Nível de atividade'
         name='activityLevel'
         options={ACTIVITY_LEVEL_OPTIONS}
-        orientation='column'
+        orientation='row'
       />
 
       <AppText color='muted' size='bodySm'>

@@ -10,7 +10,7 @@ export function useUpdateGoals() {
   const { mutateAsync, isPending } = useMutation({
     mutationKey: [GOALS_MUTATION_KEYS.UPDATE_GOALS],
     mutationFn: GoalsService.update,
-    onSuccess: (_, goals) => {
+    onSuccess: ({ goals }) => {
       queryClient.setQueryData<IMe>([ME_QUERY_KEYS.ME], (me) => me && { ...me, goals });
     }
   });
