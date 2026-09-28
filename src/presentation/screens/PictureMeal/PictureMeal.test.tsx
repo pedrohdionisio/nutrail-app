@@ -4,11 +4,9 @@ import type { CameraViewProps, PermissionResponse } from 'expo-camera';
 import { launchImageLibraryAsync } from 'expo-image-picker';
 import { HttpResponse, http } from 'msw';
 import type { Ref } from 'react';
-import type { IMealDetails } from 'shared/entities/IMealDetails';
-import type { IMealSummary } from 'shared/entities/IMealSummary';
 import { spyOnAlert } from 'tests/alert';
 import { apiUrl } from 'tests/apiUrl';
-import { buildMeal, buildMealDetails, buildMealsOfDay } from 'tests/fixtures/meal';
+import { mockMealAnalysisApi } from 'tests/mealAnalysisApi';
 import { renderApp, seedSession } from 'tests/render';
 import { waitForHome } from 'tests/screens';
 import { server } from 'tests/server';
@@ -53,50 +51,6 @@ jest.mock('expo-image-manipulator', () => ({
   }
 }));
 
-const UPLOAD_URL = 'https://uploads.test/';
-
-const ANALYZED_MEAL = buildMealDetails({ id: 'meal-9' });
-
-interface IMockPictureMealApiParams {
-  statuses?: IMealDetails['status'][];
-}
-
-function mockPictureMealApi({ statuses = ['SUCCESS'] }: IMockPictureMealApiParams = {}) {
-  const calls = { created: [] as unknown[], s3Uploads: 0, polls: 0 };
-  let meals: IMealSummary[] = [];
-
-  server.use(
-    http.get(apiUrl('/meals'), ({ request }) =>
-      HttpResponse.json(buildMealsOfDay(new URL(request.url).searchParams.get('date') ?? '', meals))
-    ),
-    http.post(apiUrl('/meals'), async ({ request }) => {
-      calls.created.push(await request.json());
-
-      return HttpResponse.json(
-        { mealId: 'meal-9', upload: { url: UPLOAD_URL, fields: { key: 'pictures/meal-9.jpg' } } },
-        { status: 201 }
-      );
-    }),
-    http.post(UPLOAD_URL, () => {
-      calls.s3Uploads += 1;
-
-      return new HttpResponse(null, { status: 204 });
-    }),
-    http.get(apiUrl('/meals/:mealId'), () => {
-      const status = statuses[Math.min(calls.polls, statuses.length - 1)] ?? 'SUCCESS';
-      calls.polls += 1;
-
-      if (status === 'SUCCESS') {
-        meals = [buildMeal({ id: 'meal-9', name: ANALYZED_MEAL.name ?? '', calories: 630 })];
-      }
-
-      return HttpResponse.json({ ...ANALYZED_MEAL, status });
-    })
-  );
-
-  return calls;
-}
-
 async function openPictureMeal() {
   await seedSession();
   const rendered = await renderApp();
@@ -128,7 +82,7 @@ describe('PictureMeal', () => {
   });
 
   it('should upload the picture, wait for the analysis and open the meal', async () => {
-    const calls = mockPictureMealApi({ statuses: ['PROCESSING', 'SUCCESS'] });
+    const calls = mockMealAnalysisApi({ statuses: ['PROCESSING', 'SUCCESS'] });
     const { user } = await openPictureMeal();
 
     await waitFor(() => expect(screen.getByRole('button', { name: 'Tirar foto' })).toBeEnabled());
@@ -158,7 +112,7 @@ describe('PictureMeal', () => {
   });
 
   it('should send a picture chosen from the gallery', async () => {
-    const calls = mockPictureMealApi();
+    const calls = mockMealAnalysisApi();
     const { user } = await openPictureMeal();
 
     await user.press(screen.getByRole('button', { name: 'Escolher foto da galeria' }));
@@ -170,7 +124,7 @@ describe('PictureMeal', () => {
   });
 
   it('should go back to the camera when the picture is discarded', async () => {
-    const calls = mockPictureMealApi();
+    const calls = mockMealAnalysisApi();
     const { user } = await openPictureMeal();
 
     await user.press(screen.getByRole('button', { name: 'Escolher foto da galeria' }));
@@ -184,7 +138,7 @@ describe('PictureMeal', () => {
 
   it('should keep the picture and warn when the analysis fails', async () => {
     const { alertSpy } = spyOnAlert();
-    mockPictureMealApi({ statuses: ['FAILED'] });
+    mockMealAnalysisApi({ statuses: ['FAILED'] });
     const { user } = await openPictureMeal();
 
     await user.press(screen.getByRole('button', { name: 'Escolher foto da galeria' }));
@@ -202,7 +156,7 @@ describe('PictureMeal', () => {
 
   it('should show the API error when the upload cannot start', async () => {
     const { alertSpy } = spyOnAlert();
-    mockPictureMealApi();
+    mockMealAnalysisApi();
     server.use(http.post(apiUrl('/meals'), () => HttpResponse.error()));
     const { user } = await openPictureMeal();
 
@@ -226,7 +180,7 @@ describe('PictureMeal', () => {
       canAskAgain: false,
       expires: 'never'
     };
-    mockPictureMealApi();
+    mockMealAnalysisApi();
     await openPictureMeal();
 
     expect(

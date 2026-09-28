@@ -15,8 +15,16 @@ import type {
   IListMealsPayload,
   IUpdateMealPayload,
   IUpdateMealResponse,
-  IUploadPicturePayload
+  IUploadAudioPayload,
+  IUploadPicturePayload,
+  IUploadSignature
 } from '../types/MealTypes';
+
+interface IUploadFile {
+  uri: string;
+  name: string;
+  type: string;
+}
 
 async function list({ date }: IListMealsPayload): Promise<IMealsOfDay> {
   const { data } = await api.get<IMealsOfDay>('/meals', { params: { date } });
@@ -64,18 +72,26 @@ async function createPictureUpload({ mealId }: ICreatePictureUploadPayload) {
   return data.upload;
 }
 
-async function uploadPicture({ upload, pictureUri }: IUploadPicturePayload): Promise<void> {
+async function uploadFile(upload: IUploadSignature, file: IUploadFile): Promise<void> {
   const formData = new FormData();
 
   for (const [name, value] of Object.entries(upload.fields)) {
     formData.append(name, value);
   }
 
-  formData.append('file', { uri: pictureUri, name: 'picture.jpg', type: 'image/jpeg' });
+  formData.append('file', file);
 
   await publicApi.post(upload.url, formData, {
     headers: { 'Content-Type': 'multipart/form-data' }
   });
+}
+
+async function uploadPicture({ upload, pictureUri }: IUploadPicturePayload): Promise<void> {
+  await uploadFile(upload, { uri: pictureUri, name: 'picture.jpg', type: 'image/jpeg' });
+}
+
+async function uploadAudio({ upload, audioUri }: IUploadAudioPayload): Promise<void> {
+  await uploadFile(upload, { uri: audioUri, name: 'audio.m4a', type: 'audio/m4a' });
 }
 
 export const MealService = {
@@ -87,5 +103,6 @@ export const MealService = {
   analyzeItems,
   createManual,
   createPictureUpload,
-  uploadPicture
+  uploadPicture,
+  uploadAudio
 };

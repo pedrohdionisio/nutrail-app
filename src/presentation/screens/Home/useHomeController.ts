@@ -71,6 +71,10 @@ export function useHomeController() {
     if (source === 'PICTURE') {
       navigation.navigate('PictureMeal', { date: toLocalIsoDate(selectedDate) });
     }
+
+    if (source === 'AUDIO') {
+      navigation.navigate('AudioMeal', { date: toLocalIsoDate(selectedDate) });
+    }
   }
 
   function handleOpenMeal({ mealId }: IHandleOpenMealParams) {

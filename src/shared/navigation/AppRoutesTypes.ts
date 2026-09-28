@@ -9,6 +9,7 @@ export type AppRoutesParamList = {
   Profile: undefined;
   ManualMeal: { date: string };
   PictureMeal: { date: string };
+  AudioMeal: { date: string };
   MealDetails: { mealId: string };
   EditMeal: { mealId: string };
 };

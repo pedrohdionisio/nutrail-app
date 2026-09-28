@@ -1,7 +1,7 @@
 import CameraIcon from 'lucide-react-native/icons/camera';
 import ImagesIcon from 'lucide-react-native/icons/images';
+import { ActionButton } from 'presentation/components/ActionButton/ActionButton';
 import { View } from 'react-native';
-import { ActionButton } from '../ActionButton/ActionButton';
 import type { ICaptureActionsProps } from './CaptureActionsTypes';
 
 export function CaptureActions({

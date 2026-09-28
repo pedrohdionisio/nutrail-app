@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { AudioMeal } from 'presentation/screens/AudioMeal/AudioMeal';
 import { EditMeal } from 'presentation/screens/EditMeal/EditMeal';
 import { Goals } from 'presentation/screens/Goals/Goals';
 import { Home } from 'presentation/screens/Home/Home';
@@ -18,6 +19,7 @@ export function AppStack() {
       <Stack.Screen component={Profile} name='Profile' />
       <Stack.Screen component={ManualMeal} name='ManualMeal' />
       <Stack.Screen component={PictureMeal} name='PictureMeal' />
+      <Stack.Screen component={AudioMeal} name='AudioMeal' />
       <Stack.Screen component={MealDetails} name='MealDetails' />
       <Stack.Screen component={EditMeal} name='EditMeal' />
     </Stack.Navigator>

@@ -13,8 +13,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Alert, Linking } from 'react-native';
 import { useScreenPadding } from 'shared/hooks/useScreenPadding';
 import type { AppRoutesParamList } from 'shared/navigation/AppRoutesTypes';
+import { toDevicePermissionStatus } from 'shared/utils/toDevicePermissionStatus';
 import { toLocalTime } from 'shared/utils/toLocalTime';
-import { toCameraStatus } from './utils/toCameraStatus';
 
 export function usePictureMealController() {
   const navigation = useNavigation<NativeStackNavigationProp<AppRoutesParamList>>();
@@ -147,7 +147,7 @@ export function usePictureMealController() {
   return {
     screenPadding,
     cameraRef,
-    cameraStatus: toCameraStatus(permission),
+    cameraStatus: toDevicePermissionStatus(permission),
     canAskPermission: permission?.canAskAgain ?? true,
     pictureUri,
     isCaptureDisabled: !isCameraReady || isPicking,

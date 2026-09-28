@@ -4,12 +4,21 @@ import { View } from 'react-native';
 import { ActionButton } from '../ActionButton/ActionButton';
 import type { IReviewActionsProps } from './ReviewActionsTypes';
 
-export function ReviewActions({ onDiscard, onConfirm }: IReviewActionsProps) {
+export function ReviewActions({
+  discardAccessibilityLabel,
+  confirmAccessibilityLabel,
+  onDiscard,
+  onConfirm
+}: IReviewActionsProps) {
   return (
     <View className='flex-row justify-center gap-12'>
-      <ActionButton accessibilityLabel='Descartar foto' icon={TrashIcon} onPress={onDiscard} />
       <ActionButton
-        accessibilityLabel='Confirmar foto'
+        accessibilityLabel={discardAccessibilityLabel}
+        icon={TrashIcon}
+        onPress={onDiscard}
+      />
+      <ActionButton
+        accessibilityLabel={confirmAccessibilityLabel}
         icon={CheckIcon}
         onPress={onConfirm}
         variant='primary'

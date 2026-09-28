@@ -25,7 +25,7 @@
         "expo-camera",
         {
           "cameraPermission": "O Nutrail usa a câmera para fotografar suas refeições e calcular os macros.",
-          "microphonePermission": false,
+          "microphonePermission": "O Nutrail usa o microfone para gravar a descrição das suas refeições e calcular os macros.",
           "recordAudioAndroid": false,
           "barcodeScannerEnabled": false
         }
@@ -35,7 +35,14 @@
         {
           "photosPermission": "O Nutrail usa suas fotos para anexar a imagem da refeição.",
           "cameraPermission": false,
-          "microphonePermission": false
+          "microphonePermission": "O Nutrail usa o microfone para gravar a descrição das suas refeições e calcular os macros."
+        }
+      ],
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "O Nutrail usa o microfone para gravar a descrição das suas refeições e calcular os macros.",
+          "enableBackgroundPlayback": false
         }
       ]
     ]

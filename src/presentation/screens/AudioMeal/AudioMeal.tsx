@@ -4,29 +4,29 @@ import { ActionButton } from 'presentation/components/ActionButton/ActionButton'
 import { AnalyzingMeal } from 'presentation/components/AnalyzingMeal/AnalyzingMeal';
 import { ReviewActions } from 'presentation/components/ReviewActions/ReviewActions';
 import { View } from 'react-native';
-import { CaptureActions } from './components/CaptureActions/CaptureActions';
-import { PictureFrame } from './components/PictureFrame/PictureFrame';
-import { usePictureMealController } from './usePictureMealController';
+import { RecordActions } from './components/RecordActions/RecordActions';
+import { RecordingPanel } from './components/RecordingPanel/RecordingPanel';
+import { useAudioMealController } from './useAudioMealController';
 
-export function PictureMeal() {
+export function AudioMeal() {
   const {
     screenPadding,
-    cameraRef,
-    cameraStatus,
+    microphoneStatus,
     canAskPermission,
-    pictureUri,
-    isCaptureDisabled,
-    isCapturing,
-    isPicking,
+    recordingStep,
+    durationLabel,
+    isPlaying,
+    isStartingRecording,
+    isRecordDisabled,
     shouldShowAnalyzing,
     handleClose,
-    handleCameraReady,
     handleRequestPermission,
-    handleCapture,
-    handlePickFromGallery,
+    handleStartRecording,
+    handleStopRecording,
+    handleTogglePlayback,
     handleDiscard,
     handleConfirm
-  } = usePictureMealController();
+  } = useAudioMealController();
 
   if (shouldShowAnalyzing) {
     return <AnalyzingMeal />;
@@ -40,29 +40,30 @@ export function PictureMeal() {
         <ActionButton accessibilityLabel='Fechar' icon={XIcon} onPress={handleClose} />
       </View>
 
-      <PictureFrame
-        cameraRef={cameraRef}
-        cameraStatus={cameraStatus}
+      <RecordingPanel
         canAskPermission={canAskPermission}
-        onCameraReady={handleCameraReady}
+        durationLabel={durationLabel}
+        isPlaying={isPlaying}
+        microphoneStatus={microphoneStatus}
         onRequestPermission={handleRequestPermission}
-        pictureUri={pictureUri}
+        onTogglePlayback={handleTogglePlayback}
+        recordingStep={recordingStep}
       />
 
-      {pictureUri ? (
+      {recordingStep === 'RECORDED' ? (
         <ReviewActions
-          confirmAccessibilityLabel='Confirmar foto'
-          discardAccessibilityLabel='Descartar foto'
+          confirmAccessibilityLabel='Confirmar áudio'
+          discardAccessibilityLabel='Descartar áudio'
           onConfirm={handleConfirm}
           onDiscard={handleDiscard}
         />
       ) : (
-        <CaptureActions
-          isCaptureDisabled={isCaptureDisabled}
-          isCapturing={isCapturing}
-          isPicking={isPicking}
-          onCapture={handleCapture}
-          onPickFromGallery={handlePickFromGallery}
+        <RecordActions
+          isDisabled={isRecordDisabled}
+          isRecording={recordingStep === 'RECORDING'}
+          isStartingRecording={isStartingRecording}
+          onStartRecording={handleStartRecording}
+          onStopRecording={handleStopRecording}
         />
       )}
     </View>

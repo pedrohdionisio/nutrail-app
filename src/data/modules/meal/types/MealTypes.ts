@@ -1,3 +1,4 @@
+import type { MealInputType } from 'shared/constants/meal';
 import type { IMacros } from 'shared/entities/IMacros';
 import type { IMealItem } from 'shared/entities/IMealItem';
 
@@ -34,10 +35,15 @@ export interface IUploadPicturePayload {
   pictureUri: string;
 }
 
+export interface IUploadAudioPayload {
+  upload: IUploadSignature;
+  audioUri: string;
+}
+
 export interface ICreateMealPayload {
   date: string;
   time: string;
-  inputType: 'PICTURE';
+  inputType: Extract<MealInputType, 'PICTURE' | 'AUDIO'>;
 }
 
 export interface ICreateMealResponse {
