@@ -8,6 +8,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { getApiErrorMessage } from 'data/config/apiError';
 import { MEAL_RECORDING_OPTIONS, MealAudioManager } from 'data/libs/MealAudioManager';
 import { useCreateAudioMeal } from 'data/modules/meal/useCases/createAudioMeal/useCreateAudioMeal';
+import { useDeleteMeal } from 'data/modules/meal/useCases/deleteMeal/useDeleteMeal';
 import { useReprocessMeal } from 'data/modules/meal/useCases/reprocessMeal/useReprocessMeal';
 import type { PermissionResponse } from 'expo';
 import {
@@ -23,7 +24,7 @@ import { useMealTimePicker } from 'shared/hooks/useMealTimePicker';
 import { useScreenPadding } from 'shared/hooks/useScreenPadding';
 import type { AppRoutesParamList } from 'shared/navigation/AppRoutesTypes';
 import { toDevicePermissionStatus } from 'shared/utils/toDevicePermissionStatus';
-import type { IHandleReprocessMealParams, IRecording, RecordingStep } from './AudioMealTypes';
+import type { IHandleFailedMealParams, IRecording, RecordingStep } from './AudioMealTypes';
 import { formatRecordingDuration } from './utils/formatRecordingDuration';
 
 export function useAudioMealController() {
@@ -34,6 +35,7 @@ export function useAudioMealController() {
   const recorderState = useAudioRecorderState(recorder);
   const { createAudioMeal } = useCreateAudioMeal();
   const { reprocessMeal } = useReprocessMeal();
+  const { deleteMeal } = useDeleteMeal();
   const { timeLabel, timePickerSheetBindings, handleOpenTimePicker, getMealTime } =
     useMealTimePicker({ date: params.date });
   const [permission, setPermission] = useState<PermissionResponse | null>(null);
@@ -160,7 +162,7 @@ export function useAudioMealController() {
     }
   }
 
-  async function handleReprocess({ mealId }: IHandleReprocessMealParams) {
+  async function handleReprocess({ mealId }: IHandleFailedMealParams) {
     setIsAnalyzing(true);
 
     try {
@@ -170,6 +172,10 @@ export function useAudioMealController() {
     } finally {
       setIsAnalyzing(false);
     }
+  }
+
+  function handleDiscardFailedMeal({ mealId }: IHandleFailedMealParams) {
+    deleteMeal({ mealId }).catch(() => undefined);
   }
 
   function showAnalysisResult(meal: IMealDetails) {
@@ -184,7 +190,11 @@ export function useAudioMealController() {
         'Não conseguimos entender o áudio',
         'Tente de novo ou grave outra vez, dizendo os alimentos e as quantidades.',
         [
-          { text: 'Cancelar', style: 'cancel' },
+          {
+            text: 'Cancelar',
+            style: 'cancel',
+            onPress: () => handleDiscardFailedMeal({ mealId: meal.id })
+          },
           { text: 'Tentar de novo', onPress: () => handleReprocess({ mealId: meal.id }) }
         ]
       );

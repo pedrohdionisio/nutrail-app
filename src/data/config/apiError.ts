@@ -5,6 +5,7 @@ const API_ERROR_MESSAGES = {
   UNAUTHORIZED: 'Sua sessão expirou. Entre de novo.',
   INVALID_REFRESH_TOKEN: 'Sua sessão expirou. Entre de novo.',
   INVALID_CREDENTIALS: 'E-mail ou senha incorretos.',
+  INVALID_CURRENT_PASSWORD: 'A senha atual está incorreta.',
   EMAIL_ALREADY_IN_USE: 'Este e-mail já está em uso.',
   INVALID_CODE: 'Código inválido ou expirado.',
   TOO_MANY_ATTEMPTS: 'Muitas tentativas. Aguarde um pouco e tente de novo.',

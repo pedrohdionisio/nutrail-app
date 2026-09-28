@@ -1,6 +1,7 @@
 import LogOutIcon from 'lucide-react-native/icons/log-out';
 import { ScreenHeader } from 'presentation/components/ScreenHeader/ScreenHeader';
 import { KeyboardAvoidingView, Platform } from 'react-native';
+import { ChangePasswordSheet } from './components/ChangePasswordSheet/ChangePasswordSheet';
 import { DeleteAccountSheet } from './components/DeleteAccountSheet/DeleteAccountSheet';
 import { ProfileFallback } from './components/ProfileFallback/ProfileFallback';
 import { ProfileFooter } from './components/ProfileFooter/ProfileFooter';
@@ -24,6 +25,8 @@ export function Profile() {
     handleSave,
     handleSignOut,
     deleteAccountSheetRef,
+    changePasswordSheetRef,
+    handleChangePassword,
     handleDeleteAccount
   } = useProfileController();
 
@@ -41,6 +44,7 @@ export function Profile() {
             apiErrorMessage={apiErrorMessage}
             control={control}
             initials={initials}
+            onChangePassword={handleChangePassword}
             onDeleteAccount={handleDeleteAccount}
           />
           <ProfileFooter
@@ -57,6 +61,7 @@ export function Profile() {
         />
       )}
 
+      <ChangePasswordSheet sheetRef={changePasswordSheetRef} />
       <DeleteAccountSheet sheetRef={deleteAccountSheetRef} />
     </KeyboardAvoidingView>
   );

@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react-native';
+import { act, screen, waitFor } from '@testing-library/react-native';
 import { HttpResponse, http } from 'msw';
 import type { IMealSummary } from 'shared/entities/IMealSummary';
 import { apiUrl } from 'tests/apiUrl';
@@ -231,5 +231,60 @@ describe('Home', () => {
     ).toBeOnTheScreen();
     expect(screen.getByRole('header', { name: 'Excluir refeição?' })).toBeOnTheScreen();
     expect(screen.getByText('Pão, manteiga e café')).toBeOnTheScreen();
+  });
+
+  it('should show a meal being analyzed and refresh it until it is ready', async () => {
+    let requests = 0;
+    server.use(
+      http.get(apiUrl('/meals'), ({ request }) => {
+        requests += 1;
+        const date = new URL(request.url).searchParams.get('date') ?? '';
+        const meal =
+          requests === 1
+            ? buildMeal({ id: 'meal-7', name: null, status: 'PROCESSING', calories: 0 })
+            : buildMeal({ id: 'meal-7', name: 'Omelete', calories: 320 });
+
+        return HttpResponse.json(buildMealsOfDay(date, [meal]));
+      })
+    );
+    await seedSession();
+    await renderApp();
+    await waitForHome();
+
+    expect(await screen.findByText('Analisando refeição')).toBeOnTheScreen();
+
+    await act(() => jest.advanceTimersByTimeAsync(3000));
+
+    expect(await screen.findByText('Omelete')).toBeOnTheScreen();
+    expect(screen.queryByText('Analisando refeição')).not.toBeOnTheScreen();
+  });
+
+  it('should reprocess a failed meal from its card', async () => {
+    const reprocessed: string[] = [];
+    let status: IMealSummary['status'] = 'FAILED';
+    server.use(
+      http.get(apiUrl('/meals'), ({ request }) =>
+        HttpResponse.json(
+          buildMealsOfDay(new URL(request.url).searchParams.get('date') ?? '', [
+            buildMeal({ id: 'meal-8', name: null, status, calories: 0 })
+          ])
+        )
+      ),
+      http.post(apiUrl('/meals/:mealId/reprocess'), ({ params }) => {
+        reprocessed.push(String(params.mealId));
+        status = 'QUEUED';
+
+        return HttpResponse.json({ id: params.mealId, status: 'QUEUED' }, { status: 202 });
+      })
+    );
+    await seedSession();
+    const { user } = await renderApp();
+    await waitForHome();
+
+    expect(await screen.findByText('Refeição não analisada')).toBeOnTheScreen();
+    await user.press(screen.getByRole('button', { name: 'Tentar de novo' }));
+
+    expect(await screen.findByText('Analisando refeição')).toBeOnTheScreen();
+    expect(reprocessed).toEqual(['meal-8']);
   });
 });

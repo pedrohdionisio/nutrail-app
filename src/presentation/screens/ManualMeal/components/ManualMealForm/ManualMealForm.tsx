@@ -2,7 +2,7 @@ import { AppText } from 'presentation/components/AppText/AppText';
 import { Input } from 'presentation/components/Input/Input';
 import { ScrollView, View } from 'react-native';
 import { maskDate } from 'shared/utils/maskDate';
-import { maskTime } from '../../utils/maskTime';
+import { maskTime } from 'shared/utils/maskTime';
 import { MealPictureField } from '../MealPictureField/MealPictureField';
 import type { IManualMealFormProps } from './ManualMealFormTypes';
 

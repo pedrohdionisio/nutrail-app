@@ -31,7 +31,7 @@ export function useEditMealController() {
   });
 
   const { fields, append, remove } = useFieldArray({ control, name: 'items' });
-  const name = useWatch({ control, name: 'name' });
+  const [name, date, time] = useWatch({ control, name: ['name', 'date', 'time'] });
 
   async function onSubmit(payload: UpdateMealPayloadType) {
     setApiErrorMessage(null);
@@ -69,7 +69,7 @@ export function useEditMealController() {
     isRefetchingMeal,
     apiErrorMessage,
     isUpdatingMeal,
-    isSaveDisabled: fields.length === 0 || !name?.trim(),
+    isSaveDisabled: fields.length === 0 || !name?.trim() || !date || !time,
     handleGoBack,
     handleRetry,
     handleRemoveItem,

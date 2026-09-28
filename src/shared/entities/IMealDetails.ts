@@ -8,6 +8,7 @@ export interface IMealDetails extends IMacros {
   status: MealStatus;
   inputType: MealInputType;
   date: string;
+  time: string;
   items: IMealItem[];
   pictureUrl: string | null;
   createdAt: string;

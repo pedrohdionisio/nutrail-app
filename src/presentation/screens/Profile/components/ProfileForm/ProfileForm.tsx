@@ -16,6 +16,7 @@ export function ProfileForm({
   control,
   initials,
   apiErrorMessage,
+  onChangePassword,
   onDeleteAccount
 }: IProfileFormProps) {
   return (
@@ -81,7 +82,10 @@ export function ProfileForm({
         </AppText>
       )}
 
-      <Button onPress={onDeleteAccount} title='Excluir conta' variant='ghost' />
+      <View className='gap-2'>
+        <Button onPress={onChangePassword} title='Alterar senha' variant='secondary' />
+        <Button onPress={onDeleteAccount} title='Excluir conta' variant='ghost' />
+      </View>
     </ScrollView>
   );
 }

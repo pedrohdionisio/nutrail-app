@@ -130,9 +130,45 @@ describe('EditMeal', () => {
             fat: 18
           },
           BANANA
-        ]
+        ],
+        date: '2026-09-26',
+        time: '08:30'
       }
     ]);
+  });
+
+  it('should move the meal to another day and time', async () => {
+    const calls = mockEditMealApi();
+    const { user } = await openEditMeal();
+
+    expect(screen.getByDisplayValue('26/09/2026')).toBeOnTheScreen();
+    expect(screen.getByDisplayValue('08:30')).toBeOnTheScreen();
+
+    const date = screen.getByLabelText('Data');
+    await user.clear(date);
+    await user.type(date, '25092026');
+    const time = screen.getByLabelText('Horário');
+    await user.clear(time);
+    await user.type(time, '1930');
+    await user.press(screen.getByRole('button', { name: 'Salvar' }));
+
+    await screen.findByRole('header', { name: 'Almoço Fitness' });
+    expect(calls.updated).toEqual([
+      expect.objectContaining({ name: 'Almoço Fitness', date: '2026-09-25', time: '19:30' })
+    ]);
+  });
+
+  it('should refuse a time in the future before sending', async () => {
+    const calls = mockEditMealApi();
+    const { user } = await openEditMeal();
+
+    const time = screen.getByLabelText('Horário');
+    await user.clear(time);
+    await user.type(time, '1130');
+    await user.press(screen.getByRole('button', { name: 'Salvar' }));
+
+    expect(await screen.findByText('O horário não pode estar no futuro')).toBeOnTheScreen();
+    expect(calls.updated).toEqual([]);
   });
 
   it('should not save a meal without items', async () => {

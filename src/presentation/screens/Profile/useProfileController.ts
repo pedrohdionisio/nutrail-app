@@ -22,6 +22,7 @@ export function useProfileController() {
   const { updateProfile, isUpdatingProfile } = useUpdateProfile();
   const [apiErrorMessage, setApiErrorMessage] = useState<string | null>(null);
   const deleteAccountSheetRef = useRef<BottomSheetModal>(null);
+  const changePasswordSheetRef = useRef<BottomSheetModal>(null);
 
   const { control, handleSubmit } = useForm<
     UpdateProfileFormType,
@@ -57,6 +58,10 @@ export function useProfileController() {
     refetchMe();
   }
 
+  function handleChangePassword() {
+    changePasswordSheetRef.current?.present();
+  }
+
   function handleDeleteAccount() {
     deleteAccountSheetRef.current?.present();
   }
@@ -75,6 +80,8 @@ export function useProfileController() {
     handleSave: handleSubmit(onSubmit),
     handleSignOut: signOut,
     deleteAccountSheetRef,
+    changePasswordSheetRef,
+    handleChangePassword,
     handleDeleteAccount
   };
 }

@@ -6,7 +6,9 @@ export function buildMeal(overrides: Partial<IMealSummary> = {}): IMealSummary {
   return {
     id: 'meal-1',
     name: 'Pão, manteiga e café',
+    status: 'SUCCESS',
     inputType: 'PICTURE',
+    time: '12:15',
     calories: 210,
     protein: 5,
     carbohydrate: 25,
@@ -37,6 +39,7 @@ export function buildMealDetails(overrides: Partial<IMealDetails> = {}): IMealDe
     status: 'SUCCESS',
     inputType: 'PICTURE',
     date: '2026-09-26',
+    time: '08:30',
     items: [
       {
         name: 'Arroz',

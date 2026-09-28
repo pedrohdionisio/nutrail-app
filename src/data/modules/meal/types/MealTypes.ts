@@ -67,11 +67,15 @@ export interface IUpdateMealPayload {
   mealId: string;
   name: string;
   items: IMealItem[];
+  date: string;
+  time: string;
 }
 
 export interface IUpdateMealResponse extends IMacros {
   name: string;
   items: IMealItem[];
+  date: string;
+  time: string;
 }
 
 export interface IAnalyzeMealItemsPayload {

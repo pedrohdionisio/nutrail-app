@@ -1,6 +1,8 @@
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Input } from 'presentation/components/Input/Input';
 import { ScrollView, View } from 'react-native';
+import { maskDate } from 'shared/utils/maskDate';
+import { maskTime } from 'shared/utils/maskTime';
 import { AddMealItemField } from '../AddMealItemField/AddMealItemField';
 import { EditableItem } from '../EditableItem/EditableItem';
 import type { IEditMealFormProps } from './EditMealFormTypes';
@@ -22,6 +24,32 @@ export function EditMealForm({
       showsVerticalScrollIndicator={false}
     >
       <Input control={control} label='Nome da refeição' maxLength={120} name='name' />
+
+      <View className='flex-row gap-4'>
+        <View className='flex-1'>
+          <Input
+            control={control}
+            keyboardType='number-pad'
+            label='Data'
+            mask={maskDate}
+            maxLength={10}
+            name='date'
+            placeholder='DD/MM/AAAA'
+          />
+        </View>
+
+        <View className='flex-1'>
+          <Input
+            control={control}
+            keyboardType='number-pad'
+            label='Horário'
+            mask={maskTime}
+            maxLength={5}
+            name='time'
+            placeholder='HH:MM'
+          />
+        </View>
+      </View>
 
       <View className='gap-5'>
         <AppText accessibilityRole='header' size='caption'>

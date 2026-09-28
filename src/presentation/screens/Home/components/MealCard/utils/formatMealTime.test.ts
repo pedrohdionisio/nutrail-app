@@ -1,7 +1,8 @@
 import { formatMealTime } from './formatMealTime';
 
 describe('formatMealTime', () => {
-  it('should show the UTC timestamp in the local time', () => {
-    expect(formatMealTime('2026-09-26T15:05:00.000Z')).toBe('12h05');
+  it('should show the meal time without the leading zero of the hour', () => {
+    expect(formatMealTime('12:05')).toBe('12h05');
+    expect(formatMealTime('08:30')).toBe('8h30');
   });
 });

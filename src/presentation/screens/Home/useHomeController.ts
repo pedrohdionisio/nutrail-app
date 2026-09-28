@@ -1,9 +1,12 @@
 import type { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
+import { getApiErrorMessage } from 'data/config/apiError';
 import { useAuth } from 'data/contexts/AuthProvider/AuthProvider';
 import { useGetMe } from 'data/modules/me/useCases/getMe/useGetMe';
 import { useListMealsByDay } from 'data/modules/meal/useCases/listMealsByDay/useListMealsByDay';
+import { useRetryMeal } from 'data/modules/meal/useCases/retryMeal/useRetryMeal';
 import { useRef, useState } from 'react';
+import { Alert } from 'react-native';
 import type { IHandleSelectDateTimeParams } from 'shared/hooks/UseDateTimePickerTypes';
 import { useDateTimePicker } from 'shared/hooks/useDateTimePicker';
 import { useScreenPadding } from 'shared/hooks/useScreenPadding';
@@ -11,7 +14,8 @@ import { getInitials } from 'shared/utils/getInitials';
 import { toLocalIsoDate } from 'shared/utils/toLocalIsoDate';
 import type {
   IHandleDeleteMealParams,
-  IHandleOpenMealParams
+  IHandleOpenMealParams,
+  IHandleRetryMealParams
 } from './components/MealCard/MealCardTypes';
 import type { IHandleSelectMealSourceParams } from './components/MealSourceOptions/MealSourceOptionsTypes';
 import { addDays } from './utils/addDays';
@@ -31,6 +35,7 @@ export function useHomeController() {
   const { me, isLoadingMe, isRefetchingMe, refetchMe } = useGetMe();
   const { mealsOfDay, isLoadingMeals, isMealsError, isRefetchingMeals, refetchMeals } =
     useListMealsByDay({ date: toLocalIsoDate(selectedDate) });
+  const { retryMeal, retryingMealId } = useRetryMeal();
 
   if (isStarting && !isLoadingMe && !isLoadingMeals) {
     setIsStarting(false);
@@ -104,6 +109,14 @@ export function useHomeController() {
     deleteMealSheetRef.current?.present();
   }
 
+  async function handleRetryMeal({ mealId }: IHandleRetryMealParams) {
+    try {
+      await retryMeal({ mealId });
+    } catch (error) {
+      Alert.alert('Não foi possível tentar de novo', getApiErrorMessage(error));
+    }
+  }
+
   function handleMealDeleted() {
     setMealIdToDelete(null);
   }
@@ -134,6 +147,7 @@ export function useHomeController() {
     newMealSheetRef,
     deleteMealSheetRef,
     mealIdToDelete,
+    retryingMealId,
     datePickerSheetBindings,
     handlePreviousDay,
     handleNextDay,
@@ -145,6 +159,7 @@ export function useHomeController() {
     handleSelectMealSource,
     handleOpenMeal,
     handleDeleteMeal,
+    handleRetryMeal,
     handleMealDeleted,
     handleRetryMe,
     handleRetryMeals,

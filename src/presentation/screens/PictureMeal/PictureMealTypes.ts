@@ -1,3 +1,3 @@
-export interface IHandleReprocessMealParams {
+export interface IHandleFailedMealParams {
   mealId: string;
 }

@@ -8,5 +8,6 @@ export interface IProfileFormProps {
   control: Control<UpdateProfileFormType, unknown, UpdateProfilePayloadType>;
   initials: string;
   apiErrorMessage: string | null;
+  onChangePassword: () => void;
   onDeleteAccount: () => void;
 }

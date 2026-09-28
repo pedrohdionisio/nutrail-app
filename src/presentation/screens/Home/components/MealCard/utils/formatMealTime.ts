@@ -1,6 +1,5 @@
-export function formatMealTime(createdAt: string) {
-  const date = new Date(createdAt);
-  const minutes = String(date.getMinutes()).padStart(2, '0');
+export function formatMealTime(time: string) {
+  const [hours = '', minutes = ''] = time.split(':');
 
-  return `${date.getHours()}h${minutes}`;
+  return `${Number(hours)}h${minutes}`;
 }

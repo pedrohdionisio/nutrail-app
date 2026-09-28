@@ -8,6 +8,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { getApiErrorMessage } from 'data/config/apiError';
 import { MealPictureManager } from 'data/libs/MealPictureManager';
 import { useCreatePictureMeal } from 'data/modules/meal/useCases/createPictureMeal/useCreatePictureMeal';
+import { useDeleteMeal } from 'data/modules/meal/useCases/deleteMeal/useDeleteMeal';
 import { useReprocessMeal } from 'data/modules/meal/useCases/reprocessMeal/useReprocessMeal';
 import { type CameraView, useCameraPermissions } from 'expo-camera';
 import { useEffect, useRef, useState } from 'react';
@@ -17,7 +18,7 @@ import { useMealTimePicker } from 'shared/hooks/useMealTimePicker';
 import { useScreenPadding } from 'shared/hooks/useScreenPadding';
 import type { AppRoutesParamList } from 'shared/navigation/AppRoutesTypes';
 import { toDevicePermissionStatus } from 'shared/utils/toDevicePermissionStatus';
-import type { IHandleReprocessMealParams } from './PictureMealTypes';
+import type { IHandleFailedMealParams } from './PictureMealTypes';
 
 export function usePictureMealController() {
   const navigation = useNavigation<NativeStackNavigationProp<AppRoutesParamList>>();
@@ -27,6 +28,7 @@ export function usePictureMealController() {
   const [permission, requestPermission] = useCameraPermissions();
   const { createPictureMeal } = useCreatePictureMeal();
   const { reprocessMeal } = useReprocessMeal();
+  const { deleteMeal } = useDeleteMeal();
   const { timeLabel, timePickerSheetBindings, handleOpenTimePicker, getMealTime } =
     useMealTimePicker({ date: params.date });
   const [pictureUri, setPictureUri] = useState<string | null>(null);
@@ -137,7 +139,7 @@ export function usePictureMealController() {
     }
   }
 
-  async function handleReprocess({ mealId }: IHandleReprocessMealParams) {
+  async function handleReprocess({ mealId }: IHandleFailedMealParams) {
     setIsAnalyzing(true);
 
     try {
@@ -147,6 +149,10 @@ export function usePictureMealController() {
     } finally {
       setIsAnalyzing(false);
     }
+  }
+
+  function handleDiscardFailedMeal({ mealId }: IHandleFailedMealParams) {
+    deleteMeal({ mealId }).catch(() => undefined);
   }
 
   function showAnalysisResult(meal: IMealDetails) {
@@ -161,7 +167,11 @@ export function usePictureMealController() {
         'Não conseguimos analisar a foto',
         'Tente de novo ou use outra foto, com os alimentos bem visíveis.',
         [
-          { text: 'Cancelar', style: 'cancel' },
+          {
+            text: 'Cancelar',
+            style: 'cancel',
+            onPress: () => handleDiscardFailedMeal({ mealId: meal.id })
+          },
           { text: 'Tentar de novo', onPress: () => handleReprocess({ mealId: meal.id }) }
         ]
       );

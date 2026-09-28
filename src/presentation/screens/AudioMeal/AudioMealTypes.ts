@@ -5,6 +5,6 @@ export interface IRecording {
   durationMillis: number;
 }
 
-export interface IHandleReprocessMealParams {
+export interface IHandleFailedMealParams {
   mealId: string;
 }

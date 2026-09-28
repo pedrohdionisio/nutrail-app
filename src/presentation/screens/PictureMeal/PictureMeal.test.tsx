@@ -252,4 +252,28 @@ describe('PictureMeal', () => {
     );
     expect(screen.getByRole('button', { name: 'Horário da refeição: 10:00' })).toBeOnTheScreen();
   });
+
+  it('should delete the failed meal when the user cancels to try another picture', async () => {
+    const { alertSpy, pressAlertButton } = spyOnAlert();
+    const deletedIds: string[] = [];
+    mockMealAnalysisApi({ statuses: ['FAILED'] });
+    server.use(
+      http.delete(apiUrl('/meals/:mealId'), ({ params }) => {
+        deletedIds.push(String(params.mealId));
+
+        return new HttpResponse(null, { status: 204 });
+      })
+    );
+    const { user } = await openPictureMeal();
+
+    await user.press(screen.getByRole('button', { name: 'Escolher foto da galeria' }));
+    await screen.findByLabelText('Foto da refeição');
+    await user.press(screen.getByRole('button', { name: 'Confirmar foto' }));
+    await waitFor(() => expect(alertSpy).toHaveBeenCalled());
+
+    await pressAlertButton('Cancelar');
+
+    await waitFor(() => expect(deletedIds).toEqual(['meal-9']));
+    expect(screen.getByRole('button', { name: 'Confirmar foto' })).toBeOnTheScreen();
+  });
 });

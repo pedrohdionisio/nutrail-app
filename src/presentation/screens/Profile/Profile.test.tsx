@@ -1,6 +1,7 @@
-import { screen } from '@testing-library/react-native';
+import { screen, waitFor } from '@testing-library/react-native';
 import { AuthTokensManager } from 'data/libs/AuthTokensManager';
 import { HttpResponse, http } from 'msw';
+import { spyOnAlert } from 'tests/alert';
 import { apiUrl } from 'tests/apiUrl';
 import { renderApp, seedSession } from 'tests/render';
 import { waitForHome, waitForWelcome } from 'tests/screens';
@@ -139,5 +140,65 @@ describe('Profile', () => {
       await screen.findByText('Não foi possível falar com o servidor. Verifique sua conexão.')
     ).toBeOnTheScreen();
     expect(await AuthTokensManager.load()).not.toBeNull();
+  });
+
+  it('should change the password after checking the confirmation', async () => {
+    const { alertSpy } = spyOnAlert();
+    const bodies: unknown[] = [];
+    server.use(
+      http.put(apiUrl('/me/password'), async ({ request }) => {
+        bodies.push(await request.json());
+
+        return new HttpResponse(null, { status: 204 });
+      })
+    );
+    const { user } = await openProfile();
+
+    await user.press(screen.getByRole('button', { name: 'Alterar senha' }));
+    await screen.findByRole('header', { name: 'Alterar senha' });
+    await user.type(screen.getByLabelText('Senha atual'), 'senha-antiga');
+    await user.type(screen.getByLabelText('Nova senha'), 'senha-nova-123');
+    await user.type(screen.getByLabelText('Confirme a nova senha'), 'senha-diferente');
+    await user.press(screen.getByRole('button', { name: 'Salvar nova senha' }));
+
+    expect(await screen.findByText('As senhas não conferem')).toBeOnTheScreen();
+    expect(bodies).toEqual([]);
+
+    const confirmation = screen.getByLabelText('Confirme a nova senha');
+    await user.clear(confirmation);
+    await user.type(confirmation, 'senha-nova-123');
+    await user.press(screen.getByRole('button', { name: 'Salvar nova senha' }));
+
+    await waitFor(() =>
+      expect(alertSpy).toHaveBeenCalledWith(
+        'Senha alterada',
+        'Use a nova senha na próxima vez que entrar.'
+      )
+    );
+    expect(bodies).toEqual([{ currentPassword: 'senha-antiga', newPassword: 'senha-nova-123' }]);
+    expect(screen.queryByRole('header', { name: 'Alterar senha' })).not.toBeOnTheScreen();
+    expect(await AuthTokensManager.load()).not.toBeNull();
+  });
+
+  it('should explain when the current password is wrong', async () => {
+    server.use(
+      http.put(apiUrl('/me/password'), () =>
+        HttpResponse.json(
+          { error: { code: 'INVALID_CURRENT_PASSWORD', message: 'Wrong password.' } },
+          { status: 400 }
+        )
+      )
+    );
+    const { user } = await openProfile();
+
+    await user.press(screen.getByRole('button', { name: 'Alterar senha' }));
+    await screen.findByRole('header', { name: 'Alterar senha' });
+    await user.type(screen.getByLabelText('Senha atual'), 'errada');
+    await user.type(screen.getByLabelText('Nova senha'), 'senha-nova-123');
+    await user.type(screen.getByLabelText('Confirme a nova senha'), 'senha-nova-123');
+    await user.press(screen.getByRole('button', { name: 'Salvar nova senha' }));
+
+    expect(await screen.findByText('A senha atual está incorreta.')).toBeOnTheScreen();
+    expect(screen.getByRole('header', { name: 'Alterar senha' })).toBeOnTheScreen();
   });
 });

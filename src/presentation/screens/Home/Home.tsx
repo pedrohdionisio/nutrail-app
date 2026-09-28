@@ -32,6 +32,7 @@ export function Home() {
     newMealSheetRef,
     deleteMealSheetRef,
     mealIdToDelete,
+    retryingMealId,
     datePickerSheetBindings,
     handlePreviousDay,
     handleNextDay,
@@ -43,6 +44,7 @@ export function Home() {
     handleSelectMealSource,
     handleOpenMeal,
     handleDeleteMeal,
+    handleRetryMeal,
     handleMealDeleted,
     handleRetryMe,
     handleRetryMeals,
@@ -102,7 +104,13 @@ export function Home() {
             </View>
           }
           renderItem={({ item }) => (
-            <MealCard meal={item} onDelete={handleDeleteMeal} onPress={handleOpenMeal} />
+            <MealCard
+              isRetrying={retryingMealId === item.id}
+              meal={item}
+              onDelete={handleDeleteMeal}
+              onPress={handleOpenMeal}
+              onRetry={handleRetryMeal}
+            />
           )}
           showsVerticalScrollIndicator={false}
         />
