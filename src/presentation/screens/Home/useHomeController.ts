@@ -32,6 +32,7 @@ export function useHomeController() {
   const [mealIdToDelete, setMealIdToDelete] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState(() => new Date());
   const [isStarting, setIsStarting] = useState(true);
+  const [isPullingToRefresh, setIsPullingToRefresh] = useState(false);
   const { me, isLoadingMe, isRefetchingMe, refetchMe } = useGetMe();
   const { mealsOfDay, isLoadingMeals, isMealsError, isRefetchingMeals, refetchMeals } =
     useListMealsByDay({ date: toLocalIsoDate(selectedDate) });
@@ -129,6 +130,16 @@ export function useHomeController() {
     refetchMeals();
   }
 
+  async function handleRefresh() {
+    setIsPullingToRefresh(true);
+
+    try {
+      await Promise.all([refetchMe(), refetchMeals()]);
+    } finally {
+      setIsPullingToRefresh(false);
+    }
+  }
+
   return {
     me,
     shouldShowSplash: isStarting,
@@ -142,6 +153,7 @@ export function useHomeController() {
     isLoadingMeals,
     isMealsError,
     isRefetchingMeals,
+    isPullingToRefresh,
     shouldShowAddMealButton: meals.length > 0,
     listPaddingBottom: paddingBottom + ADD_MEAL_BUTTON_SPACE,
     newMealSheetRef,
@@ -163,6 +175,7 @@ export function useHomeController() {
     handleMealDeleted,
     handleRetryMe,
     handleRetryMeals,
+    handleRefresh,
     handleSignOut: signOut
   };
 }

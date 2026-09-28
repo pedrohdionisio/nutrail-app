@@ -1,4 +1,4 @@
-import { act, screen, waitFor } from '@testing-library/react-native';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react-native';
 import { HttpResponse, http } from 'msw';
 import type { IMealSummary } from 'shared/entities/IMealSummary';
 import { apiUrl } from 'tests/apiUrl';
@@ -142,6 +142,28 @@ describe('Home', () => {
     expect(screen.getByText('Ana')).toBeOnTheScreen();
 
     await user.press(screen.getByRole('button', { name: 'Tentar de novo' }));
+
+    expect(await screen.findByText('Pão, manteiga e café')).toBeOnTheScreen();
+  });
+
+  it('should reload the day when the list is pulled down', async () => {
+    let attempts = 0;
+    server.use(
+      http.get(apiUrl('/meals'), () => {
+        attempts += 1;
+
+        return HttpResponse.json(
+          buildMealsOfDay('2026-09-26', attempts === 1 ? [] : [buildMeal()])
+        );
+      })
+    );
+    await seedSession();
+    await renderApp();
+
+    await waitForHome();
+    expect(screen.queryByText('Pão, manteiga e café')).not.toBeOnTheScreen();
+
+    await fireEvent(screen.getByTestId('meals-list'), 'refresh');
 
     expect(await screen.findByText('Pão, manteiga e café')).toBeOnTheScreen();
   });

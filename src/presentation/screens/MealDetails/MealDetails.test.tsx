@@ -93,6 +93,8 @@ describe('MealDetails', () => {
     expect(screen.getByText('56g (49%)')).toBeOnTheScreen();
     expect(screen.getAllByText('29g (25%)')).toHaveLength(2);
     expect(screen.getByText('120g Arroz')).toBeOnTheScreen();
+    expect(screen.getByText('156 kcal')).toBeOnTheScreen();
+    expect(screen.getByText('3g prot · 34g carb · 0g gord')).toBeOnTheScreen();
     expect(screen.getByText('2 unidades Ovos')).toBeOnTheScreen();
     expect(screen.getByText('150g Frango')).toBeOnTheScreen();
     expect(screen.getByLabelText('Foto da refeição')).toBeOnTheScreen();

@@ -27,6 +27,7 @@ export function Home() {
     isLoadingMeals,
     isMealsError,
     isRefetchingMeals,
+    isPullingToRefresh,
     shouldShowAddMealButton,
     listPaddingBottom,
     newMealSheetRef,
@@ -48,6 +49,7 @@ export function Home() {
     handleMealDeleted,
     handleRetryMe,
     handleRetryMeals,
+    handleRefresh,
     handleSignOut
   } = useHomeController();
 
@@ -103,6 +105,9 @@ export function Home() {
               </AppText>
             </View>
           }
+          onRefresh={handleRefresh}
+          refreshing={isPullingToRefresh}
+          testID='meals-list'
           renderItem={({ item }) => (
             <MealCard
               isRetrying={retryingMealId === item.id}
