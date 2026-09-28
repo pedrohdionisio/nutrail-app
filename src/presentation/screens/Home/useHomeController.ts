@@ -7,7 +7,10 @@ import { useRef, useState } from 'react';
 import { useScreenPadding } from 'shared/hooks/useScreenPadding';
 import { getInitials } from 'shared/utils/getInitials';
 import { toLocalIsoDate } from 'shared/utils/toLocalIsoDate';
-import type { IHandleOpenMealParams } from './components/MealCard/MealCardTypes';
+import type {
+  IHandleDeleteMealParams,
+  IHandleOpenMealParams
+} from './components/MealCard/MealCardTypes';
 import type { IHandleSelectMealSourceParams } from './components/MealSourceOptions/MealSourceOptionsTypes';
 import { addDays } from './utils/addDays';
 import { formatDayLabel } from './utils/formatDayLabel';
@@ -19,6 +22,8 @@ export function useHomeController() {
   const { signOut } = useAuth();
   const { paddingBottom } = useScreenPadding();
   const newMealSheetRef = useRef<BottomSheetModal>(null);
+  const deleteMealSheetRef = useRef<BottomSheetModal>(null);
+  const [mealIdToDelete, setMealIdToDelete] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState(() => new Date());
   const [isStarting, setIsStarting] = useState(true);
   const { me, isLoadingMe, isRefetchingMe, refetchMe } = useGetMe();
@@ -72,6 +77,15 @@ export function useHomeController() {
     navigation.navigate('MealDetails', { mealId });
   }
 
+  function handleDeleteMeal({ mealId }: IHandleDeleteMealParams) {
+    setMealIdToDelete(mealId);
+    deleteMealSheetRef.current?.present();
+  }
+
+  function handleMealDeleted() {
+    setMealIdToDelete(null);
+  }
+
   function handleRetryMe() {
     refetchMe();
   }
@@ -96,6 +110,8 @@ export function useHomeController() {
     shouldShowAddMealButton: meals.length > 0,
     listPaddingBottom: paddingBottom + ADD_MEAL_BUTTON_SPACE,
     newMealSheetRef,
+    deleteMealSheetRef,
+    mealIdToDelete,
     handlePreviousDay,
     handleNextDay,
     handleOpenProfile,
@@ -103,6 +119,8 @@ export function useHomeController() {
     handleOpenNewMeal,
     handleSelectMealSource,
     handleOpenMeal,
+    handleDeleteMeal,
+    handleMealDeleted,
     handleRetryMe,
     handleRetryMeals,
     handleSignOut: signOut

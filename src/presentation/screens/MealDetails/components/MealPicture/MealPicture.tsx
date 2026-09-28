@@ -1,5 +1,6 @@
 import ChevronLeftIcon from 'lucide-react-native/icons/chevron-left';
 import PencilIcon from 'lucide-react-native/icons/pencil';
+import TrashIcon from 'lucide-react-native/icons/trash';
 import UtensilsIcon from 'lucide-react-native/icons/utensils';
 import { Image, Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -8,7 +9,15 @@ import type { IMealPictureProps } from './MealPictureTypes';
 
 const BUTTON_TOP_SPACING = 8;
 
-export function MealPicture({ pictureUrl, isLoading, canEdit, onBack, onEdit }: IMealPictureProps) {
+export function MealPicture({
+  pictureUrl,
+  isLoading,
+  canEdit,
+  canDelete,
+  onBack,
+  onEdit,
+  onDelete
+}: IMealPictureProps) {
   const { top } = useSafeAreaInsets();
 
   return (
@@ -37,17 +46,29 @@ export function MealPicture({ pictureUrl, isLoading, canEdit, onBack, onEdit }: 
         <ChevronLeftIcon color={COLORS.white} size={24} strokeWidth={2} />
       </Pressable>
 
-      {canEdit && (
-        <Pressable
-          accessibilityLabel='Editar refeição'
-          accessibilityRole='button'
-          className='absolute right-5 h-12 w-12 items-center justify-center rounded-xl bg-black-800/40 active:opacity-70'
-          onPress={onEdit}
-          style={{ top: top + BUTTON_TOP_SPACING }}
-        >
-          <PencilIcon color={COLORS.white} size={20} strokeWidth={2} />
-        </Pressable>
-      )}
+      <View className='absolute right-5 flex-row gap-3' style={{ top: top + BUTTON_TOP_SPACING }}>
+        {canEdit && (
+          <Pressable
+            accessibilityLabel='Editar refeição'
+            accessibilityRole='button'
+            className='h-12 w-12 items-center justify-center rounded-xl bg-black-800/40 active:opacity-70'
+            onPress={onEdit}
+          >
+            <PencilIcon color={COLORS.white} size={20} strokeWidth={2} />
+          </Pressable>
+        )}
+
+        {canDelete && (
+          <Pressable
+            accessibilityLabel='Excluir refeição'
+            accessibilityRole='button'
+            className='h-12 w-12 items-center justify-center rounded-xl bg-black-800/40 active:opacity-70'
+            onPress={onDelete}
+          >
+            <TrashIcon color={COLORS.white} size={20} strokeWidth={2} />
+          </Pressable>
+        )}
+      </View>
     </View>
   );
 }

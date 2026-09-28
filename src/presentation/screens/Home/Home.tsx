@@ -1,4 +1,5 @@
 import { AppText } from 'presentation/components/AppText/AppText';
+import { DeleteMealSheet } from 'presentation/components/DeleteMealSheet/DeleteMealSheet';
 import { FlatList, View } from 'react-native';
 import { AddMealButton } from './components/AddMealButton/AddMealButton';
 import { DailySummary } from './components/DailySummary/DailySummary';
@@ -28,6 +29,8 @@ export function Home() {
     shouldShowAddMealButton,
     listPaddingBottom,
     newMealSheetRef,
+    deleteMealSheetRef,
+    mealIdToDelete,
     handlePreviousDay,
     handleNextDay,
     handleOpenProfile,
@@ -35,6 +38,8 @@ export function Home() {
     handleOpenNewMeal,
     handleSelectMealSource,
     handleOpenMeal,
+    handleDeleteMeal,
+    handleMealDeleted,
     handleRetryMe,
     handleRetryMeals,
     handleSignOut
@@ -90,7 +95,9 @@ export function Home() {
               </AppText>
             </View>
           }
-          renderItem={({ item }) => <MealCard meal={item} onPress={handleOpenMeal} />}
+          renderItem={({ item }) => (
+            <MealCard meal={item} onDelete={handleDeleteMeal} onPress={handleOpenMeal} />
+          )}
           showsVerticalScrollIndicator={false}
         />
       </View>
@@ -98,6 +105,12 @@ export function Home() {
       {shouldShowAddMealButton && <AddMealButton onPress={handleOpenNewMeal} />}
 
       <NewMealSheet onSelectSource={handleSelectMealSource} sheetRef={newMealSheetRef} />
+
+      <DeleteMealSheet
+        mealId={mealIdToDelete}
+        onDeleted={handleMealDeleted}
+        sheetRef={deleteMealSheetRef}
+      />
     </View>
   );
 }

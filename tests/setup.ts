@@ -5,6 +5,10 @@ import { server } from './server';
 
 jest.mock('expo-secure-store', () => jest.requireActual('./mocks/secureStore').secureStoreMock);
 jest.mock('@gorhom/bottom-sheet', () => jest.requireActual('./mocks/bottomSheet').bottomSheetMock);
+jest.mock(
+  'react-native-gesture-handler/ReanimatedSwipeable',
+  () => jest.requireActual('./mocks/swipeable').swipeableMock
+);
 jest.mock('react-native-reanimated', () => jest.requireActual('react-native-reanimated/mock'));
 jest.mock(
   'react-native-safe-area-context',

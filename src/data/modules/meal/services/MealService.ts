@@ -10,6 +10,7 @@ import type {
   ICreateMealResponse,
   ICreatePictureUploadPayload,
   ICreatePictureUploadResponse,
+  IDeleteMealPayload,
   IGetMealPayload,
   IListMealsPayload,
   IUpdateMealPayload,
@@ -39,6 +40,10 @@ async function update({ mealId, ...payload }: IUpdateMealPayload): Promise<IUpda
   const { data } = await api.put<IUpdateMealResponse>(`/meals/${mealId}`, payload);
 
   return data;
+}
+
+async function remove({ mealId }: IDeleteMealPayload): Promise<void> {
+  await api.delete(`/meals/${mealId}`);
 }
 
 async function analyzeItems(payload: IAnalyzeMealItemsPayload) {
@@ -78,6 +83,7 @@ export const MealService = {
   getById,
   create,
   update,
+  remove,
   analyzeItems,
   createManual,
   createPictureUpload,

@@ -1,4 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
+import { DeleteMealSheet } from 'presentation/components/DeleteMealSheet/DeleteMealSheet';
 import { FlatList, View } from 'react-native';
 import { MealDetailsError } from './components/MealDetailsError/MealDetailsError';
 import { MealItemRow } from './components/MealItemRow/MealItemRow';
@@ -10,18 +11,23 @@ import { useMealDetailsController } from './useMealDetailsController';
 
 export function MealDetails() {
   const {
+    mealId,
     meal,
     mealName,
     items,
     pictureUrl,
     isLoadingMeal,
     canEdit,
+    canDelete,
     shouldShowError,
     errorMessage,
     isRefetchingMeal,
     listPaddingBottom,
+    deleteMealSheetRef,
     handleGoBack,
     handleEdit,
+    handleDelete,
+    handleMealDeleted,
     handleRetry
   } = useMealDetailsController();
 
@@ -41,9 +47,11 @@ export function MealDetails() {
       <StatusBar style='light' />
 
       <MealPicture
+        canDelete={canDelete}
         canEdit={canEdit}
         isLoading={isLoadingMeal}
         onBack={handleGoBack}
+        onDelete={handleDelete}
         onEdit={handleEdit}
         pictureUrl={pictureUrl}
       />
@@ -62,6 +70,12 @@ export function MealDetails() {
         }
         renderItem={({ item }) => <MealItemRow item={item} />}
         showsVerticalScrollIndicator={false}
+      />
+
+      <DeleteMealSheet
+        mealId={mealId}
+        onDeleted={handleMealDeleted}
+        sheetRef={deleteMealSheetRef}
       />
     </View>
   );

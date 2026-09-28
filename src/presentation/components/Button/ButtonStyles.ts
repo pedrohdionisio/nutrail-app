@@ -7,6 +7,7 @@ export const buttonVariants = cva(
       variant: {
         primary: 'bg-lime-500',
         secondary: 'bg-gray-300',
+        danger: 'bg-support-red',
         ghost: 'bg-transparent'
       },
       isDisabled: {

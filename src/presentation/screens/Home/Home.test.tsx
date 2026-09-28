@@ -146,4 +146,71 @@ describe('Home', () => {
 
     await waitForHome();
   });
+
+  it('should delete a meal from the swipe action after confirming', async () => {
+    const deletedIds: string[] = [];
+    let meals = [buildMeal()];
+    server.use(
+      http.get(apiUrl('/meals'), () => HttpResponse.json(buildMealsOfDay('2026-09-26', meals))),
+      http.delete(apiUrl('/meals/:mealId'), ({ params }) => {
+        deletedIds.push(String(params.mealId));
+        meals = [];
+
+        return new HttpResponse(null, { status: 204 });
+      })
+    );
+    await seedSession();
+    const { user } = await renderApp();
+    await screen.findByText('Pão, manteiga e café');
+
+    await user.press(screen.getByRole('button', { name: 'Excluir refeição' }));
+    expect(await screen.findByRole('header', { name: 'Excluir refeição?' })).toBeOnTheScreen();
+
+    await user.press(screen.getByRole('button', { name: 'Excluir' }));
+
+    await waitFor(() => expect(screen.queryByText('Pão, manteiga e café')).not.toBeOnTheScreen());
+    expect(screen.queryByRole('header', { name: 'Excluir refeição?' })).not.toBeOnTheScreen();
+    expect(deletedIds).toEqual(['meal-1']);
+  });
+
+  it('should keep the meal when the deletion is canceled', async () => {
+    const deletedIds: string[] = [];
+    mockMealsByDate({ '2026-09-26': [buildMeal()] });
+    server.use(
+      http.delete(apiUrl('/meals/:mealId'), ({ params }) => {
+        deletedIds.push(String(params.mealId));
+
+        return new HttpResponse(null, { status: 204 });
+      })
+    );
+    await seedSession();
+    const { user } = await renderApp();
+    await screen.findByText('Pão, manteiga e café');
+
+    await user.press(screen.getByRole('button', { name: 'Excluir refeição' }));
+    await screen.findByRole('header', { name: 'Excluir refeição?' });
+    await user.press(screen.getByRole('button', { name: 'Cancelar' }));
+
+    expect(screen.queryByRole('header', { name: 'Excluir refeição?' })).not.toBeOnTheScreen();
+    expect(screen.getByText('Pão, manteiga e café')).toBeOnTheScreen();
+    expect(deletedIds).toEqual([]);
+  });
+
+  it('should keep the sheet open with the error when the deletion fails', async () => {
+    mockMealsByDate({ '2026-09-26': [buildMeal()] });
+    server.use(http.delete(apiUrl('/meals/:mealId'), () => HttpResponse.error()));
+    await seedSession();
+    const { user } = await renderApp();
+    await screen.findByText('Pão, manteiga e café');
+
+    await user.press(screen.getByRole('button', { name: 'Excluir refeição' }));
+    await screen.findByRole('header', { name: 'Excluir refeição?' });
+    await user.press(screen.getByRole('button', { name: 'Excluir' }));
+
+    expect(
+      await screen.findByText('Não foi possível falar com o servidor. Verifique sua conexão.')
+    ).toBeOnTheScreen();
+    expect(screen.getByRole('header', { name: 'Excluir refeição?' })).toBeOnTheScreen();
+    expect(screen.getByText('Pão, manteiga e café')).toBeOnTheScreen();
+  });
 });

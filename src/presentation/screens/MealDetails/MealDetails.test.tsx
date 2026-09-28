@@ -96,4 +96,56 @@ describe('MealDetails', () => {
 
     await waitForHome();
   });
+
+  it('should delete the meal from the trash button and go back to the home', async () => {
+    const deletedIds: string[] = [];
+    let meals = [buildMeal()];
+    server.use(
+      http.get(apiUrl('/meals'), ({ request }) =>
+        HttpResponse.json(
+          buildMealsOfDay(new URL(request.url).searchParams.get('date') ?? '', meals)
+        )
+      ),
+      http.get(apiUrl('/meals/:mealId'), () => HttpResponse.json(buildMealDetails())),
+      http.delete(apiUrl('/meals/:mealId'), ({ params }) => {
+        deletedIds.push(String(params.mealId));
+        meals = [];
+
+        return new HttpResponse(null, { status: 204 });
+      })
+    );
+    await seedSession();
+    const { user } = await renderApp();
+    await waitForHome();
+    await user.press(screen.getByRole('button', { name: /Pão, manteiga e café/ }));
+    await screen.findByRole('header', { name: 'Almoço Fitness' });
+
+    await user.press(screen.getByRole('button', { name: 'Excluir refeição' }));
+    await screen.findByRole('header', { name: 'Excluir refeição?' });
+    await user.press(screen.getByRole('button', { name: 'Excluir' }));
+
+    await waitForHome();
+    expect(screen.queryByText('Pão, manteiga e café')).not.toBeOnTheScreen();
+    expect(deletedIds).toEqual(['meal-1']);
+  });
+
+  it('should treat a meal that no longer exists as deleted', async () => {
+    server.use(
+      http.get(apiUrl('/meals/:mealId'), () => HttpResponse.json(buildMealDetails())),
+      http.delete(apiUrl('/meals/:mealId'), () =>
+        HttpResponse.json(
+          { error: { code: 'MEAL_NOT_FOUND', message: 'Meal not found.' } },
+          { status: 404 }
+        )
+      )
+    );
+    const { user } = await openMealFromHome();
+    await screen.findByRole('header', { name: 'Almoço Fitness' });
+
+    await user.press(screen.getByRole('button', { name: 'Excluir refeição' }));
+    await screen.findByRole('header', { name: 'Excluir refeição?' });
+    await user.press(screen.getByRole('button', { name: 'Excluir' }));
+
+    await waitForHome();
+  });
 });
