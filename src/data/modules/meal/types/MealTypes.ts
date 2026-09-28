@@ -78,6 +78,22 @@ export interface IUpdateMealResponse extends IMacros {
   time: string;
 }
 
+export interface ICreateMealFromSavedMealPayload {
+  savedMealId: string;
+  date: string;
+  time: string;
+}
+
+export interface ICreateMealFromRecipePayload {
+  recipeId: string;
+  date: string;
+  time: string;
+}
+
+export interface ICreatedMealResponse {
+  id: string;
+}
+
 export interface IAnalyzeMealItemsPayload {
   text: string;
 }

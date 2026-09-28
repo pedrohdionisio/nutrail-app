@@ -9,6 +9,7 @@ import { PictureMeal } from 'presentation/screens/PictureMeal/PictureMeal';
 import { Profile } from 'presentation/screens/Profile/Profile';
 import { RecipeDetails } from 'presentation/screens/RecipeDetails/RecipeDetails';
 import { Recipes } from 'presentation/screens/Recipes/Recipes';
+import { SavedMeals } from 'presentation/screens/SavedMeals/SavedMeals';
 import { SuggestRecipe } from 'presentation/screens/SuggestRecipe/SuggestRecipe';
 import type { AppRoutesParamList } from './AppRoutesTypes';
 
@@ -28,6 +29,7 @@ export function AppStack() {
       <Stack.Screen component={Recipes} name='Recipes' />
       <Stack.Screen component={SuggestRecipe} name='SuggestRecipe' />
       <Stack.Screen component={RecipeDetails} name='RecipeDetails' />
+      <Stack.Screen component={SavedMeals} name='SavedMeals' />
     </Stack.Navigator>
   );
 }

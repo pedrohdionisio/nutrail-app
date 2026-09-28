@@ -4,6 +4,7 @@ import { HttpResponse, http } from 'msw';
 import { spyOnAlert } from 'tests/alert';
 import { apiUrl } from 'tests/apiUrl';
 import { buildMeal, buildMealDetails, buildMealsOfDay } from 'tests/fixtures/meal';
+import { buildSavedMeal } from 'tests/fixtures/savedMeal';
 import { renderApp, seedSession } from 'tests/render';
 import { waitForHome } from 'tests/screens';
 import { server } from 'tests/server';
@@ -247,5 +248,72 @@ describe('MealDetails', () => {
 
     expect(screen.queryByRole('button', { name: 'Adicionar foto' })).not.toBeOnTheScreen();
     expect(screen.queryByRole('button', { name: 'Trocar foto' })).not.toBeOnTheScreen();
+  });
+
+  it('should save the meal with a name', async () => {
+    const { alertSpy } = spyOnAlert();
+    const saved: unknown[] = [];
+    server.use(
+      http.get(apiUrl('/meals/:mealId'), () => HttpResponse.json(buildMealDetails())),
+      http.post(apiUrl('/saved-meals'), async ({ request }) => {
+        const body = await request.json();
+        saved.push(body);
+
+        return HttpResponse.json(buildSavedMeal({ name: 'Café de sempre' }), { status: 201 });
+      })
+    );
+    const { user } = await openMealFromHome();
+    await screen.findByRole('header', { name: 'Almoço Fitness' });
+
+    await user.press(screen.getByRole('button', { name: 'Salvar refeição' }));
+    await screen.findByRole('header', { name: 'Salvar refeição' });
+
+    expect(screen.getByRole('button', { name: 'Salvar' })).toBeDisabled();
+
+    await user.type(screen.getByLabelText('Nome'), '  Café de sempre ');
+    await user.press(screen.getByRole('button', { name: 'Salvar' }));
+
+    await waitFor(() =>
+      expect(alertSpy).toHaveBeenCalledWith(
+        'Refeição salva',
+        'Cadastre de novo quando quiser, em "Refeição salva".'
+      )
+    );
+    expect(saved).toEqual([{ mealId: 'meal-1', name: 'Café de sempre' }]);
+    expect(screen.queryByRole('header', { name: 'Salvar refeição' })).not.toBeOnTheScreen();
+  });
+
+  it('should show why the meal cannot be saved', async () => {
+    server.use(
+      http.get(apiUrl('/meals/:mealId'), () => HttpResponse.json(buildMealDetails())),
+      http.post(apiUrl('/saved-meals'), () =>
+        HttpResponse.json(
+          { error: { code: 'MEAL_NOT_SAVABLE', message: 'Not savable.' } },
+          { status: 409 }
+        )
+      )
+    );
+    const { user } = await openMealFromHome();
+    await screen.findByRole('header', { name: 'Almoço Fitness' });
+
+    await user.press(screen.getByRole('button', { name: 'Salvar refeição' }));
+    await user.type(await screen.findByLabelText('Nome'), 'Café de sempre');
+    await user.press(screen.getByRole('button', { name: 'Salvar' }));
+
+    expect(
+      await screen.findByText('Só é possível salvar refeições que já foram processadas.')
+    ).toBeOnTheScreen();
+  });
+
+  it('should not offer saving a meal that was not analyzed', async () => {
+    server.use(
+      http.get(apiUrl('/meals/:mealId'), () =>
+        HttpResponse.json(buildMealDetails({ status: 'FAILED', items: [] }))
+      )
+    );
+    await openMealFromHome();
+
+    await screen.findByRole('button', { name: 'Excluir refeição' });
+    expect(screen.queryByRole('button', { name: 'Salvar refeição' })).not.toBeOnTheScreen();
   });
 });

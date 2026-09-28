@@ -1,3 +1,4 @@
+import BookmarkPlusIcon from 'lucide-react-native/icons/bookmark-plus';
 import ChevronLeftIcon from 'lucide-react-native/icons/chevron-left';
 import ImagePlusIcon from 'lucide-react-native/icons/image-plus';
 import PencilIcon from 'lucide-react-native/icons/pencil';
@@ -15,11 +16,13 @@ export function MealPicture({
   pictureUrl,
   isLoading,
   canEdit,
+  canSave,
   canDelete,
   canChangePicture,
   isChangingPicture,
   onBack,
   onEdit,
+  onSave,
   onDelete,
   onChangePicture
 }: IMealPictureProps) {
@@ -93,6 +96,17 @@ export function MealPicture({
             onPress={onEdit}
           >
             <PencilIcon color={COLORS.white} size={20} strokeWidth={2} />
+          </Pressable>
+        )}
+
+        {canSave && (
+          <Pressable
+            accessibilityLabel='Salvar refeição'
+            accessibilityRole='button'
+            className='h-12 w-12 items-center justify-center rounded-xl bg-black-800/40 active:opacity-70'
+            onPress={onSave}
+          >
+            <BookmarkPlusIcon color={COLORS.white} size={20} strokeWidth={2} />
           </Pressable>
         )}
 

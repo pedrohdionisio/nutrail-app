@@ -15,6 +15,7 @@ export type AppRoutesParamList = {
   Recipes: undefined;
   SuggestRecipe: undefined;
   RecipeDetails: { recipeId: string };
+  SavedMeals: { date: string };
 };
 
 declare global {

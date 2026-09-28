@@ -2,10 +2,10 @@ import CircleAlertIcon from 'lucide-react-native/icons/circle-alert';
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Button } from 'presentation/components/Button/Button';
 import { MacroStats } from 'presentation/components/MacroStats/MacroStats';
+import { SwipeDeleteAction } from 'presentation/components/SwipeDeleteAction/SwipeDeleteAction';
 import { ActivityIndicator, Pressable, View } from 'react-native';
 import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import { COLORS } from 'shared/constants/colors';
-import { MealCardDeleteAction } from './components/MealCardDeleteAction/MealCardDeleteAction';
 import { MEAL_INPUT_ICONS } from './constants/mealInputIcons';
 import type { IMealCardProps } from './MealCardTypes';
 import { useMealCardController } from './useMealCardController';
@@ -20,7 +20,9 @@ export function MealCard({ meal, isRetrying, onPress, onDelete, onRetry }: IMeal
       friction={2}
       overshootRight={false}
       ref={swipeableRef}
-      renderRightActions={() => <MealCardDeleteAction onPress={handleDelete} />}
+      renderRightActions={() => (
+        <SwipeDeleteAction accessibilityLabel='Excluir refeição' onPress={handleDelete} />
+      )}
       rightThreshold={40}
     >
       <Pressable

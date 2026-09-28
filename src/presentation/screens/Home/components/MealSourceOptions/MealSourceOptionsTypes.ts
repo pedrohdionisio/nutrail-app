@@ -11,7 +11,7 @@ export interface IMealSourceOption {
 }
 
 export interface IHandleSelectMealSourceParams {
-  source: MealInputType;
+  source: MealInputType | 'SAVED';
 }
 
 export interface IMealSourceOptionsProps {

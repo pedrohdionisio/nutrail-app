@@ -12,6 +12,7 @@ const API_ERROR_MESSAGES = {
   USER_NOT_FOUND: 'Usuário não encontrado.',
   MEAL_NOT_FOUND: 'Refeição não encontrada.',
   MEAL_NOT_EDITABLE: 'Só é possível editar refeições que já foram processadas.',
+  MEAL_NOT_SAVABLE: 'Só é possível salvar refeições que já foram processadas.',
   MEAL_WITHOUT_ITEMS: 'Nenhum alimento foi identificado na refeição.',
   MEAL_ANALYSIS_FAILED: 'Não conseguimos analisar a refeição. Tente de novo.',
   MEAL_PICTURE_NOT_ALLOWED: 'Não é possível trocar a foto desta refeição agora.',
@@ -19,6 +20,7 @@ const API_ERROR_MESSAGES = {
   NO_FOOD_INGREDIENTS: 'Não identificamos nenhum alimento na descrição.',
   GOALS_BELOW_MACROS: 'As calorias não cobrem suas metas de proteína e gordura.',
   RECIPE_NOT_FOUND: 'Receita não encontrada.',
+  SAVED_MEAL_NOT_FOUND: 'Refeição salva não encontrada.',
   RECIPE_GENERATION_FAILED: 'Não conseguimos gerar uma receita. Tente de novo.'
 } as const;
 

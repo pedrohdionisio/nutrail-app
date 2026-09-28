@@ -4,8 +4,11 @@ import type { IMealsOfDay } from 'shared/entities/IMealsOfDay';
 import type {
   IAnalyzeMealItemsPayload,
   IAnalyzeMealItemsResponse,
+  ICreatedMealResponse,
   ICreateManualMealPayload,
   ICreateManualMealResponse,
+  ICreateMealFromRecipePayload,
+  ICreateMealFromSavedMealPayload,
   ICreateMealPayload,
   ICreateMealResponse,
   ICreatePictureUploadPayload,
@@ -71,6 +74,27 @@ async function createManual(payload: ICreateManualMealPayload): Promise<ICreateM
   return data;
 }
 
+async function createFromRecipe({
+  recipeId,
+  ...payload
+}: ICreateMealFromRecipePayload): Promise<ICreatedMealResponse> {
+  const { data } = await api.post<ICreatedMealResponse>(`/recipes/${recipeId}/meal`, payload);
+
+  return data;
+}
+
+async function createFromSavedMeal({
+  savedMealId,
+  ...payload
+}: ICreateMealFromSavedMealPayload): Promise<ICreatedMealResponse> {
+  const { data } = await api.post<ICreatedMealResponse>(
+    `/saved-meals/${savedMealId}/meal`,
+    payload
+  );
+
+  return data;
+}
+
 async function createPictureUpload({ mealId }: ICreatePictureUploadPayload) {
   const { data } = await api.post<ICreatePictureUploadResponse>(`/meals/${mealId}/picture`);
 
@@ -108,6 +132,8 @@ export const MealService = {
   reprocess,
   analyzeItems,
   createManual,
+  createFromRecipe,
+  createFromSavedMeal,
   createPictureUpload,
   uploadPicture,
   uploadAudio

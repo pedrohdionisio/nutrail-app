@@ -88,6 +88,10 @@ export function useHomeController() {
   function handleSelectMealSource({ source }: IHandleSelectMealSourceParams) {
     newMealSheetRef.current?.dismiss();
 
+    if (source === 'SAVED') {
+      navigation.navigate('SavedMeals', { date: toLocalIsoDate(selectedDate) });
+    }
+
     if (source === 'MANUAL') {
       navigation.navigate('ManualMeal', { date: toLocalIsoDate(selectedDate) });
     }

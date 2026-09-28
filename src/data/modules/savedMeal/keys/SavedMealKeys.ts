@@ -1,0 +1,8 @@
+export const SAVED_MEAL_QUERY_KEYS = {
+  SAVED_MEALS: 'SAVED_MEALS'
+} as const;
+
+export const SAVED_MEAL_MUTATION_KEYS = {
+  SAVE_MEAL: 'SAVE_MEAL',
+  DELETE_SAVED_MEAL: 'DELETE_SAVED_MEAL'
+} as const;

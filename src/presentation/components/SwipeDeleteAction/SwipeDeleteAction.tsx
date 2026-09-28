@@ -2,12 +2,12 @@ import TrashIcon from 'lucide-react-native/icons/trash';
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Pressable } from 'react-native';
 import { COLORS } from 'shared/constants/colors';
-import type { IMealCardDeleteActionProps } from './MealCardDeleteActionTypes';
+import type { ISwipeDeleteActionProps } from './SwipeDeleteActionTypes';
 
-export function MealCardDeleteAction({ onPress }: IMealCardDeleteActionProps) {
+export function SwipeDeleteAction({ accessibilityLabel, onPress }: ISwipeDeleteActionProps) {
   return (
     <Pressable
-      accessibilityLabel='Excluir refeição'
+      accessibilityLabel={accessibilityLabel}
       accessibilityRole='button'
       className='ml-3 w-24 items-center justify-center gap-2 rounded-2xl bg-support-red active:opacity-80'
       onPress={onPress}

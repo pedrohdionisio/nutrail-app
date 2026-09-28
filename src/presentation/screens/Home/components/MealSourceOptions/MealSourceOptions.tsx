@@ -1,5 +1,7 @@
+import BookmarkIcon from 'lucide-react-native/icons/bookmark';
+import PenLineIcon from 'lucide-react-native/icons/pen-line';
 import { View } from 'react-native';
-import { ManualMealButton } from './components/ManualMealButton/ManualMealButton';
+import { MealSourceButton } from './components/MealSourceButton/MealSourceButton';
 import { MealSourceCard } from './components/MealSourceCard/MealSourceCard';
 import { MEAL_SOURCE_OPTIONS } from './constants/mealSourceOptions';
 import type { IMealSourceOptionsProps } from './MealSourceOptionsTypes';
@@ -17,7 +19,19 @@ export function MealSourceOptions({ onSelect }: IMealSourceOptionsProps) {
         ))}
       </View>
 
-      <ManualMealButton onPress={() => onSelect({ source: 'MANUAL' })} />
+      <MealSourceButton
+        accessibilityLabel='Cadastrar refeição salva'
+        icon={BookmarkIcon}
+        label='Refeição salva'
+        onPress={() => onSelect({ source: 'SAVED' })}
+      />
+
+      <MealSourceButton
+        accessibilityLabel='Cadastrar refeição manualmente'
+        icon={PenLineIcon}
+        label='Refeição manual'
+        onPress={() => onSelect({ source: 'MANUAL' })}
+      />
     </View>
   );
 }

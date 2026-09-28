@@ -1,6 +1,7 @@
-import { screen } from '@testing-library/react-native';
+import { screen, waitFor } from '@testing-library/react-native';
 import { HttpResponse, http } from 'msw';
 import type { IRecipe } from 'shared/entities/IRecipe';
+import { spyOnAlert } from 'tests/alert';
 import { apiUrl } from 'tests/apiUrl';
 import { buildRecipe } from 'tests/fixtures/recipe';
 import { renderApp, seedSession } from 'tests/render';
@@ -38,6 +39,10 @@ async function openRecipes() {
 }
 
 describe('Recipes', () => {
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   it('should list the saved recipes with their macros', async () => {
     mockRecipesApi([
       buildRecipe({ id: 'recipe-2', name: 'Panqueca de banana', calories: 310 }),
@@ -99,5 +104,39 @@ describe('Recipes', () => {
     expect(await screen.findByText('Nenhuma receita salva')).toBeOnTheScreen();
     expect(calls.deletedIds).toEqual(['recipe-1']);
     expect(calls.lists).toBe(1);
+  });
+
+  it('should register a recipe as a meal', async () => {
+    jest.useFakeTimers({ now: new Date(2026, 8, 26, 13), advanceTimers: true });
+    const { alertSpy } = spyOnAlert();
+    const logged: { recipeId: string; body: unknown }[] = [];
+    mockRecipesApi([buildRecipe()]);
+    server.use(
+      http.post(apiUrl('/recipes/:recipeId/meal'), async ({ params, request }) => {
+        logged.push({ recipeId: String(params.recipeId), body: await request.json() });
+
+        return HttpResponse.json({ id: 'meal-2' }, { status: 201 });
+      })
+    );
+    const { user } = await openRecipes();
+
+    await user.press(await screen.findByRole('button', { name: /Omelete de queijo com tomate/ }));
+    await screen.findByRole('header', { name: 'Omelete de queijo com tomate' });
+
+    await user.press(screen.getByRole('button', { name: 'Registrar como refeição' }));
+    await screen.findByRole('header', { name: 'Registrar como refeição' });
+
+    expect(screen.getByLabelText('Data')).toHaveDisplayValue('26/09/2026');
+    expect(screen.getByLabelText('Horário')).toHaveDisplayValue('13:00');
+
+    await user.press(screen.getByRole('button', { name: 'Registrar refeição' }));
+
+    await waitFor(() =>
+      expect(alertSpy).toHaveBeenCalledWith(
+        'Refeição registrada',
+        'A receita já aparece no dia escolhido.'
+      )
+    );
+    expect(logged).toEqual([{ recipeId: 'recipe-1', body: { date: '2026-09-26', time: '13:00' } }]);
   });
 });

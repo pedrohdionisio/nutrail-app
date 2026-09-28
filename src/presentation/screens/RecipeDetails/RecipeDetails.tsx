@@ -3,8 +3,12 @@ import { RecipeContent } from 'presentation/components/RecipeContent/RecipeConte
 import { ScreenHeader } from 'presentation/components/ScreenHeader/ScreenHeader';
 import { View } from 'react-native';
 import { DeleteRecipeSheet } from './components/DeleteRecipeSheet/DeleteRecipeSheet';
+import { LogRecipeMealSheet } from './components/LogRecipeMealSheet/LogRecipeMealSheet';
 import { RecipeDetailsFallback } from './components/RecipeDetailsFallback/RecipeDetailsFallback';
+import { RecipeDetailsFooter } from './components/RecipeDetailsFooter/RecipeDetailsFooter';
 import { useRecipeDetailsController } from './useRecipeDetailsController';
+
+const CONTENT_PADDING_BOTTOM = 24;
 
 export function RecipeDetails() {
   const {
@@ -14,12 +18,13 @@ export function RecipeDetails() {
     fallbackMessage,
     fallbackActionTitle,
     isRefetchingRecipe,
-    listPaddingBottom,
     deleteRecipeSheetRef,
+    logMealSheetRef,
     handleGoBack,
     handleFallbackAction,
     handleDelete,
-    handleRecipeDeleted
+    handleRecipeDeleted,
+    handleLogMeal
   } = useRecipeDetailsController();
 
   if (!recipe) {
@@ -43,13 +48,16 @@ export function RecipeDetails() {
         title='Receita'
       />
 
-      <RecipeContent paddingBottom={listPaddingBottom} recipe={recipe} />
+      <RecipeContent paddingBottom={CONTENT_PADDING_BOTTOM} recipe={recipe} />
+      <RecipeDetailsFooter onLogMeal={handleLogMeal} />
 
       <DeleteRecipeSheet
         onDeleted={handleRecipeDeleted}
         recipeId={recipeId}
         sheetRef={deleteRecipeSheetRef}
       />
+
+      <LogRecipeMealSheet recipeId={recipeId} sheetRef={logMealSheetRef} />
     </View>
   );
 }

@@ -7,6 +7,7 @@ import { MealItemRow } from './components/MealItemRow/MealItemRow';
 import { MealItemsHeader } from './components/MealItemsHeader/MealItemsHeader';
 import { MealItemsSkeleton } from './components/MealItemsSkeleton/MealItemsSkeleton';
 import { MealPicture } from './components/MealPicture/MealPicture';
+import { SaveMealSheet } from './components/SaveMealSheet/SaveMealSheet';
 import { useMealDetailsController } from './useMealDetailsController';
 
 export function MealDetails() {
@@ -18,6 +19,7 @@ export function MealDetails() {
     pictureUrl,
     isLoadingMeal,
     canEdit,
+    canSave,
     canDelete,
     canChangePicture,
     isChangingPicture,
@@ -26,8 +28,10 @@ export function MealDetails() {
     isRefetchingMeal,
     listPaddingBottom,
     deleteMealSheetRef,
+    saveMealSheetRef,
     handleGoBack,
     handleEdit,
+    handleSave,
     handleDelete,
     handleMealDeleted,
     handleChangePicture,
@@ -53,12 +57,14 @@ export function MealDetails() {
         canChangePicture={canChangePicture}
         canDelete={canDelete}
         canEdit={canEdit}
+        canSave={canSave}
         isChangingPicture={isChangingPicture}
         isLoading={isLoadingMeal}
         onBack={handleGoBack}
         onChangePicture={handleChangePicture}
         onDelete={handleDelete}
         onEdit={handleEdit}
+        onSave={handleSave}
         pictureUrl={pictureUrl}
       />
 
@@ -83,6 +89,8 @@ export function MealDetails() {
         onDeleted={handleMealDeleted}
         sheetRef={deleteMealSheetRef}
       />
+
+      <SaveMealSheet mealId={mealId} sheetRef={saveMealSheetRef} />
     </View>
   );
 }

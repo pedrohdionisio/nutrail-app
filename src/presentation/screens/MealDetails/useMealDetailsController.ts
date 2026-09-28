@@ -14,6 +14,7 @@ export function useMealDetailsController() {
   const { params } = useRoute<RouteProp<AppRoutesParamList, 'MealDetails'>>();
   const { paddingBottom } = useScreenPadding();
   const deleteMealSheetRef = useRef<BottomSheetModal>(null);
+  const saveMealSheetRef = useRef<BottomSheetModal>(null);
   const { meal, isLoadingMeal, mealError, isRefetchingMeal, refetchMeal } = useGetMeal({
     mealId: params.mealId
   });
@@ -29,6 +30,10 @@ export function useMealDetailsController() {
 
   function handleEdit() {
     navigation.navigate('EditMeal', { mealId: params.mealId });
+  }
+
+  function handleSave() {
+    saveMealSheetRef.current?.present();
   }
 
   function handleDelete() {
@@ -76,6 +81,7 @@ export function useMealDetailsController() {
     pictureUrl: attachedPictureUri ?? meal?.pictureUrl ?? null,
     isLoadingMeal,
     canEdit: meal?.status === 'SUCCESS',
+    canSave: meal?.status === 'SUCCESS',
     canDelete: !!meal,
     canChangePicture: meal?.inputType !== 'PICTURE' && isFinished,
     isChangingPicture: isPickingPicture || isAttachingMealPicture,
@@ -84,8 +90,10 @@ export function useMealDetailsController() {
     isRefetchingMeal,
     listPaddingBottom: paddingBottom,
     deleteMealSheetRef,
+    saveMealSheetRef,
     handleGoBack,
     handleEdit,
+    handleSave,
     handleDelete,
     handleMealDeleted,
     handleChangePicture,

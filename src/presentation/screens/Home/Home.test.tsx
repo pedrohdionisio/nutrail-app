@@ -80,6 +80,7 @@ describe('Home', () => {
     expect(
       screen.getByRole('button', { name: 'Cadastrar refeição manualmente' })
     ).toBeOnTheScreen();
+    expect(screen.getByRole('button', { name: 'Cadastrar refeição salva' })).toBeOnTheScreen();
     expect(screen.queryByRole('button', { name: 'Cadastrar refeição' })).not.toBeOnTheScreen();
   });
 
