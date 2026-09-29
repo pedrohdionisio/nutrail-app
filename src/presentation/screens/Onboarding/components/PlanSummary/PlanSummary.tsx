@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Button } from 'presentation/components/Button/Button';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { COLORS } from 'shared/constants/colors';
 import { useScreenPadding } from 'shared/hooks/useScreenPadding';
@@ -9,6 +10,7 @@ import { MacroValue } from '../MacroValue/MacroValue';
 import type { IPlanSummaryProps } from './PlanSummaryTypes';
 
 export function PlanSummary({ me, onStart }: IPlanSummaryProps) {
+  const { t } = useTranslation();
   const { paddingTop, paddingBottom } = useScreenPadding();
   const { label: goalLabel, icon: GoalIcon } = GOAL_SUMMARY[me.profile.goal];
   const { calories, protein, carbohydrate, fat } = me.goals;
@@ -25,16 +27,15 @@ export function PlanSummary({ me, onStart }: IPlanSummaryProps) {
 
           <View className='gap-4'>
             <AppText accessibilityRole='header' align='center' color='inverse' size='title1'>
-              Seu plano de dieta para{' '}
+              {t('onboarding.planTitlePrefix')}{' '}
               <AppText color='brand' size='title1'>
-                {goalLabel}
+                {t(goalLabel)}
               </AppText>{' '}
-              está pronto!
+              {t('onboarding.planTitleSuffix')}
             </AppText>
 
             <AppText align='center' color='inverseMuted'>
-              Essa é a meta diária recomendada para o seu plano. Fique tranquilo, você poderá editar
-              depois caso deseje.
+              {t('onboarding.planDescription')}
             </AppText>
           </View>
         </View>
@@ -45,26 +46,30 @@ export function PlanSummary({ me, onStart }: IPlanSummaryProps) {
               {`${calories} kcal`}
             </AppText>
 
-            <AppText color='inverse'>Calorias</AppText>
+            <AppText color='inverse'>{t('common.calories')}</AppText>
           </View>
 
           <View className='w-full flex-row'>
             <MacroValue
-              label='Proteínas'
+              label={t('common.protein')}
               value={`${protein}g`}
               valueClassName='text-support-teal'
             />
             <MacroValue
-              label='Carboidratos'
+              label={t('common.carbohydrate')}
               value={`${carbohydrate}g`}
               valueClassName='text-support-yellow'
             />
-            <MacroValue label='Gorduras' value={`${fat}g`} valueClassName='text-support-orange' />
+            <MacroValue
+              label={t('common.fat')}
+              value={`${fat}g`}
+              valueClassName='text-support-orange'
+            />
           </View>
         </View>
       </View>
 
-      <Button onPress={onStart} title='Começar meu plano' />
+      <Button onPress={onStart} title={t('onboarding.startPlan')} />
     </View>
   );
 }

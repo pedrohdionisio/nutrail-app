@@ -1,11 +1,7 @@
 import { z } from 'zod';
 
 export const saveMealSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(1, 'Dê um nome para a refeição')
-    .max(60, 'O nome pode ter no máximo 60 caracteres')
+  name: z.string().trim().min(1, 'validation.savedMealNameRequired').max(60, 'validation.nameMax60')
 });
 
 export type SaveMealFormType = z.input<typeof saveMealSchema>;

@@ -7,6 +7,7 @@ import {
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Button } from 'presentation/components/Button/Button';
 import { Input } from 'presentation/components/Input/Input';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { COLORS } from 'shared/constants/colors';
 import type { IChangePasswordSheetProps } from './ChangePasswordSheetTypes';
@@ -29,6 +30,7 @@ function renderBackdrop(props: BottomSheetBackdropProps) {
 }
 
 export function ChangePasswordSheet({ sheetRef }: IChangePasswordSheetProps) {
+  const { t } = useTranslation();
   const {
     paddingBottom,
     control,
@@ -53,14 +55,14 @@ export function ChangePasswordSheet({ sheetRef }: IChangePasswordSheetProps) {
       <BottomSheetScrollView keyboardShouldPersistTaps='handled'>
         <View className='gap-6 px-5 pt-4' style={{ paddingBottom }}>
           <AppText accessibilityRole='header' size='bodyXl' weight='semibold'>
-            Alterar senha
+            {t('profile.changePassword')}
           </AppText>
 
           <Input
             autoCapitalize='none'
             autoComplete='current-password'
             control={control}
-            label='Senha atual'
+            label={t('profile.currentPassword')}
             name='currentPassword'
             secureTextEntry
           />
@@ -69,7 +71,7 @@ export function ChangePasswordSheet({ sheetRef }: IChangePasswordSheetProps) {
             autoCapitalize='none'
             autoComplete='new-password'
             control={control}
-            label='Nova senha'
+            label={t('profile.newPassword')}
             name='newPassword'
             secureTextEntry
           />
@@ -78,7 +80,7 @@ export function ChangePasswordSheet({ sheetRef }: IChangePasswordSheetProps) {
             autoCapitalize='none'
             autoComplete='new-password'
             control={control}
-            label='Confirme a nova senha'
+            label={t('profile.newPasswordConfirmation')}
             name='newPasswordConfirmation'
             secureTextEntry
           />
@@ -93,7 +95,7 @@ export function ChangePasswordSheet({ sheetRef }: IChangePasswordSheetProps) {
             disabled={isSubmitDisabled}
             isLoading={isChangingPassword}
             onPress={handleSubmit}
-            title='Salvar nova senha'
+            title={t('profile.saveNewPassword')}
           />
         </View>
       </BottomSheetScrollView>

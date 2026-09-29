@@ -5,6 +5,7 @@ import PencilIcon from 'lucide-react-native/icons/pencil';
 import TrashIcon from 'lucide-react-native/icons/trash';
 import UtensilsIcon from 'lucide-react-native/icons/utensils';
 import { AppText } from 'presentation/components/AppText/AppText';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Image, Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS } from 'shared/constants/colors';
@@ -26,6 +27,7 @@ export function MealPicture({
   onDelete,
   onChangePicture
 }: IMealPictureProps) {
+  const { t } = useTranslation();
   const { top } = useSafeAreaInsets();
 
   return (
@@ -33,7 +35,7 @@ export function MealPicture({
       {pictureUrl && (
         <Image
           accessibilityIgnoresInvertColors
-          accessibilityLabel='Foto da refeição'
+          accessibilityLabel={t('common.mealPicture')}
           className='absolute inset-0'
           resizeMode='cover'
           source={{ uri: pictureUrl }}
@@ -54,18 +56,21 @@ export function MealPicture({
             <ImagePlusIcon color={COLORS.black[700]} size={22} strokeWidth={1.8} />
           </View>
 
-          <AppText weight='medium'>Adicionar foto</AppText>
+          <AppText weight='medium'>{t('common.addPicture')}</AppText>
         </Pressable>
       )}
 
       {isChangingPicture && (
         <View className='absolute inset-0 items-center justify-center bg-black-800/40'>
-          <ActivityIndicator accessibilityLabel='Enviando foto' color={COLORS.white} />
+          <ActivityIndicator
+            accessibilityLabel={t('mealDetails.sendingPicture')}
+            color={COLORS.white}
+          />
         </View>
       )}
 
       <Pressable
-        accessibilityLabel='Voltar'
+        accessibilityLabel={t('common.back')}
         accessibilityRole='button'
         className='absolute left-5 h-12 w-12 items-center justify-center rounded-xl bg-black-800/40 active:opacity-70'
         onPress={onBack}
@@ -77,7 +82,7 @@ export function MealPicture({
       <View className='absolute right-5 flex-row gap-3' style={{ top: top + BUTTON_TOP_SPACING }}>
         {canChangePicture && !!pictureUrl && (
           <Pressable
-            accessibilityLabel='Trocar foto'
+            accessibilityLabel={t('mealDetails.changePicture')}
             accessibilityRole='button'
             accessibilityState={{ disabled: isChangingPicture }}
             className='h-12 w-12 items-center justify-center rounded-xl bg-black-800/40 active:opacity-70'
@@ -90,7 +95,7 @@ export function MealPicture({
 
         {canEdit && (
           <Pressable
-            accessibilityLabel='Editar refeição'
+            accessibilityLabel={t('common.editMeal')}
             accessibilityRole='button'
             className='h-12 w-12 items-center justify-center rounded-xl bg-black-800/40 active:opacity-70'
             onPress={onEdit}
@@ -101,7 +106,7 @@ export function MealPicture({
 
         {canSave && (
           <Pressable
-            accessibilityLabel='Salvar refeição'
+            accessibilityLabel={t('common.saveMeal')}
             accessibilityRole='button'
             className='h-12 w-12 items-center justify-center rounded-xl bg-black-800/40 active:opacity-70'
             onPress={onSave}
@@ -112,7 +117,7 @@ export function MealPicture({
 
         {canDelete && (
           <Pressable
-            accessibilityLabel='Excluir refeição'
+            accessibilityLabel={t('home.deleteMeal')}
             accessibilityRole='button'
             className='h-12 w-12 items-center justify-center rounded-xl bg-black-800/40 active:opacity-70'
             onPress={onDelete}

@@ -6,6 +6,7 @@ import {
   GENDER_OPTIONS,
   GOAL_OPTIONS
 } from 'presentation/constants/profileOptions';
+import { useTranslation } from 'react-i18next';
 import { AccountFields } from './components/AccountFields/AccountFields';
 import { BirthDateField } from './components/BirthDateField/BirthDateField';
 import { NextButton } from './components/NextButton/NextButton';
@@ -15,6 +16,7 @@ import { PlanSummary } from './components/PlanSummary/PlanSummary';
 import { useOnboardingController } from './useOnboardingController';
 
 export function Onboarding() {
+  const { t } = useTranslation();
   const {
     stepId,
     currentStep,
@@ -44,14 +46,14 @@ export function Onboarding() {
   return (
     <OnboardingStep
       contentAlignment={currentStep.contentAlignment}
-      description={currentStep.description}
+      description={currentStep.description && t(currentStep.description)}
       footer={
         stepId === 'account' ? (
           <Button
             disabled={isNextDisabled}
             isLoading={isSigningUp}
             onPress={handleCreateAccount}
-            title='Criar conta'
+            title={t('onboarding.createAccount')}
           />
         ) : (
           <NextButton disabled={isNextDisabled} onPress={handleNext} />
@@ -59,7 +61,7 @@ export function Onboarding() {
       }
       onBack={handleGoBack}
       progress={progress}
-      title={currentStep.title}
+      title={t(currentStep.title)}
     >
       {stepId === 'goal' && (
         <OptionsField control={control} name='goal' options={GOAL_OPTIONS} orientation='row' />
@@ -81,7 +83,7 @@ export function Onboarding() {
           autoFocus
           control={control}
           keyboardType='number-pad'
-          label='Altura (cm)'
+          label={t('onboarding.heightLabel')}
           maxLength={3}
           name='height'
           placeholder='175'
@@ -93,7 +95,7 @@ export function Onboarding() {
           autoFocus
           control={control}
           keyboardType='decimal-pad'
-          label='Peso (kg)'
+          label={t('onboarding.weightLabel')}
           maxLength={6}
           name='weight'
           placeholder='80'

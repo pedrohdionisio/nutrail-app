@@ -97,13 +97,14 @@ depois das 21h no Brasil. `createdAt` chega em ISO 8601 UTC e só é convertido 
 ## Erros
 
 A `nutrail-api` responde erro como `{ error: { code, message, details? } }`. A `message` é técnica
-e em inglês, então **o app não a exibe**: o texto em português mora no `API_ERROR_MESSAGES` de
-`data/config/apiError.ts`, indexado pelo `code`.
+e em inglês, então **o app não a exibe**: o texto mora no grupo `errors` dos dicionários
+(`data/config/locales`), um por `code`, nos dois idiomas. Ver `i18n.md`.
 
 - `getApiErrorMessage(error)` para exibir; `getApiErrorCode(error)` para ramificar.
 - Código que o app não conhece (inclusive `INTERNAL` e `INVALID_JSON`) cai no genérico. Sem
   resposta (rede fora, timeout), cai na mensagem de conexão.
-- A API ganhou um código novo que o usuário precisa entender → entra no `API_ERROR_MESSAGES`. A
+- A API ganhou um código novo que o usuário precisa entender → entra no `API_ERROR_CODES` de
+  `data/config/apiError.ts` e em `errors.<code>` nos dois dicionários. A
   fonte é `src/application/errors` e `src/domain/errors` da `nutrail-api`; nada liga os dois
   automaticamente.
 - `VALIDATION` não deveria chegar à tela: o formulário valida com Zod antes, espelhando o schema da

@@ -3,6 +3,7 @@ import { AppText } from 'presentation/components/AppText/AppText';
 import { Button } from 'presentation/components/Button/Button';
 import { MacroStats } from 'presentation/components/MacroStats/MacroStats';
 import { SwipeDeleteAction } from 'presentation/components/SwipeDeleteAction/SwipeDeleteAction';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Pressable, View } from 'react-native';
 import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import { COLORS } from 'shared/constants/colors';
@@ -11,6 +12,7 @@ import type { IMealCardProps } from './MealCardTypes';
 import { useMealCardController } from './useMealCardController';
 
 export function MealCard({ meal, isRetrying, onPress, onDelete, onRetry }: IMealCardProps) {
+  const { t } = useTranslation();
   const InputIcon = MEAL_INPUT_ICONS[meal.inputType];
   const { swipeableRef, state, title, timeLabel, handlePress, handleDelete, handleRetry } =
     useMealCardController({ meal, onPress, onDelete, onRetry });
@@ -21,12 +23,12 @@ export function MealCard({ meal, isRetrying, onPress, onDelete, onRetry }: IMeal
       overshootRight={false}
       ref={swipeableRef}
       renderRightActions={() => (
-        <SwipeDeleteAction accessibilityLabel='Excluir refeição' onPress={handleDelete} />
+        <SwipeDeleteAction accessibilityLabel={t('home.deleteMeal')} onPress={handleDelete} />
       )}
       rightThreshold={40}
     >
       <Pressable
-        accessibilityHint={state === 'ANALYZED' ? 'Abre os detalhes da refeição' : undefined}
+        accessibilityHint={state === 'ANALYZED' ? t('home.openMealHint') : undefined}
         accessibilityRole='button'
         className='gap-4 rounded-2xl border border-gray-400 bg-white p-4 active:opacity-80'
         disabled={state !== 'ANALYZED'}
@@ -38,7 +40,10 @@ export function MealCard({ meal, isRetrying, onPress, onDelete, onRetry }: IMeal
               <InputIcon color={COLORS.black[700]} size={20} strokeWidth={1.8} />
             )}
             {state === 'ANALYZING' && (
-              <ActivityIndicator accessibilityLabel='Analisando' color={COLORS.lime[700]} />
+              <ActivityIndicator
+                accessibilityLabel={t('home.analyzing')}
+                color={COLORS.lime[700]}
+              />
             )}
             {state === 'FAILED' && (
               <CircleAlertIcon color={COLORS.support.red} size={20} strokeWidth={1.8} />
@@ -60,21 +65,20 @@ export function MealCard({ meal, isRetrying, onPress, onDelete, onRetry }: IMeal
 
         {state === 'ANALYZING' && (
           <AppText color='muted' size='bodySm'>
-            Estamos calculando os macros. A refeição entra no resumo do dia assim que ficar pronta.
+            {t('home.analyzingMessage')}
           </AppText>
         )}
 
         {state === 'FAILED' && (
           <View className='gap-3'>
             <AppText color='error' size='bodySm'>
-              Não conseguimos analisar esta refeição. Tente de novo ou exclua deslizando para o
-              lado.
+              {t('home.failedMessage')}
             </AppText>
 
             <Button
               isLoading={isRetrying}
               onPress={handleRetry}
-              title='Tentar de novo'
+              title={t('common.retry')}
               variant='secondary'
             />
           </View>

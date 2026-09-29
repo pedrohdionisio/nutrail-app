@@ -4,8 +4,8 @@ export const analyzeMealItemsSchema = z.object({
   text: z
     .string()
     .trim()
-    .min(1, 'Descreva o alimento que você quer adicionar')
-    .max(500, 'A descrição pode ter no máximo 500 caracteres')
+    .min(1, 'validation.foodToAddRequired')
+    .max(500, 'validation.descriptionMax500')
 });
 
 export type AnalyzeMealItemsFormType = z.input<typeof analyzeMealItemsSchema>;

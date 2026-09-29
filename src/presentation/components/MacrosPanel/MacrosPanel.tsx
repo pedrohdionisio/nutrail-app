@@ -1,22 +1,24 @@
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Skeleton } from 'presentation/components/Skeleton/Skeleton';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { MacroShareColumn } from './components/MacroShareColumn/MacroShareColumn';
 import type { IMacrosPanelProps } from './MacrosPanelTypes';
 import { toMacroShares } from './utils/toMacroShares';
 
 export function MacrosPanel({ macros }: IMacrosPanelProps) {
+  const { t } = useTranslation();
   const shares = toMacroShares(macros);
 
   return (
     <View>
       <View className='h-16 flex-row items-center justify-between gap-4 bg-black-700 px-4'>
         <AppText color='inverse' weight='medium'>
-          Macros Totais
+          {t('common.totalMacros')}
         </AppText>
 
         <View className='flex-row items-center gap-2'>
-          <AppText color='inverseMuted'>Calorias</AppText>
+          <AppText color='inverseMuted'>{t('common.calories')}</AppText>
 
           {macros ? (
             <AppText color='inverse' weight='medium'>{`${macros.calories}kcal`}</AppText>

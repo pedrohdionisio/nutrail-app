@@ -1,5 +1,6 @@
 import ChevronLeftIcon from 'lucide-react-native/icons/chevron-left';
 import { AppText } from 'presentation/components/AppText/AppText';
+import { useTranslation } from 'react-i18next';
 import { Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS } from 'shared/constants/colors';
@@ -8,6 +9,7 @@ import type { IScreenHeaderProps } from './ScreenHeaderTypes';
 const HEADER_TOP_SPACING = 8;
 
 export function ScreenHeader({ title, onBack, action }: IScreenHeaderProps) {
+  const { t } = useTranslation();
   const { top } = useSafeAreaInsets();
 
   return (
@@ -16,7 +18,7 @@ export function ScreenHeader({ title, onBack, action }: IScreenHeaderProps) {
       style={{ marginTop: top + HEADER_TOP_SPACING }}
     >
       <Pressable
-        accessibilityLabel='Voltar'
+        accessibilityLabel={t('common.back')}
         accessibilityRole='button'
         className='h-11 w-11 items-center justify-center rounded-lg active:opacity-60'
         onPress={onBack}

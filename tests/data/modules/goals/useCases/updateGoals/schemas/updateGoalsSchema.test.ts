@@ -26,14 +26,14 @@ describe('updateGoalsSchema', () => {
     });
 
     expect(result.error?.issues.map(({ path, message }) => ({ path, message }))).toEqual([
-      { path: ['protein'], message: 'Informe um número inteiro' },
-      { path: ['fat'], message: 'Informe um número inteiro' }
+      { path: ['protein'], message: 'validation.wholeNumber' },
+      { path: ['fat'], message: 'validation.wholeNumber' }
     ]);
   });
 
   it('should require calories above zero', () => {
     const result = updateGoalsSchema.safeParse({ ...VALID, mode: 'calories', calories: '0' });
 
-    expect(result.error?.issues[0]?.message).toBe('A meta de calorias precisa ser maior que zero');
+    expect(result.error?.issues[0]?.message).toBe('validation.caloriesPositive');
   });
 });

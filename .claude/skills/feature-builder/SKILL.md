@@ -31,7 +31,7 @@ Depois escreva a spec na conversa:
 - **Fluxo** — de onde o usuário chega, o que vê, o que faz, para onde vai. Telas novas são rotas;
   o que cobre parte da tela é bottom sheet.
 - **Contrato** — cada endpoint consumido (método, caminho, body, resposta) e os `code`s que o
-  usuário pode ver, com a mensagem em português de cada um.
+  usuário pode ver, com a mensagem de cada um em português e em inglês.
 - **Dados** — módulo de `data/`, entidade, chaves de query, o que invalida o cache, polling se o
   resultado é assíncrono (análise por IA).
 - **Estados** — carregando, vazio e erro de cada tela, e o que o Figma não cobre.

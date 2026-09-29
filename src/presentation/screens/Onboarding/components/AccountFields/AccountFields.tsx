@@ -1,18 +1,20 @@
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Input } from 'presentation/components/Input/Input';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import type { IAccountFieldsProps } from './AccountFieldsTypes';
 
 export function AccountFields({ control, apiErrorMessage }: IAccountFieldsProps) {
+  const { t } = useTranslation();
   return (
     <View className='gap-6'>
       <Input
         autoCapitalize='words'
         autoComplete='name'
         control={control}
-        label='Nome'
+        label={t('onboarding.name')}
         name='name'
-        placeholder='Seu nome'
+        placeholder={t('onboarding.namePlaceholder')}
       />
 
       <Input
@@ -21,18 +23,18 @@ export function AccountFields({ control, apiErrorMessage }: IAccountFieldsProps)
         autoCorrect={false}
         control={control}
         keyboardType='email-address'
-        label='E-mail'
+        label={t('common.email')}
         name='email'
-        placeholder='voce@email.com'
+        placeholder={t('onboarding.emailPlaceholder')}
       />
 
       <Input
         autoCapitalize='none'
         autoComplete='new-password'
         control={control}
-        label='Senha'
+        label={t('common.password')}
         name='password'
-        placeholder='Mínimo 8 caracteres'
+        placeholder={t('onboarding.passwordPlaceholder')}
         secureTextEntry
       />
 
@@ -40,9 +42,9 @@ export function AccountFields({ control, apiErrorMessage }: IAccountFieldsProps)
         autoCapitalize='none'
         autoComplete='new-password'
         control={control}
-        label='Confirmar Senha'
+        label={t('onboarding.passwordConfirmation')}
         name='passwordConfirmation'
-        placeholder='Mínimo 8 caracteres'
+        placeholder={t('onboarding.passwordPlaceholder')}
         secureTextEntry
       />
 

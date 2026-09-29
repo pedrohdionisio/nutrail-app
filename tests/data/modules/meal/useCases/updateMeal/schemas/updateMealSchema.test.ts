@@ -52,14 +52,14 @@ describe('updateMealSchema', () => {
       ...SCHEDULE
     });
 
-    expect(invalid.error?.issues[0]?.message).toBe('Informe uma quantidade válida');
-    expect(zero.error?.issues[0]?.message).toBe('A quantidade precisa ser maior que zero');
+    expect(invalid.error?.issues[0]?.message).toBe('validation.invalidQuantity');
+    expect(zero.error?.issues[0]?.message).toBe('validation.quantityPositive');
   });
 
   it('should refuse a meal without items', () => {
     const result = updateMealSchema.safeParse({ name: 'Almoço', items: [], ...SCHEDULE });
 
-    expect(result.error?.issues[0]?.message).toBe('Mantenha pelo menos um item na refeição');
+    expect(result.error?.issues[0]?.message).toBe('validation.itemsRequired');
   });
 
   it('should refuse a date or time in the future', () => {
@@ -81,7 +81,7 @@ describe('updateMealSchema', () => {
 
     jest.useRealTimers();
 
-    expect(futureDate.error?.issues[0]?.message).toBe('A data não pode estar no futuro');
-    expect(futureTime.error?.issues[0]?.message).toBe('O horário não pode estar no futuro');
+    expect(futureDate.error?.issues[0]?.message).toBe('validation.futureDate');
+    expect(futureTime.error?.issues[0]?.message).toBe('validation.futureTime');
   });
 });

@@ -1,5 +1,6 @@
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Button } from 'presentation/components/Button/Button';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { useScreenPadding } from 'shared/hooks/useScreenPadding';
 import { AuthPrompt } from './components/AuthPrompt/AuthPrompt';
@@ -10,6 +11,7 @@ import { WelcomeBackground } from './components/WelcomeBackground/WelcomeBackgro
 import { useWelcomeController } from './useWelcomeController';
 
 export function Welcome() {
+  const { t } = useTranslation();
   const {
     signInSheetRef,
     forgotPasswordSheetRef,
@@ -27,23 +29,23 @@ export function Welcome() {
     <WelcomeBackground>
       <View className='gap-10 px-5' style={{ paddingBottom }}>
         <AppText accessibilityRole='header' align='center' color='inverse' size='title1'>
-          Controle sua dieta de forma simples
+          {t('welcome.title')}
         </AppText>
 
         <View className='gap-8'>
-          <Button onPress={handleCreateAccount} title='Criar Conta' />
+          <Button onPress={handleCreateAccount} title={t('welcome.createAccount')} />
 
           <View className='gap-4'>
             <AuthPrompt
-              actionLabel='Acessar conta'
+              actionLabel={t('welcome.signInAction')}
               onPress={handleOpenSignIn}
-              question='Já tem conta?'
+              question={t('welcome.haveAccount')}
             />
 
             <AuthPrompt
-              actionLabel='Recuperar senha'
+              actionLabel={t('welcome.recoverPasswordAction')}
               onPress={handleOpenForgotPassword}
-              question='Esqueceu a senha?'
+              question={t('welcome.forgotPassword')}
             />
           </View>
         </View>

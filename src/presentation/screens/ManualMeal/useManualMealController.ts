@@ -6,6 +6,7 @@ import {
   useRoute
 } from '@react-navigation/native';
 import { getApiErrorMessage } from 'data/config/apiError';
+import { getLanguage } from 'data/config/i18n';
 import {
   type CreateManualMealFormType,
   type CreateManualMealPayloadType,
@@ -14,12 +15,14 @@ import {
 import { useCreateManualMeal } from 'data/modules/meal/useCases/createManualMeal/useCreateManualMeal';
 import { useEffect, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 import type { AppRoutesParamList } from 'shared/navigation/AppRoutesTypes';
-import { toBrazilianDate } from 'shared/utils/toBrazilianDate';
+import { toDateInput } from 'shared/utils/toDateInput';
 import { toLocalTime } from 'shared/utils/toLocalTime';
 
 export function useManualMealController() {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const { params } = useRoute<RouteProp<AppRoutesParamList, 'ManualMeal'>>();
   const { createManualMeal } = useCreateManualMeal();
@@ -35,7 +38,7 @@ export function useManualMealController() {
     resolver: zodResolver(createManualMealSchema),
     defaultValues: {
       text: '',
-      date: toBrazilianDate(params.date),
+      date: toDateInput(params.date, getLanguage()),
       time: toLocalTime(new Date()),
       pictureUri: null
     }
@@ -59,10 +62,7 @@ export function useManualMealController() {
       const { isPictureUploaded } = await createManualMeal(meal);
 
       if (!isPictureUploaded) {
-        Alert.alert(
-          'Refeição cadastrada sem a foto',
-          'Os macros foram calculados, mas não conseguimos enviar a foto.'
-        );
+        Alert.alert(t('manualMeal.pictureFailedTitle'), t('manualMeal.pictureFailedMessage'));
       }
 
       setHasFinished(true);

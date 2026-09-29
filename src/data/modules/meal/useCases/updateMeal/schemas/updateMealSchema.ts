@@ -1,14 +1,11 @@
-import { parseBrazilianDate } from 'shared/utils/parseBrazilianDate';
+import { getLanguage } from 'data/config/i18n';
+import { parseDateInput } from 'shared/utils/parseDateInput';
 import { toLocalIsoDate } from 'shared/utils/toLocalIsoDate';
 import { z } from 'zod';
 
 export const updateMealSchema = z
   .object({
-    name: z
-      .string()
-      .trim()
-      .min(1, 'Informe o nome da refeição')
-      .max(120, 'O nome pode ter no máximo 120 caracteres'),
+    name: z.string().trim().min(1, 'validation.mealNameRequired').max(120, 'validation.nameMax120'),
     items: z
       .array(
         z
@@ -18,9 +15,9 @@ export const updateMealSchema = z
             quantity: z
               .string()
               .trim()
-              .regex(/^\d{1,6}([.,]\d{1,2})?$/, 'Informe uma quantidade válida')
+              .regex(/^\d{1,6}([.,]\d{1,2})?$/, 'validation.invalidQuantity')
               .transform((value) => Number(value.replace(',', '.')))
-              .pipe(z.number().positive('A quantidade precisa ser maior que zero')),
+              .pipe(z.number().positive('validation.quantityPositive')),
             original: z.object({
               quantity: z.number(),
               calories: z.number(),
@@ -43,26 +40,23 @@ export const updateMealSchema = z
             };
           })
       )
-      .min(1, 'Mantenha pelo menos um item na refeição')
-      .max(50, 'A refeição pode ter no máximo 50 itens'),
+      .min(1, 'validation.itemsRequired')
+      .max(50, 'validation.itemsMax'),
     date: z
       .string()
       .transform((value, context) => {
-        const isoDate = parseBrazilianDate(value);
+        const isoDate = parseDateInput(value, getLanguage());
 
         if (!isoDate) {
-          context.addIssue({ code: 'custom', message: 'Informe uma data válida' });
+          context.addIssue({ code: 'custom', message: 'validation.invalidDate' });
 
           return z.NEVER;
         }
 
         return isoDate;
       })
-      .refine(
-        (isoDate) => isoDate <= toLocalIsoDate(new Date()),
-        'A data não pode estar no futuro'
-      ),
-    time: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, 'Informe um horário válido')
+      .refine((isoDate) => isoDate <= toLocalIsoDate(new Date()), 'validation.futureDate'),
+    time: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, 'validation.invalidTime')
   })
   .refine(
     ({ date, time }) => {
@@ -71,7 +65,7 @@ export const updateMealSchema = z
 
       return date !== toLocalIsoDate(now) || time <= currentTime;
     },
-    { path: ['time'], message: 'O horário não pode estar no futuro' }
+    { path: ['time'], message: 'validation.futureTime' }
   );
 
 export type UpdateMealFormType = z.input<typeof updateMealSchema>;

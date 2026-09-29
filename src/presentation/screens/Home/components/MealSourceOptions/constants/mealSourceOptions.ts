@@ -5,14 +5,14 @@ import type { IMealSourceOption } from '../MealSourceOptionsTypes';
 export const MEAL_SOURCE_OPTIONS: IMealSourceOption[] = [
   {
     source: 'AUDIO',
-    label: 'Áudio',
-    accessibilityLabel: 'Cadastrar refeição por áudio',
+    label: 'home.audioLabel',
+    accessibilityLabel: 'home.audioAccessibility',
     icon: MicIcon
   },
   {
     source: 'PICTURE',
-    label: 'Foto',
-    accessibilityLabel: 'Cadastrar refeição por foto',
+    label: 'home.pictureLabel',
+    accessibilityLabel: 'home.pictureAccessibility',
     icon: CameraIcon
   }
 ];

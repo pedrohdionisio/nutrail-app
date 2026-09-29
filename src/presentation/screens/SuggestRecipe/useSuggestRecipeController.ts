@@ -10,11 +10,13 @@ import {
 import { useSuggestRecipe } from 'data/modules/recipe/useCases/suggestRecipe/useSuggestRecipe';
 import { useEffect, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 import type { IRecipeContent } from 'shared/entities/IRecipeContent';
 import { toLocalIsoDate } from 'shared/utils/toLocalIsoDate';
 
 export function useSuggestRecipeController() {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const { suggestRecipe, isSuggestingRecipe } = useSuggestRecipe();
   const { saveRecipe, isSavingRecipe } = useSaveRecipe();
@@ -52,7 +54,7 @@ export function useSuggestRecipeController() {
       setSuggestion(await suggestRecipe({ date: toLocalIsoDate(new Date()), text: ingredients }));
     } catch (error) {
       if (suggestion) {
-        Alert.alert('Não foi possível sugerir outra receita', getApiErrorMessage(error));
+        Alert.alert(t('recipes.suggestAnotherError'), getApiErrorMessage(error));
       } else {
         setApiErrorMessage(getApiErrorMessage(error));
       }
@@ -78,7 +80,7 @@ export function useSuggestRecipeController() {
       await saveRecipe(suggestion);
       setHasSaved(true);
     } catch (error) {
-      Alert.alert('Não foi possível salvar a receita', getApiErrorMessage(error));
+      Alert.alert(t('recipes.saveError'), getApiErrorMessage(error));
     }
   }
 

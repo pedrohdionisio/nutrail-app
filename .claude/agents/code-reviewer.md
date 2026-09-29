@@ -19,12 +19,13 @@ Você revisa uma mudança no Nutrail App com olhos novos. Não edita arquivos; r
      espelhando o schema da API, sessão só pelo `AuthProvider`, totais vindos da API.
    - **Contrato** — para cada service novo ou alterado, abra o controller e o schema da rota em
      `../nutrail-api/src/presentation/controllers` e confira método, caminho, body, campos da
-     resposta, status e `code`s. `code` que o usuário pode ver sem entrada no `API_ERROR_MESSAGES` é
-     achado.
+     resposta, status e `code`s. `code` que o usuário pode ver sem entrada em `errors` nos dicionários
+     é achado.
    - **Camadas e padrões** — import apontando para o lado errado, DTO chegando em `presentation/`,
      lógica no `.tsx`, controller importando outro controller, handler sem objeto de params,
      `interface` sem `I`, `any`, `as` para calar o compilador, `enum`, `console.log`, comentário.
-   - **Interface** — texto fora do `AppText`, cor ou medida fora dos tokens, sheet que devia ser
+   - **Interface** — texto literal em vez de `t()`, texto que só existe num idioma, data ou decimal
+     com formato fixo, texto fora do `AppText`, cor ou medida fora dos tokens, sheet que devia ser
      `BottomSheetModal`, `map` em `ScrollView` para lista da API, tela sem um dos três estados,
      elemento tocável sem rótulo acessível.
    - **Testes** — cada critério de aceite tem um teste que falharia sem a mudança? O teste afirma o

@@ -1,6 +1,7 @@
 import ChefHatIcon from 'lucide-react-native/icons/chef-hat';
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Button } from 'presentation/components/Button/Button';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, View } from 'react-native';
 import { COLORS } from 'shared/constants/colors';
 import type { IRecipesListEmptyProps } from './RecipesListEmptyTypes';
@@ -11,10 +12,11 @@ export function RecipesListEmpty({
   isRetrying,
   onRetry
 }: IRecipesListEmptyProps) {
+  const { t } = useTranslation();
   if (isLoading) {
     return (
       <View className='items-center py-16'>
-        <ActivityIndicator accessibilityLabel='Carregando receitas' color={COLORS.lime[700]} />
+        <ActivityIndicator accessibilityLabel={t('recipes.loading')} color={COLORS.lime[700]} />
       </View>
     );
   }
@@ -24,18 +26,18 @@ export function RecipesListEmpty({
       <View className='gap-6 py-10'>
         <View className='gap-2'>
           <AppText align='center' weight='medium'>
-            Não conseguimos carregar suas receitas
+            {t('recipes.errorTitle')}
           </AppText>
 
           <AppText align='center' color='muted' size='bodySm'>
-            Verifique sua conexão e tente de novo.
+            {t('common.connectionHint')}
           </AppText>
         </View>
 
         <Button
           isLoading={isRetrying}
           onPress={onRetry}
-          title='Tentar de novo'
+          title={t('common.retry')}
           variant='secondary'
         />
       </View>
@@ -50,11 +52,11 @@ export function RecipesListEmpty({
 
       <View className='gap-2'>
         <AppText align='center' weight='medium'>
-          Nenhuma receita salva
+          {t('recipes.emptyTitle')}
         </AppText>
 
         <AppText align='center' color='muted' size='bodySm'>
-          Conte o que você tem em casa e a IA sugere uma receita que cabe nas suas metas de hoje.
+          {t('recipes.emptyMessage')}
         </AppText>
       </View>
     </View>

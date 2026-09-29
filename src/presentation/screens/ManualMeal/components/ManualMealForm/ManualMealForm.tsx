@@ -1,5 +1,6 @@
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Input } from 'presentation/components/Input/Input';
+import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
 import { maskDate } from 'shared/utils/maskDate';
 import { maskTime } from 'shared/utils/maskTime';
@@ -7,6 +8,7 @@ import { MealPictureField } from '../MealPictureField/MealPictureField';
 import type { IManualMealFormProps } from './ManualMealFormTypes';
 
 export function ManualMealForm({ control, apiErrorMessage }: IManualMealFormProps) {
+  const { t } = useTranslation();
   return (
     <ScrollView
       className='flex-1'
@@ -18,11 +20,11 @@ export function ManualMealForm({ control, apiErrorMessage }: IManualMealFormProp
       <Input
         className='h-32 py-3'
         control={control}
-        label='O que você comeu?'
+        label={t('manualMeal.whatDidYouEat')}
         maxLength={1000}
         multiline
         name='text'
-        placeholder='Ex.: 2 ovos mexidos, 1 pão francês com manteiga e um café com leite'
+        placeholder={t('manualMeal.descriptionPlaceholder')}
         textAlignVertical='top'
       />
 
@@ -31,11 +33,11 @@ export function ManualMealForm({ control, apiErrorMessage }: IManualMealFormProp
           <Input
             control={control}
             keyboardType='number-pad'
-            label='Data'
+            label={t('common.date')}
             mask={maskDate}
             maxLength={10}
             name='date'
-            placeholder='DD/MM/AAAA'
+            placeholder={t('common.dateInputPlaceholder')}
           />
         </View>
 
@@ -43,7 +45,7 @@ export function ManualMealForm({ control, apiErrorMessage }: IManualMealFormProp
           <Input
             control={control}
             keyboardType='number-pad'
-            label='Horário'
+            label={t('common.time')}
             mask={maskTime}
             maxLength={5}
             name='time'

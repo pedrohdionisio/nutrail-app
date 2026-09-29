@@ -1,3 +1,4 @@
+import type { TranslationKey } from 'data/config/i18n';
 import type { IRecipeContent } from 'shared/entities/IRecipeContent';
 
 export interface IRecipeContentProps {
@@ -6,6 +7,6 @@ export interface IRecipeContentProps {
 }
 
 export interface IRecipeSection {
-  title: string;
+  title: TranslationKey;
   data: string[];
 }

@@ -9,7 +9,7 @@ export function toRecipeSections({ ingredients, instructions }: IRecipeContent):
     .filter(Boolean);
 
   return [
-    { title: 'Ingredientes', data: ingredients.map(formatFoodQuantity) },
-    { title: 'Modo de preparo', data: steps }
+    { title: 'common.ingredients', data: ingredients.map(formatFoodQuantity) },
+    { title: 'common.instructions', data: steps }
   ];
 }

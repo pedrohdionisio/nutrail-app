@@ -7,6 +7,7 @@ import {
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Button } from 'presentation/components/Button/Button';
 import { Input } from 'presentation/components/Input/Input';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { COLORS } from 'shared/constants/colors';
 import { maskDate } from 'shared/utils/maskDate';
@@ -31,6 +32,7 @@ function renderBackdrop(props: BottomSheetBackdropProps) {
 }
 
 export function LogRecipeMealSheet({ sheetRef, recipeId }: ILogRecipeMealSheetProps) {
+  const { t } = useTranslation();
   const {
     paddingBottom,
     control,
@@ -56,12 +58,11 @@ export function LogRecipeMealSheet({ sheetRef, recipeId }: ILogRecipeMealSheetPr
         <View className='gap-6 px-5 pt-4' style={{ paddingBottom }}>
           <View className='gap-2'>
             <AppText accessibilityRole='header' size='bodyXl' weight='semibold'>
-              Registrar como refeição
+              {t('recipes.logAsMeal')}
             </AppText>
 
             <AppText color='muted' size='bodySm'>
-              A receita entra como uma porção, com os macros dela. Dá para ajustar a quantidade
-              depois, editando a refeição.
+              {t('recipes.logDescription')}
             </AppText>
           </View>
 
@@ -70,11 +71,11 @@ export function LogRecipeMealSheet({ sheetRef, recipeId }: ILogRecipeMealSheetPr
               <Input
                 control={control}
                 keyboardType='number-pad'
-                label='Data'
+                label={t('common.date')}
                 mask={maskDate}
                 maxLength={10}
                 name='date'
-                placeholder='DD/MM/AAAA'
+                placeholder={t('common.dateInputPlaceholder')}
               />
             </View>
 
@@ -82,7 +83,7 @@ export function LogRecipeMealSheet({ sheetRef, recipeId }: ILogRecipeMealSheetPr
               <Input
                 control={control}
                 keyboardType='number-pad'
-                label='Horário'
+                label={t('common.time')}
                 mask={maskTime}
                 maxLength={5}
                 name='time'
@@ -101,7 +102,7 @@ export function LogRecipeMealSheet({ sheetRef, recipeId }: ILogRecipeMealSheetPr
             disabled={isSubmitDisabled}
             isLoading={isCreatingMealFromRecipe}
             onPress={handleSubmit}
-            title='Registrar refeição'
+            title={t('recipes.logMeal')}
           />
         </View>
       </BottomSheetView>

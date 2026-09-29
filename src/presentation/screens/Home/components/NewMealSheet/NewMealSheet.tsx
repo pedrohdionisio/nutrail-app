@@ -5,6 +5,7 @@ import {
   BottomSheetView
 } from '@gorhom/bottom-sheet';
 import { AppText } from 'presentation/components/AppText/AppText';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { COLORS } from 'shared/constants/colors';
 import { useScreenPadding } from 'shared/hooks/useScreenPadding';
@@ -28,6 +29,7 @@ function renderBackdrop(props: BottomSheetBackdropProps) {
 }
 
 export function NewMealSheet({ sheetRef, onSelectSource }: INewMealSheetProps) {
+  const { t } = useTranslation();
   const { paddingBottom } = useScreenPadding();
 
   return (
@@ -40,7 +42,7 @@ export function NewMealSheet({ sheetRef, onSelectSource }: INewMealSheetProps) {
       <BottomSheetView>
         <View className='gap-6 px-5 pt-4' style={{ paddingBottom }}>
           <AppText accessibilityRole='header' size='bodyXl' weight='semibold'>
-            Cadastre sua refeição
+            {t('home.newMealTitle')}
           </AppText>
 
           <MealSourceOptions onSelect={onSelectSource} />

@@ -2,6 +2,7 @@ import ChefHatIcon from 'lucide-react-native/icons/chef-hat';
 import TargetIcon from 'lucide-react-native/icons/target';
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Avatar } from 'presentation/components/Avatar/Avatar';
+import { useTranslation } from 'react-i18next';
 import { Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HomeHeaderAction } from './components/HomeHeaderAction/HomeHeaderAction';
@@ -16,6 +17,7 @@ export function HomeHeader({
   onOpenGoals,
   onOpenRecipes
 }: IHomeHeaderProps) {
+  const { t } = useTranslation();
   const { top } = useSafeAreaInsets();
 
   return (
@@ -24,7 +26,7 @@ export function HomeHeader({
       style={{ paddingTop: top + HEADER_TOP_SPACING }}
     >
       <Pressable
-        accessibilityLabel='Perfil'
+        accessibilityLabel={t('home.profile')}
         accessibilityRole='button'
         className='flex-1 flex-row items-center gap-3 active:opacity-70'
         onPress={onOpenProfile}
@@ -33,7 +35,7 @@ export function HomeHeader({
 
         <View className='flex-1'>
           <AppText color='muted' size='bodySm'>
-            Olá,
+            {t('home.greeting')}
           </AppText>
 
           <AppText numberOfLines={1} weight='semibold'>
@@ -43,8 +45,8 @@ export function HomeHeader({
       </Pressable>
 
       <View className='flex-row gap-2'>
-        <HomeHeaderAction icon={ChefHatIcon} label='Receitas' onPress={onOpenRecipes} />
-        <HomeHeaderAction icon={TargetIcon} label='Metas' onPress={onOpenGoals} />
+        <HomeHeaderAction icon={ChefHatIcon} label={t('home.recipes')} onPress={onOpenRecipes} />
+        <HomeHeaderAction icon={TargetIcon} label={t('home.goals')} onPress={onOpenGoals} />
       </View>
     </View>
   );

@@ -1,4 +1,5 @@
 import { AppText } from 'presentation/components/AppText/AppText';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { MacroProgress } from './components/MacroProgress/MacroProgress';
 import { ProgressBar } from './components/ProgressBar/ProgressBar';
@@ -6,13 +7,14 @@ import type { IDailySummaryProps } from './DailySummaryTypes';
 import { formatRemainingCalories } from './utils/formatRemainingCalories';
 
 export function DailySummary({ consumed, goals }: IDailySummaryProps) {
+  const { t } = useTranslation();
   return (
     <View className='gap-6 border-gray-400 border-b pb-6'>
       <View className='gap-3'>
         <View className='flex-row items-end justify-between gap-4'>
           <View className='gap-1'>
             <AppText color='muted' size='bodySm'>
-              Calorias
+              {t('common.calories')}
             </AppText>
 
             <AppText size='title1'>
@@ -29,7 +31,7 @@ export function DailySummary({ consumed, goals }: IDailySummaryProps) {
         <ProgressBar
           className='h-3'
           fillClassName='bg-support-tomato'
-          label='Calorias'
+          label={t('common.calories')}
           max={goals.calories}
           value={consumed.calories}
         />
@@ -39,19 +41,19 @@ export function DailySummary({ consumed, goals }: IDailySummaryProps) {
         <MacroProgress
           fillClassName='bg-support-teal'
           goal={goals.protein}
-          label='Proteínas'
+          label={t('common.protein')}
           value={consumed.protein}
         />
         <MacroProgress
           fillClassName='bg-support-yellow'
           goal={goals.carbohydrate}
-          label='Carboidratos'
+          label={t('common.carbohydrate')}
           value={consumed.carbohydrate}
         />
         <MacroProgress
           fillClassName='bg-support-orange'
           goal={goals.fat}
-          label='Gorduras'
+          label={t('common.fat')}
           value={consumed.fat}
         />
       </View>

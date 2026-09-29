@@ -1,9 +1,11 @@
+import { i18n } from 'data/config/i18n';
+
 export function formatRemainingCalories(consumed: number, goal: number) {
   const difference = goal - consumed;
 
   if (difference < 0) {
-    return `${-difference} kcal acima da meta`;
+    return i18n.t('home.caloriesOver', { count: -difference });
   }
 
-  return `${difference} kcal restantes`;
+  return i18n.t('home.caloriesLeft', { count: difference });
 }

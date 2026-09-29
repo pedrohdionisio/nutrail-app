@@ -8,11 +8,18 @@
     "userInterfaceStyle": "light",
     "ios": {
       "bundleIdentifier": "com.nutrail.app",
-      "supportsTablet": false
+      "supportsTablet": false,
+      "infoPlist": {
+        "CFBundleAllowMixedLocalizations": true
+      }
     },
     "android": {
       "package": "com.nutrail.app",
       "predictiveBackGestureEnabled": false
+    },
+    "locales": {
+      "pt": "./locales/pt.json",
+      "en": "./locales/en.json"
     },
     "experiments": {
       "tsconfigPaths": true
@@ -24,8 +31,8 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "O Nutrail usa a câmera para fotografar suas refeições e calcular os macros.",
-          "microphonePermission": "O Nutrail usa o microfone para gravar a descrição das suas refeições e calcular os macros.",
+          "cameraPermission": "Nutrail uses the camera to take pictures of your meals and calculate the macros.",
+          "microphonePermission": "Nutrail uses the microphone to record the description of your meals and calculate the macros.",
           "recordAudioAndroid": false,
           "barcodeScannerEnabled": false
         }
@@ -33,19 +40,20 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "O Nutrail usa suas fotos para anexar a imagem da refeição.",
+          "photosPermission": "Nutrail uses your photos to attach the picture of a meal.",
           "cameraPermission": false,
-          "microphonePermission": "O Nutrail usa o microfone para gravar a descrição das suas refeições e calcular os macros."
+          "microphonePermission": "Nutrail uses the microphone to record the description of your meals and calculate the macros."
         }
       ],
       [
         "expo-audio",
         {
-          "microphonePermission": "O Nutrail usa o microfone para gravar a descrição das suas refeições e calcular os macros.",
+          "microphonePermission": "Nutrail uses the microphone to record the description of your meals and calculate the macros.",
           "enableBackgroundPlayback": false
         }
       ],
-      "@react-native-community/datetimepicker"
+      "@react-native-community/datetimepicker",
+      "expo-localization"
     ]
   }
 }

@@ -6,6 +6,7 @@ import { useGetMe } from 'data/modules/me/useCases/getMe/useGetMe';
 import { useListMealsByDay } from 'data/modules/meal/useCases/listMealsByDay/useListMealsByDay';
 import { useRetryMeal } from 'data/modules/meal/useCases/retryMeal/useRetryMeal';
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 import type { IHandleSelectDateTimeParams } from 'shared/hooks/UseDateTimePickerTypes';
 import { useDateTimePicker } from 'shared/hooks/useDateTimePicker';
@@ -24,6 +25,7 @@ import { formatDayLabel } from './utils/formatDayLabel';
 const ADD_MEAL_BUTTON_SPACE = 96;
 
 export function useHomeController() {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const { signOut } = useAuth();
   const { paddingBottom } = useScreenPadding();
@@ -118,7 +120,7 @@ export function useHomeController() {
     try {
       await retryMeal({ mealId });
     } catch (error) {
-      Alert.alert('Não foi possível tentar de novo', getApiErrorMessage(error));
+      Alert.alert(t('home.retryFailed'), getApiErrorMessage(error));
     }
   }
 

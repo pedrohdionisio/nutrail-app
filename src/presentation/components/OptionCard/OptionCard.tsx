@@ -1,11 +1,15 @@
 import { AppText } from 'presentation/components/AppText/AppText';
+import { useTranslation } from 'react-i18next';
 import { Pressable, View } from 'react-native';
 import { COLORS } from 'shared/constants/colors';
 import { optionCardVariants, optionIconVariants } from './OptionCardStyles';
 import type { IOptionCardProps } from './OptionCardTypes';
 
 export function OptionCard({ option, isSelected, orientation, onPress }: IOptionCardProps) {
-  const { icon: Icon, label, description } = option;
+  const { t } = useTranslation();
+  const { icon: Icon } = option;
+  const label = t(option.label);
+  const description = option.description && t(option.description);
 
   return (
     <Pressable

@@ -1,10 +1,12 @@
 import { MealPictureManager } from 'data/libs/MealPictureManager';
 import { useState } from 'react';
 import { useController } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 import type { IUseMealPictureFieldControllerParams } from './MealPictureFieldTypes';
 
 export function useMealPictureFieldController({ control }: IUseMealPictureFieldControllerParams) {
+  const { t } = useTranslation();
   const { field } = useController({ control, name: 'pictureUri' });
   const [isPicking, setIsPicking] = useState(false);
 
@@ -18,7 +20,7 @@ export function useMealPictureFieldController({ control }: IUseMealPictureFieldC
         field.onChange(pictureUri);
       }
     } catch {
-      Alert.alert('Não foi possível abrir suas fotos', 'Tente de novo em alguns instantes.');
+      Alert.alert(t('common.photosError'), t('common.tryAgainSoon'));
     } finally {
       setIsPicking(false);
     }

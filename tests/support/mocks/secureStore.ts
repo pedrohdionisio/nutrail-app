@@ -1,6 +1,7 @@
 const store = new Map<string, string>();
 
 export const secureStoreMock = {
+  getItem: jest.fn((key: string) => store.get(key) ?? null),
   getItemAsync: jest.fn(async (key: string) => store.get(key) ?? null),
   setItemAsync: jest.fn(async (key: string, value: string) => {
     store.set(key, value);

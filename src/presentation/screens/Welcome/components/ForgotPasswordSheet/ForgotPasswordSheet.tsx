@@ -1,19 +1,21 @@
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Button } from 'presentation/components/Button/Button';
 import { Input } from 'presentation/components/Input/Input';
+import { useTranslation } from 'react-i18next';
 import { AuthSheet } from '../AuthSheet/AuthSheet';
 import type { IForgotPasswordSheetProps } from './ForgotPasswordSheetTypes';
 import { useForgotPasswordSheetController } from './useForgotPasswordSheetController';
 
 export function ForgotPasswordSheet({ sheetRef, onCodeSent }: IForgotPasswordSheetProps) {
+  const { t } = useTranslation();
   const { control, apiErrorMessage, isRequestingPasswordReset, isSubmitDisabled, handleSubmit } =
     useForgotPasswordSheetController({ onCodeSent });
 
   return (
     <AuthSheet
-      description='Informe o e-mail da sua conta e enviaremos um código para você criar uma senha nova.'
+      description={t('welcome.forgotPasswordDescription')}
       sheetRef={sheetRef}
-      title='Recupere sua senha'
+      title={t('welcome.forgotPasswordTitle')}
     >
       <Input
         autoCapitalize='none'
@@ -21,7 +23,7 @@ export function ForgotPasswordSheet({ sheetRef, onCodeSent }: IForgotPasswordShe
         autoCorrect={false}
         control={control}
         keyboardType='email-address'
-        label='E-mail'
+        label={t('common.email')}
         name='email'
         onSubmitEditing={handleSubmit}
         returnKeyType='send'
@@ -38,7 +40,7 @@ export function ForgotPasswordSheet({ sheetRef, onCodeSent }: IForgotPasswordShe
         disabled={isSubmitDisabled}
         isLoading={isRequestingPasswordReset}
         onPress={handleSubmit}
-        title='Enviar código'
+        title={t('welcome.sendCode')}
       />
     </AuthSheet>
   );

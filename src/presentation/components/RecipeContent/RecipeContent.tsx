@@ -1,10 +1,12 @@
 import { AppText } from 'presentation/components/AppText/AppText';
 import { MacrosPanel } from 'presentation/components/MacrosPanel/MacrosPanel';
+import { useTranslation } from 'react-i18next';
 import { SectionList, View } from 'react-native';
 import type { IRecipeContentProps } from './RecipeContentTypes';
 import { toRecipeSections } from './utils/toRecipeSections';
 
 export function RecipeContent({ recipe, paddingBottom }: IRecipeContentProps) {
+  const { t } = useTranslation();
   return (
     <SectionList
       className='flex-1'
@@ -28,7 +30,7 @@ export function RecipeContent({ recipe, paddingBottom }: IRecipeContentProps) {
       )}
       renderSectionHeader={({ section }) => (
         <View className='px-5 pt-8 pb-2'>
-          <AppText color='muted'>{section.title}</AppText>
+          <AppText color='muted'>{t(section.title)}</AppText>
         </View>
       )}
       sections={toRecipeSections(recipe)}

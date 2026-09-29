@@ -2,6 +2,7 @@ import BookmarkIcon from 'lucide-react-native/icons/bookmark';
 import { AppText } from 'presentation/components/AppText/AppText';
 import { MacroStats } from 'presentation/components/MacroStats/MacroStats';
 import { SwipeDeleteAction } from 'presentation/components/SwipeDeleteAction/SwipeDeleteAction';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Pressable, View } from 'react-native';
 import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import { COLORS } from 'shared/constants/colors';
@@ -15,6 +16,7 @@ export function SavedMealCard({
   onPress,
   onDelete
 }: ISavedMealCardProps) {
+  const { t } = useTranslation();
   const { swipeableRef, itemsLabel, handlePress, handleDelete } = useSavedMealCardController({
     savedMeal,
     onPress,
@@ -28,12 +30,12 @@ export function SavedMealCard({
       overshootRight={false}
       ref={swipeableRef}
       renderRightActions={() => (
-        <SwipeDeleteAction accessibilityLabel='Excluir refeição salva' onPress={handleDelete} />
+        <SwipeDeleteAction accessibilityLabel={t('savedMeals.delete')} onPress={handleDelete} />
       )}
       rightThreshold={40}
     >
       <Pressable
-        accessibilityHint='Cadastra esta refeição'
+        accessibilityHint={t('savedMeals.logHint')}
         accessibilityRole='button'
         accessibilityState={{ disabled: isDisabled, busy: isCreating }}
         className='gap-4 rounded-2xl border border-gray-400 bg-white p-4 active:opacity-80'
@@ -43,7 +45,10 @@ export function SavedMealCard({
         <View className='flex-row items-center gap-3'>
           <View className='h-12 w-12 items-center justify-center rounded-xl bg-gray-200'>
             {isCreating ? (
-              <ActivityIndicator accessibilityLabel='Cadastrando' color={COLORS.lime[700]} />
+              <ActivityIndicator
+                accessibilityLabel={t('savedMeals.logging')}
+                color={COLORS.lime[700]}
+              />
             ) : (
               <BookmarkIcon color={COLORS.black[700]} size={20} strokeWidth={1.8} />
             )}

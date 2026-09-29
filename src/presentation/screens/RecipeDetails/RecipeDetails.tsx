@@ -1,6 +1,7 @@
 import TrashIcon from 'lucide-react-native/icons/trash';
 import { RecipeContent } from 'presentation/components/RecipeContent/RecipeContent';
 import { ScreenHeader } from 'presentation/components/ScreenHeader/ScreenHeader';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { DeleteRecipeSheet } from './components/DeleteRecipeSheet/DeleteRecipeSheet';
 import { LogRecipeMealSheet } from './components/LogRecipeMealSheet/LogRecipeMealSheet';
@@ -10,6 +11,7 @@ import { useRecipeDetailsController } from './useRecipeDetailsController';
 const CONTENT_PADDING_BOTTOM = 24;
 
 export function RecipeDetails() {
+  const { t } = useTranslation();
   const {
     recipeId,
     recipe,
@@ -28,9 +30,9 @@ export function RecipeDetails() {
   return (
     <View className='flex-1 bg-white'>
       <ScreenHeader
-        action={{ icon: TrashIcon, accessibilityLabel: 'Excluir receita', onPress: handleDelete }}
+        action={{ icon: TrashIcon, accessibilityLabel: t('recipes.delete'), onPress: handleDelete }}
         onBack={handleGoBack}
-        title='Receita'
+        title={t('recipes.recipe')}
       />
 
       <RecipeContent paddingBottom={CONTENT_PADDING_BOTTOM} recipe={recipe} />

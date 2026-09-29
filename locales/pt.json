@@ -1,0 +1,7 @@
+{
+  "ios": {
+    "NSCameraUsageDescription": "O Nutrail usa a câmera para fotografar suas refeições e calcular os macros.",
+    "NSMicrophoneUsageDescription": "O Nutrail usa o microfone para gravar a descrição das suas refeições e calcular os macros.",
+    "NSPhotoLibraryUsageDescription": "O Nutrail usa suas fotos para anexar a imagem da refeição."
+  }
+}

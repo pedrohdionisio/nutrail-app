@@ -7,9 +7,9 @@ export const updateGoalsSchema = z.discriminatedUnion('mode', [
       calories: z
         .string()
         .trim()
-        .regex(/^\d{1,5}$/, 'Informe um número inteiro')
+        .regex(/^\d{1,5}$/, 'validation.wholeNumber')
         .transform(Number)
-        .pipe(z.number().int().min(1, 'A meta de calorias precisa ser maior que zero')),
+        .pipe(z.number().int().min(1, 'validation.caloriesPositive')),
       carbohydrate: z.string(),
       protein: z.string(),
       fat: z.string()
@@ -22,21 +22,21 @@ export const updateGoalsSchema = z.discriminatedUnion('mode', [
       carbohydrate: z
         .string()
         .trim()
-        .regex(/^\d{1,5}$/, 'Informe um número inteiro')
+        .regex(/^\d{1,5}$/, 'validation.wholeNumber')
         .transform(Number)
-        .pipe(z.number().int().min(0, 'Informe um número inteiro')),
+        .pipe(z.number().int().min(0, 'validation.wholeNumber')),
       protein: z
         .string()
         .trim()
-        .regex(/^\d{1,5}$/, 'Informe um número inteiro')
+        .regex(/^\d{1,5}$/, 'validation.wholeNumber')
         .transform(Number)
-        .pipe(z.number().int().min(0, 'Informe um número inteiro')),
+        .pipe(z.number().int().min(0, 'validation.wholeNumber')),
       fat: z
         .string()
         .trim()
-        .regex(/^\d{1,5}$/, 'Informe um número inteiro')
+        .regex(/^\d{1,5}$/, 'validation.wholeNumber')
         .transform(Number)
-        .pipe(z.number().int().min(0, 'Informe um número inteiro'))
+        .pipe(z.number().int().min(0, 'validation.wholeNumber'))
     })
     .transform(({ carbohydrate, protein, fat }) => ({ carbohydrate, protein, fat }))
 ]);

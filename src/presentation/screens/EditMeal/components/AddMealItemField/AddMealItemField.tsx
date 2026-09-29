@@ -1,11 +1,13 @@
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Button } from 'presentation/components/Button/Button';
 import { Input } from 'presentation/components/Input/Input';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import type { IAddMealItemFieldProps } from './AddMealItemFieldTypes';
 import { useAddMealItemFieldController } from './useAddMealItemFieldController';
 
 export function AddMealItemField({ onAdd }: IAddMealItemFieldProps) {
+  const { t } = useTranslation();
   const { control, apiErrorMessage, isAnalyzingMealItems, isAddDisabled, handleAdd } =
     useAddMealItemFieldController({ onAdd });
 
@@ -13,10 +15,10 @@ export function AddMealItemField({ onAdd }: IAddMealItemFieldProps) {
     <View className='gap-3'>
       <Input
         control={control}
-        label='Adicionar alimento'
+        label={t('editMeal.addFood')}
         maxLength={500}
         name='text'
-        placeholder='Ex.: 2 colheres de sopa de azeite'
+        placeholder={t('editMeal.addFoodPlaceholder')}
       />
 
       {!!apiErrorMessage && (
@@ -29,7 +31,7 @@ export function AddMealItemField({ onAdd }: IAddMealItemFieldProps) {
         disabled={isAddDisabled}
         isLoading={isAnalyzingMealItems}
         onPress={handleAdd}
-        title='Adicionar'
+        title={t('editMeal.add')}
         variant='secondary'
       />
     </View>

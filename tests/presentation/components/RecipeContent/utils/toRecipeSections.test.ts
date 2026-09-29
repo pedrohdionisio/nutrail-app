@@ -16,9 +16,9 @@ describe('toRecipeSections', () => {
     });
 
     expect(sections).toEqual([
-      { title: 'Ingredientes', data: ['3 unidades Ovo', '40g Queijo mussarela'] },
+      { title: 'common.ingredients', data: ['3 unidades Ovo', '40g Queijo mussarela'] },
       {
-        title: 'Modo de preparo',
+        title: 'common.instructions',
         data: ['1. Bata os ovos.', '2. Junte o queijo e leve à frigideira.']
       }
     ]);

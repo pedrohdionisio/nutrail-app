@@ -8,6 +8,7 @@ import {
 import { useChangePassword } from 'data/modules/me/useCases/changePassword/useChangePassword';
 import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 import { useScreenPadding } from 'shared/hooks/useScreenPadding';
 import type { IUseChangePasswordSheetControllerParams } from './ChangePasswordSheetTypes';
@@ -21,6 +22,7 @@ const EMPTY_FORM: ChangePasswordFormType = {
 export function useChangePasswordSheetController({
   sheetRef
 }: IUseChangePasswordSheetControllerParams) {
+  const { t } = useTranslation();
   const { paddingBottom } = useScreenPadding();
   const { changePassword, isChangingPassword } = useChangePassword();
   const [apiErrorMessage, setApiErrorMessage] = useState<string | null>(null);
@@ -51,7 +53,7 @@ export function useChangePasswordSheetController({
     }
 
     sheetRef.current?.dismiss();
-    Alert.alert('Senha alterada', 'Use a nova senha na próxima vez que entrar.');
+    Alert.alert(t('profile.passwordChangedTitle'), t('profile.passwordChangedMessage'));
   }
 
   function handleDismiss() {

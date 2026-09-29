@@ -1,45 +1,48 @@
+import { getLanguage } from 'data/config/i18n';
 import { ACTIVITY_LEVELS, GENDERS, GOALS } from 'shared/constants/profile';
-import { parseBrazilianDate } from 'shared/utils/parseBrazilianDate';
+import { parseDateInput } from 'shared/utils/parseDateInput';
 import { toLocalIsoDate } from 'shared/utils/toLocalIsoDate';
 import { z } from 'zod';
 
 export const updateProfileSchema = z.object({
-  name: z.string().trim().min(1, 'Informe seu nome').max(100, 'O nome é muito longo'),
+  name: z.string().trim().min(1, 'validation.nameRequired').max(100, 'validation.nameTooLong'),
   birthDate: z
     .string()
     .transform((value, context) => {
-      const isoDate = parseBrazilianDate(value);
+      const isoDate = parseDateInput(value, getLanguage());
 
       if (!isoDate) {
-        context.addIssue({ code: 'custom', message: 'Informe uma data válida' });
+        context.addIssue({ code: 'custom', message: 'validation.invalidDate' });
 
         return z.NEVER;
       }
 
       return isoDate;
     })
-    .refine((isoDate) => isoDate <= toLocalIsoDate(new Date()), 'A data não pode estar no futuro')
-    .refine((isoDate) => isoDate >= '1900-01-01', 'Informe uma data válida'),
+    .refine((isoDate) => isoDate <= toLocalIsoDate(new Date()), 'validation.futureDate')
+    .refine((isoDate) => isoDate >= '1900-01-01', 'validation.invalidDate'),
   height: z
     .string()
     .trim()
-    .regex(/^\d{2,3}$/, 'Informe a altura em centímetros')
+    .regex(/^\d{2,3}$/, 'validation.heightInCentimeters')
     .transform(Number)
     .pipe(
       z
         .number()
-        .min(50, 'Informe a altura em centímetros')
-        .max(250, 'Informe a altura em centímetros')
+        .min(50, 'validation.heightInCentimeters')
+        .max(250, 'validation.heightInCentimeters')
     ),
   weight: z
     .string()
     .trim()
-    .regex(/^\d{2,3}([.,]\d{1,2})?$/, 'Informe o peso em quilos')
+    .regex(/^\d{2,3}([.,]\d{1,2})?$/, 'validation.weightInKilograms')
     .transform((value) => Number(value.replace(',', '.')))
-    .pipe(z.number().min(20, 'Informe o peso em quilos').max(400, 'Informe o peso em quilos')),
-  gender: z.enum(GENDERS, 'Escolha um gênero'),
-  goal: z.enum(GOALS, 'Escolha um objetivo'),
-  activityLevel: z.enum(ACTIVITY_LEVELS, 'Escolha um nível de atividade')
+    .pipe(
+      z.number().min(20, 'validation.weightInKilograms').max(400, 'validation.weightInKilograms')
+    ),
+  gender: z.enum(GENDERS, 'validation.genderRequired'),
+  goal: z.enum(GOALS, 'validation.goalRequired'),
+  activityLevel: z.enum(ACTIVITY_LEVELS, 'validation.activityLevelRequired')
 });
 
 export type UpdateProfileFormType = z.input<typeof updateProfileSchema>;

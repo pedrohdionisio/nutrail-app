@@ -12,43 +12,43 @@ export const ONBOARDING_STEP_IDS = [
 
 export const ONBOARDING_STEPS: Record<OnboardingStepId, IOnboardingStep> = {
   goal: {
-    title: 'Qual é seu objetivo?',
-    description: 'O que você pretende alcançar com a dieta?',
+    title: 'onboarding.steps.goal.title',
+    description: 'onboarding.steps.goal.description',
     fields: ['goal'],
     contentAlignment: 'end'
   },
   gender: {
-    title: 'Qual o seu gênero biológico?',
-    description: 'Seu gênero influencia no tipo da dieta',
+    title: 'onboarding.steps.gender.title',
+    description: 'onboarding.steps.gender.description',
     fields: ['gender'],
     contentAlignment: 'end'
   },
   birthDate: {
-    title: 'Que dia você nasceu?',
-    description: 'Cada faixa etária responde de forma única',
+    title: 'onboarding.steps.birthDate.title',
+    description: 'onboarding.steps.birthDate.description',
     fields: ['birthDate'],
     contentAlignment: 'center'
   },
   height: {
-    title: 'Qual é sua altura?',
-    description: 'Você pode inserir uma estimativa',
+    title: 'onboarding.steps.height.title',
+    description: 'onboarding.steps.height.description',
     fields: ['height'],
     contentAlignment: 'center'
   },
   weight: {
-    title: 'Qual é seu peso?',
-    description: 'Você pode inserir uma estimativa',
+    title: 'onboarding.steps.weight.title',
+    description: 'onboarding.steps.weight.description',
     fields: ['weight'],
     contentAlignment: 'center'
   },
   activityLevel: {
-    title: 'Qual seu nível de atividade?',
+    title: 'onboarding.steps.activityLevel.title',
     fields: ['activityLevel'],
     contentAlignment: 'start'
   },
   account: {
-    title: 'Crie sua conta',
-    description: 'Para poder visualizar seu progresso',
+    title: 'onboarding.steps.account.title',
+    description: 'onboarding.steps.account.description',
     fields: ['name', 'email', 'password', 'passwordConfirmation'],
     contentAlignment: 'start'
   }

@@ -1,4 +1,5 @@
-import { parseBrazilianDate } from 'shared/utils/parseBrazilianDate';
+import { getLanguage } from 'data/config/i18n';
+import { parseDateInput } from 'shared/utils/parseDateInput';
 import { toLocalIsoDate } from 'shared/utils/toLocalIsoDate';
 import { z } from 'zod';
 
@@ -7,21 +8,18 @@ export const createMealFromRecipeSchema = z
     date: z
       .string()
       .transform((value, context) => {
-        const isoDate = parseBrazilianDate(value);
+        const isoDate = parseDateInput(value, getLanguage());
 
         if (!isoDate) {
-          context.addIssue({ code: 'custom', message: 'Informe uma data válida' });
+          context.addIssue({ code: 'custom', message: 'validation.invalidDate' });
 
           return z.NEVER;
         }
 
         return isoDate;
       })
-      .refine(
-        (isoDate) => isoDate <= toLocalIsoDate(new Date()),
-        'A data não pode estar no futuro'
-      ),
-    time: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, 'Informe um horário válido')
+      .refine((isoDate) => isoDate <= toLocalIsoDate(new Date()), 'validation.futureDate'),
+    time: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, 'validation.invalidTime')
   })
   .refine(
     ({ date, time }) => {
@@ -30,7 +28,7 @@ export const createMealFromRecipeSchema = z
 
       return date !== toLocalIsoDate(now) || time <= currentTime;
     },
-    { path: ['time'], message: 'O horário não pode estar no futuro' }
+    { path: ['time'], message: 'validation.futureTime' }
   );
 
 export type CreateMealFromRecipeFormType = z.input<typeof createMealFromRecipeSchema>;

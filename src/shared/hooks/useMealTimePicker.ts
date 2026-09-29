@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 import { toDateAtTime } from 'shared/utils/toDateAtTime';
 import { toLocalIsoDate } from 'shared/utils/toLocalIsoDate';
@@ -8,6 +9,7 @@ import type { IUseMealTimePickerParams } from './UseMealTimePickerTypes';
 import { useDateTimePicker } from './useDateTimePicker';
 
 export function useMealTimePicker({ date }: IUseMealTimePickerParams) {
+  const { t } = useTranslation();
   const [pickedTime, setPickedTime] = useState<string | null>(null);
 
   const now = new Date();
@@ -18,7 +20,7 @@ export function useMealTimePicker({ date }: IUseMealTimePickerParams) {
     const selectedTime = toLocalTime(selected);
 
     if (isToday && selectedTime > toLocalTime(new Date())) {
-      Alert.alert('Horário inválido', 'O horário da refeição não pode estar no futuro.');
+      Alert.alert(t('common.invalidTimeTitle'), t('common.futureTimeMessage'));
 
       return;
     }

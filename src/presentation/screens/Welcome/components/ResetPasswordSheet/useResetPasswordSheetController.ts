@@ -9,6 +9,7 @@ import {
 import { useResetPassword } from 'data/modules/auth/useCases/resetPassword/useResetPassword';
 import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 import type { IUseResetPasswordSheetControllerParams } from './ResetPasswordSheetTypes';
 
@@ -16,6 +17,7 @@ export function useResetPasswordSheetController({
   email,
   onPasswordReset
 }: IUseResetPasswordSheetControllerParams) {
+  const { t } = useTranslation();
   const { resetPassword, isResettingPassword } = useResetPassword();
   const { requestPasswordReset, isRequestingPasswordReset } = useRequestPasswordReset();
   const [apiErrorMessage, setApiErrorMessage] = useState<string | null>(null);
@@ -40,7 +42,7 @@ export function useResetPasswordSheetController({
     try {
       await resetPassword({ email, ...payload });
 
-      Alert.alert('Senha alterada', 'Entre com a sua nova senha.');
+      Alert.alert(t('welcome.passwordResetTitle'), t('welcome.passwordResetMessage'));
       onPasswordReset();
     } catch (error) {
       setApiErrorMessage(getApiErrorMessage(error));
@@ -53,14 +55,14 @@ export function useResetPasswordSheetController({
     try {
       await requestPasswordReset({ email });
 
-      Alert.alert('Código reenviado', `Enviamos um novo código para ${email}.`);
+      Alert.alert(t('welcome.codeResentTitle'), t('welcome.codeResentMessage', { email }));
     } catch (error) {
       setApiErrorMessage(getApiErrorMessage(error));
     }
   }
 
   return {
-    description: `Enviamos um código para ${email}. Confira também a caixa de spam.`,
+    description: t('welcome.resetPasswordDescription', { email }),
     control,
     apiErrorMessage,
     isResettingPassword,

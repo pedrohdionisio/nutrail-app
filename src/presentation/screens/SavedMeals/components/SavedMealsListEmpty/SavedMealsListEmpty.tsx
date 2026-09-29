@@ -1,6 +1,7 @@
 import BookmarkIcon from 'lucide-react-native/icons/bookmark';
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Button } from 'presentation/components/Button/Button';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, View } from 'react-native';
 import { COLORS } from 'shared/constants/colors';
 import type { ISavedMealsListEmptyProps } from './SavedMealsListEmptyTypes';
@@ -11,13 +12,11 @@ export function SavedMealsListEmpty({
   isRetrying,
   onRetry
 }: ISavedMealsListEmptyProps) {
+  const { t } = useTranslation();
   if (isLoading) {
     return (
       <View className='items-center py-16'>
-        <ActivityIndicator
-          accessibilityLabel='Carregando refeições salvas'
-          color={COLORS.lime[700]}
-        />
+        <ActivityIndicator accessibilityLabel={t('savedMeals.loading')} color={COLORS.lime[700]} />
       </View>
     );
   }
@@ -27,18 +26,18 @@ export function SavedMealsListEmpty({
       <View className='gap-6 py-10'>
         <View className='gap-2'>
           <AppText align='center' weight='medium'>
-            Não conseguimos carregar suas refeições salvas
+            {t('savedMeals.errorTitle')}
           </AppText>
 
           <AppText align='center' color='muted' size='bodySm'>
-            Verifique sua conexão e tente de novo.
+            {t('common.connectionHint')}
           </AppText>
         </View>
 
         <Button
           isLoading={isRetrying}
           onPress={onRetry}
-          title='Tentar de novo'
+          title={t('common.retry')}
           variant='secondary'
         />
       </View>
@@ -53,12 +52,11 @@ export function SavedMealsListEmpty({
 
       <View className='gap-2'>
         <AppText align='center' weight='medium'>
-          Nenhuma refeição salva
+          {t('savedMeals.emptyTitle')}
         </AppText>
 
         <AppText align='center' color='muted' size='bodySm'>
-          Abra uma refeição já analisada e toque em salvar. Ela aparece aqui para você cadastrar de
-          novo com um toque.
+          {t('savedMeals.emptyMessage')}
         </AppText>
       </View>
     </View>

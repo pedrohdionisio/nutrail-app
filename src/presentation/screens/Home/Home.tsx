@@ -1,6 +1,7 @@
 import { AppText } from 'presentation/components/AppText/AppText';
 import { DateTimePickerSheet } from 'presentation/components/DateTimePickerSheet/DateTimePickerSheet';
 import { DeleteMealSheet } from 'presentation/components/DeleteMealSheet/DeleteMealSheet';
+import { useTranslation } from 'react-i18next';
 import { FlatList, View } from 'react-native';
 import { AddMealButton } from './components/AddMealButton/AddMealButton';
 import { DailySummary } from './components/DailySummary/DailySummary';
@@ -14,6 +15,7 @@ import { NewMealSheet } from './components/NewMealSheet/NewMealSheet';
 import { useHomeController } from './useHomeController';
 
 export function Home() {
+  const { t } = useTranslation();
   const {
     me,
     shouldShowSplash,
@@ -101,7 +103,7 @@ export function Home() {
               {totals && <DailySummary consumed={totals} goals={me.goals} />}
 
               <AppText accessibilityRole='header' className='pt-2' size='caption'>
-                Refeições
+                {t('home.mealsTitle')}
               </AppText>
             </View>
           }
@@ -125,7 +127,7 @@ export function Home() {
 
       <NewMealSheet onSelectSource={handleSelectMealSource} sheetRef={newMealSheetRef} />
 
-      <DateTimePickerSheet {...datePickerSheetBindings} title='Escolher dia' />
+      <DateTimePickerSheet {...datePickerSheetBindings} title={t('home.chooseDay')} />
 
       <DeleteMealSheet
         mealId={mealIdToDelete}

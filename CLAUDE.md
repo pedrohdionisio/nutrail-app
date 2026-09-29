@@ -14,7 +14,7 @@ A organização de pastas e os padrões de código vêm do `../../myfood/myfood-
 - **Faça só o que foi pedido.** Sem passos, refatorações ou arquivos que o pedido não chamou.
   Achou um problema em outro lugar, relate em vez de corrigir no caminho.
 - **Converse em português.** Código, identificadores, títulos de teste, commits e o README ficam em
-  inglês; o texto da interface é em português.
+  inglês. A interface é bilíngue (português e inglês): todo texto vem dos dicionários (`i18n.md`).
 - **Commit só quando pedido**, na branch atual. Nunca criar branch, dar push ou amend sem pedido.
 - **Nunca** suba o Metro (`yarn start`), nem rode `yarn ios`, `yarn android` ou `expo prebuild` sem
   o Pedro pedir explicitamente.
@@ -32,6 +32,7 @@ As regras detalhadas ficam em `.claude/rules/`, carregadas por caminho:
 | `design-system.md`  | tokens do Figma, `AppText`, papéis de cor, medidas         |
 | `navigation.md`     | stacks, param list, header                                 |
 | `tests.md`          | onde ficam os testes, `tests/support`, o que testar        |
+| `i18n.md`           | dicionários, onde traduzir, formatos por idioma            |
 
 Os fluxos de trabalho são skills que orquestram subagents especialistas:
 
@@ -87,8 +88,11 @@ src/shared/         navigation, utils, constants, entities, hooks, assets
 
 1. **A `date` e o `time` da refeição são locais.** Saem do relógio do aparelho, nunca de
    `toISOString()`, que muda o dia depois das 21h no Brasil.
-2. **A mensagem de erro vem do `code`.** O texto em português mora no `API_ERROR_MESSAGES` de
-   `data/config/apiError.ts`; a `message` da API nunca aparece na tela.
+2. **A mensagem de erro vem do `code`.** O texto mora em `errors.<code>` nos dicionários; a
+   `message` da API nunca aparece na tela.
+6. **Nenhum texto fora dos dicionários.** Todo texto que o usuário vê — tela, alerta, rótulo de
+   acessibilidade, mensagem de schema — existe em `ptBR.ts` e `enUS.ts`, e datas e decimais seguem o
+   idioma ativo.
 3. **O formulário espelha o schema da API.** Mesmos limites e formatos, para `VALIDATION` nunca
    chegar à tela.
 4. **Sessão só pelo `AuthProvider`.** Tokens no SecureStore pelo `AuthTokensManager`, refresh único
@@ -100,5 +104,8 @@ src/shared/         navigation, utils, constants, entities, hooks, assets
 
 - Login obrigatório, com refresh de sessão e recuperação de senha.
 - Sem bottom tab.
-- Mensagens de erro em português mapeadas no app pelo `code` da API (`data/config/apiError.ts`).
+- Português e inglês, trocados no Perfil. Sem escolha, vale o idioma do aparelho (pt → português,
+  qualquer outro → inglês). A API recebe o idioma no `Accept-Language` e responde a IA e os e-mails
+  nele; o que o usuário já cadastrou fica no idioma original.
+- Mensagens de erro mapeadas no app pelo `code` da API.
 - Light-only.

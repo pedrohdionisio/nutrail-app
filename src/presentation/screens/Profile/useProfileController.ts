@@ -2,6 +2,7 @@ import type { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation } from '@react-navigation/native';
 import { getApiErrorMessage } from 'data/config/apiError';
+import { changeLanguage, toLanguage } from 'data/config/i18n';
 import { useAuth } from 'data/contexts/AuthProvider/AuthProvider';
 import { useGetMe } from 'data/modules/me/useCases/getMe/useGetMe';
 import {
@@ -12,11 +13,14 @@ import {
 import { useUpdateProfile } from 'data/modules/profile/useCases/updateProfile/useUpdateProfile';
 import { useRef, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { getInitials } from 'shared/utils/getInitials';
+import type { ISelectLanguageParams } from './components/LanguageField/LanguageFieldTypes';
 import { toProfileFormValues } from './utils/toProfileFormValues';
 
 export function useProfileController() {
   const navigation = useNavigation();
+  const { i18n } = useTranslation();
   const { signOut } = useAuth();
   const { me } = useGetMe();
   const { updateProfile, isUpdatingProfile } = useUpdateProfile();
@@ -50,6 +54,10 @@ export function useProfileController() {
     }
   }
 
+  async function handleSelectLanguage({ language }: ISelectLanguageParams) {
+    await changeLanguage(toLanguage(language));
+  }
+
   function handleGoBack() {
     navigation.goBack();
   }
@@ -66,8 +74,10 @@ export function useProfileController() {
     control,
     initials: getInitials(name ?? me?.profile.name ?? ''),
     apiErrorMessage,
+    language: toLanguage(i18n.language),
     isUpdatingProfile,
     isSaveDisabled: !name?.trim() || !birthDate || !height || !weight,
+    handleSelectLanguage,
     handleGoBack,
     handleSave: handleSubmit(onSubmit),
     handleSignOut: signOut,

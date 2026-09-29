@@ -1,6 +1,7 @@
 import axios, { type AxiosInstance, type InternalAxiosRequestConfig, isAxiosError } from 'axios';
 import { sleep } from 'shared/utils/sleep';
 import { env } from './env';
+import { i18n } from './i18n';
 
 export const api = axios.create({
   baseURL: env.apiUrl
@@ -9,6 +10,14 @@ export const api = axios.create({
 export const publicApi = axios.create({
   baseURL: env.apiUrl
 });
+
+for (const instance of [api, publicApi]) {
+  instance.interceptors.request.use((config) => {
+    config.headers['Accept-Language'] = i18n.language;
+
+    return config;
+  });
+}
 
 export interface ISessionHandlers {
   refreshAccessToken: () => Promise<void>;

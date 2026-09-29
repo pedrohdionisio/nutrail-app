@@ -8,17 +8,23 @@ import {
   GENDER_OPTIONS,
   GOAL_OPTIONS
 } from 'presentation/constants/profileOptions';
+import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
 import { maskDate } from 'shared/utils/maskDate';
+import { LanguageField } from '../LanguageField/LanguageField';
 import type { IProfileFormProps } from './ProfileFormTypes';
 
 export function ProfileForm({
   control,
   initials,
   apiErrorMessage,
+  language,
+  onSelectLanguage,
   onChangePassword,
   onDeleteAccount
 }: IProfileFormProps) {
+  const { t } = useTranslation();
+
   return (
     <ScrollView
       className='flex-1'
@@ -35,46 +41,60 @@ export function ProfileForm({
         autoCapitalize='words'
         autoComplete='name'
         control={control}
-        label='Nome'
+        label={t('profile.name')}
         name='name'
         returnKeyType='next'
       />
       <Input
         control={control}
         keyboardType='number-pad'
-        label='Data de nascimento'
+        label={t('profile.birthDate')}
         mask={maskDate}
         maxLength={10}
         name='birthDate'
-        placeholder='DD/MM/AAAA'
+        placeholder={t('common.dateInputPlaceholder')}
       />
-      <Input control={control} keyboardType='number-pad' label='Altura' name='height' unit='cm' />
-      <Input control={control} keyboardType='decimal-pad' label='Peso' name='weight' unit='kg' />
+      <Input
+        control={control}
+        keyboardType='number-pad'
+        label={t('profile.height')}
+        name='height'
+        unit='cm'
+      />
+      <Input
+        control={control}
+        keyboardType='decimal-pad'
+        label={t('profile.weight')}
+        name='weight'
+        unit='kg'
+      />
       <OptionsField
         control={control}
-        label='Sexo'
+        label={t('profile.gender')}
         name='gender'
         options={GENDER_OPTIONS}
         orientation='column'
       />
       <OptionsField
         control={control}
-        label='Objetivo'
+        label={t('profile.goal')}
         name='goal'
         options={GOAL_OPTIONS}
         orientation='column'
       />
       <OptionsField
         control={control}
-        label='Nível de atividade'
+        label={t('profile.activityLevel')}
         name='activityLevel'
         options={ACTIVITY_LEVEL_OPTIONS}
         orientation='row'
       />
 
       <AppText color='muted' size='bodySm'>
-        Ao salvar, suas metas de calorias e macros são recalculadas a partir destes dados.
+        {t('profile.goalsRecalculated')}
       </AppText>
+
+      <LanguageField language={language} onSelectLanguage={onSelectLanguage} />
 
       {!!apiErrorMessage && (
         <AppText color='error' size='bodySm'>
@@ -83,8 +103,12 @@ export function ProfileForm({
       )}
 
       <View className='gap-2'>
-        <Button onPress={onChangePassword} title='Alterar senha' variant='secondary' />
-        <Button onPress={onDeleteAccount} title='Excluir conta' variant='ghost' />
+        <Button
+          onPress={onChangePassword}
+          title={t('profile.changePassword')}
+          variant='secondary'
+        />
+        <Button onPress={onDeleteAccount} title={t('profile.deleteAccount')} variant='ghost' />
       </View>
     </ScrollView>
   );

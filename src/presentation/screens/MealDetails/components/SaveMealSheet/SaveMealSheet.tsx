@@ -7,6 +7,7 @@ import {
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Button } from 'presentation/components/Button/Button';
 import { Input } from 'presentation/components/Input/Input';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { COLORS } from 'shared/constants/colors';
 import type { ISaveMealSheetProps } from './SaveMealSheetTypes';
@@ -29,6 +30,7 @@ function renderBackdrop(props: BottomSheetBackdropProps) {
 }
 
 export function SaveMealSheet({ sheetRef, mealId }: ISaveMealSheetProps) {
+  const { t } = useTranslation();
   const {
     paddingBottom,
     control,
@@ -54,21 +56,20 @@ export function SaveMealSheet({ sheetRef, mealId }: ISaveMealSheetProps) {
         <View className='gap-6 px-5 pt-4' style={{ paddingBottom }}>
           <View className='gap-2'>
             <AppText accessibilityRole='header' size='bodyXl' weight='semibold'>
-              Salvar refeição
+              {t('common.saveMeal')}
             </AppText>
 
             <AppText color='muted' size='bodySm'>
-              Os itens e macros ficam guardados para você cadastrar esta refeição de novo com um
-              toque.
+              {t('mealDetails.saveDescription')}
             </AppText>
           </View>
 
           <Input
             control={control}
-            label='Nome'
+            label={t('common.name')}
             maxLength={60}
             name='name'
-            placeholder='Ex.: Café da manhã de sempre'
+            placeholder={t('mealDetails.savePlaceholder')}
           />
 
           {!!apiErrorMessage && (
@@ -81,7 +82,7 @@ export function SaveMealSheet({ sheetRef, mealId }: ISaveMealSheetProps) {
             disabled={isSubmitDisabled}
             isLoading={isSavingMeal}
             onPress={handleSubmit}
-            title='Salvar'
+            title={t('common.save')}
           />
         </View>
       </BottomSheetView>

@@ -1,9 +1,11 @@
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Skeleton } from 'presentation/components/Skeleton/Skeleton';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import type { IMealItemsHeaderProps } from './MealItemsHeaderTypes';
 
 export function MealItemsHeader({ name }: IMealItemsHeaderProps) {
+  const { t } = useTranslation();
   return (
     <View className='gap-8 px-5 pt-10 pb-2'>
       {name ? (
@@ -14,7 +16,7 @@ export function MealItemsHeader({ name }: IMealItemsHeaderProps) {
         <Skeleton className='h-7 w-full' />
       )}
 
-      <AppText color='muted'>Itens</AppText>
+      <AppText color='muted'>{t('mealDetails.items')}</AppText>
     </View>
   );
 }

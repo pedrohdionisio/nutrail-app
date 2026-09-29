@@ -6,6 +6,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Button } from 'presentation/components/Button/Button';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { COLORS } from 'shared/constants/colors';
 import { useScreenPadding } from 'shared/hooks/useScreenPadding';
@@ -37,6 +38,7 @@ export function DeleteSheet({
   onCancel,
   onDismiss
 }: IDeleteSheetProps) {
+  const { t } = useTranslation();
   const { paddingBottom } = useScreenPadding();
 
   return (
@@ -70,14 +72,14 @@ export function DeleteSheet({
               className='flex-1'
               disabled={isDeleting}
               onPress={onCancel}
-              title='Cancelar'
+              title={t('common.cancel')}
               variant='secondary'
             />
             <Button
               className='flex-1'
               isLoading={isDeleting}
               onPress={onConfirm}
-              title='Excluir'
+              title={t('common.delete')}
               variant='danger'
             />
           </View>

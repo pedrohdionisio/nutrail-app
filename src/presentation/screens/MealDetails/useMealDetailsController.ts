@@ -5,11 +5,13 @@ import { MealPictureManager } from 'data/libs/MealPictureManager';
 import { useAttachMealPicture } from 'data/modules/meal/useCases/attachMealPicture/useAttachMealPicture';
 import { useGetMeal } from 'data/modules/meal/useCases/getMeal/useGetMeal';
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 import { useScreenPadding } from 'shared/hooks/useScreenPadding';
 import type { AppRoutesParamList } from 'shared/navigation/AppRoutesTypes';
 
 export function useMealDetailsController() {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const { params } = useRoute<RouteProp<AppRoutesParamList, 'MealDetails'>>();
   const { paddingBottom } = useScreenPadding();
@@ -52,7 +54,7 @@ export function useMealDetailsController() {
     try {
       pictureUri = await MealPictureManager.pick();
     } catch {
-      Alert.alert('Não foi possível abrir suas fotos', 'Tente de novo em alguns instantes.');
+      Alert.alert(t('common.photosError'), t('common.tryAgainSoon'));
     } finally {
       setIsPickingPicture(false);
     }
@@ -65,7 +67,7 @@ export function useMealDetailsController() {
       await attachMealPicture({ mealId: params.mealId, pictureUri });
       setAttachedPictureUri(pictureUri);
     } catch (error) {
-      Alert.alert('Não foi possível enviar a foto', getApiErrorMessage(error));
+      Alert.alert(t('common.uploadPictureError'), getApiErrorMessage(error));
     }
   }
 

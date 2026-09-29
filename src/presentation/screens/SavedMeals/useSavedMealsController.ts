@@ -4,6 +4,7 @@ import { getApiErrorMessage } from 'data/config/apiError';
 import { useCreateMealFromSavedMeal } from 'data/modules/meal/useCases/createMealFromSavedMeal/useCreateMealFromSavedMeal';
 import { useListSavedMeals } from 'data/modules/savedMeal/useCases/listSavedMeals/useListSavedMeals';
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 import { useMealTimePicker } from 'shared/hooks/useMealTimePicker';
 import { useScreenPadding } from 'shared/hooks/useScreenPadding';
@@ -14,6 +15,7 @@ import type {
 } from './components/SavedMealCard/SavedMealCardTypes';
 
 export function useSavedMealsController() {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const { params } = useRoute<RouteProp<AppRoutesParamList, 'SavedMeals'>>();
   const { paddingBottom } = useScreenPadding();
@@ -39,7 +41,7 @@ export function useSavedMealsController() {
       await createMealFromSavedMeal({ savedMealId, date: params.date, time: getMealTime() });
       navigation.goBack();
     } catch (error) {
-      Alert.alert('Não foi possível cadastrar a refeição', getApiErrorMessage(error));
+      Alert.alert(t('savedMeals.logError'), getApiErrorMessage(error));
     }
   }
 

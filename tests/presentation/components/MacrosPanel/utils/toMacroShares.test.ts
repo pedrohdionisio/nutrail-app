@@ -21,9 +21,9 @@ describe('toMacroShares', () => {
     const shares = toMacroShares(null);
 
     expect(shares.map(({ label, value }) => ({ label, value }))).toEqual([
-      { label: 'Carboidratos', value: null },
-      { label: 'Proteínas', value: null },
-      { label: 'Gorduras', value: null }
+      { label: 'common.carbohydrate', value: null },
+      { label: 'common.protein', value: null },
+      { label: 'common.fat', value: null }
     ]);
   });
 });

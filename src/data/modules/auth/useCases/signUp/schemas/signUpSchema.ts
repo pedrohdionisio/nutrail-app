@@ -1,56 +1,59 @@
+import { getLanguage } from 'data/config/i18n';
 import { ACTIVITY_LEVELS, GENDERS, GOALS } from 'shared/constants/profile';
-import { parseBrazilianDate } from 'shared/utils/parseBrazilianDate';
+import { parseDateInput } from 'shared/utils/parseDateInput';
 import { toLocalIsoDate } from 'shared/utils/toLocalIsoDate';
 import { z } from 'zod';
 
 export const signUpSchema = z
   .object({
-    goal: z.enum(GOALS, 'Escolha um objetivo'),
-    gender: z.enum(GENDERS, 'Escolha um gênero'),
+    goal: z.enum(GOALS, 'validation.goalRequired'),
+    gender: z.enum(GENDERS, 'validation.genderRequired'),
     birthDate: z
       .string()
       .transform((value, context) => {
-        const isoDate = parseBrazilianDate(value);
+        const isoDate = parseDateInput(value, getLanguage());
 
         if (!isoDate) {
-          context.addIssue({ code: 'custom', message: 'Informe uma data válida' });
+          context.addIssue({ code: 'custom', message: 'validation.invalidDate' });
 
           return z.NEVER;
         }
 
         return isoDate;
       })
-      .refine((isoDate) => isoDate <= toLocalIsoDate(new Date()), 'A data não pode estar no futuro')
-      .refine((isoDate) => isoDate >= '1900-01-01', 'Informe uma data válida'),
+      .refine((isoDate) => isoDate <= toLocalIsoDate(new Date()), 'validation.futureDate')
+      .refine((isoDate) => isoDate >= '1900-01-01', 'validation.invalidDate'),
     height: z
       .string()
       .trim()
-      .regex(/^\d{2,3}$/, 'Informe a altura em centímetros')
+      .regex(/^\d{2,3}$/, 'validation.heightInCentimeters')
       .transform(Number)
       .pipe(
         z
           .number()
-          .min(50, 'Informe a altura em centímetros')
-          .max(250, 'Informe a altura em centímetros')
+          .min(50, 'validation.heightInCentimeters')
+          .max(250, 'validation.heightInCentimeters')
       ),
     weight: z
       .string()
       .trim()
-      .regex(/^\d{2,3}([.,]\d{1,2})?$/, 'Informe o peso em quilos')
+      .regex(/^\d{2,3}([.,]\d{1,2})?$/, 'validation.weightInKilograms')
       .transform((value) => Number(value.replace(',', '.')))
-      .pipe(z.number().min(20, 'Informe o peso em quilos').max(400, 'Informe o peso em quilos')),
-    activityLevel: z.enum(ACTIVITY_LEVELS, 'Escolha um nível de atividade'),
-    name: z.string().trim().min(1, 'Informe seu nome').max(100, 'O nome é muito longo'),
-    email: z.email('Formato de e-mail inválido').max(254, 'O e-mail é muito longo'),
+      .pipe(
+        z.number().min(20, 'validation.weightInKilograms').max(400, 'validation.weightInKilograms')
+      ),
+    activityLevel: z.enum(ACTIVITY_LEVELS, 'validation.activityLevelRequired'),
+    name: z.string().trim().min(1, 'validation.nameRequired').max(100, 'validation.nameTooLong'),
+    email: z.email('validation.emailInvalid').max(254, 'validation.emailTooLong'),
     password: z
       .string()
-      .min(8, 'A senha deve ter no mínimo 8 caracteres')
-      .max(256, 'A senha deve ter no máximo 256 caracteres'),
+      .min(8, 'validation.passwordTooShort')
+      .max(256, 'validation.passwordTooLong'),
     passwordConfirmation: z.string()
   })
   .refine((values) => values.password === values.passwordConfirmation, {
     path: ['passwordConfirmation'],
-    message: 'As senhas não conferem'
+    message: 'validation.passwordsMismatch'
   })
   .transform(({ email, password, passwordConfirmation: _, ...profile }) => ({
     account: { email, password },

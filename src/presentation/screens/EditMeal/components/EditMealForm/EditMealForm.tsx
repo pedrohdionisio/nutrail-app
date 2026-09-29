@@ -1,5 +1,6 @@
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Input } from 'presentation/components/Input/Input';
+import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
 import { maskDate } from 'shared/utils/maskDate';
 import { maskTime } from 'shared/utils/maskTime';
@@ -15,6 +16,7 @@ export function EditMealForm({
   onRemoveItem,
   onAddItems
 }: IEditMealFormProps) {
+  const { t } = useTranslation();
   return (
     <ScrollView
       className='flex-1'
@@ -23,18 +25,18 @@ export function EditMealForm({
       keyboardShouldPersistTaps='handled'
       showsVerticalScrollIndicator={false}
     >
-      <Input control={control} label='Nome da refeição' maxLength={120} name='name' />
+      <Input control={control} label={t('editMeal.mealName')} maxLength={120} name='name' />
 
       <View className='flex-row gap-4'>
         <View className='flex-1'>
           <Input
             control={control}
             keyboardType='number-pad'
-            label='Data'
+            label={t('common.date')}
             mask={maskDate}
             maxLength={10}
             name='date'
-            placeholder='DD/MM/AAAA'
+            placeholder={t('common.dateInputPlaceholder')}
           />
         </View>
 
@@ -42,7 +44,7 @@ export function EditMealForm({
           <Input
             control={control}
             keyboardType='number-pad'
-            label='Horário'
+            label={t('common.time')}
             mask={maskTime}
             maxLength={5}
             name='time'
@@ -53,7 +55,7 @@ export function EditMealForm({
 
       <View className='gap-5'>
         <AppText accessibilityRole='header' size='caption'>
-          Itens
+          {t('mealDetails.items')}
         </AppText>
 
         {items.map((item, index) => (
@@ -67,9 +69,7 @@ export function EditMealForm({
           />
         ))}
 
-        {shouldShowEmptyItems && (
-          <AppText color='muted'>Adicione pelo menos um alimento para salvar a refeição.</AppText>
-        )}
+        {shouldShowEmptyItems && <AppText color='muted'>{t('editMeal.itemsRequired')}</AppText>}
       </View>
 
       <AddMealItemField onAdd={onAddItems} />

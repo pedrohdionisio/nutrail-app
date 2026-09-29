@@ -1,10 +1,12 @@
 import TrashIcon from 'lucide-react-native/icons/trash';
 import { AppText } from 'presentation/components/AppText/AppText';
+import { useTranslation } from 'react-i18next';
 import { Pressable } from 'react-native';
 import { COLORS } from 'shared/constants/colors';
 import type { ISwipeDeleteActionProps } from './SwipeDeleteActionTypes';
 
 export function SwipeDeleteAction({ accessibilityLabel, onPress }: ISwipeDeleteActionProps) {
+  const { t } = useTranslation();
   return (
     <Pressable
       accessibilityLabel={accessibilityLabel}
@@ -14,7 +16,7 @@ export function SwipeDeleteAction({ accessibilityLabel, onPress }: ISwipeDeleteA
     >
       <TrashIcon color={COLORS.black[700]} size={22} strokeWidth={1.8} />
       <AppText size='bodySm' weight='medium'>
-        Excluir
+        {t('common.delete')}
       </AppText>
     </Pressable>
   );

@@ -2,6 +2,7 @@ import { AppText } from 'presentation/components/AppText/AppText';
 import { DateTimePickerSheet } from 'presentation/components/DateTimePickerSheet/DateTimePickerSheet';
 import { MealTimeButton } from 'presentation/components/MealTimeButton/MealTimeButton';
 import { ScreenHeader } from 'presentation/components/ScreenHeader/ScreenHeader';
+import { useTranslation } from 'react-i18next';
 import { FlatList, View } from 'react-native';
 import { DeleteSavedMealSheet } from './components/DeleteSavedMealSheet/DeleteSavedMealSheet';
 import { SavedMealCard } from './components/SavedMealCard/SavedMealCard';
@@ -9,6 +10,7 @@ import { SavedMealsListEmpty } from './components/SavedMealsListEmpty/SavedMeals
 import { useSavedMealsController } from './useSavedMealsController';
 
 export function SavedMeals() {
+  const { t } = useTranslation();
   const {
     savedMeals,
     isLoadingSavedMeals,
@@ -32,7 +34,7 @@ export function SavedMeals() {
 
   return (
     <View className='flex-1 bg-white'>
-      <ScreenHeader onBack={handleGoBack} title='Refeições salvas' />
+      <ScreenHeader onBack={handleGoBack} title={t('savedMeals.title')} />
 
       <FlatList
         contentContainerClassName='grow gap-4 px-5 pt-6'
@@ -53,7 +55,7 @@ export function SavedMeals() {
               <MealTimeButton onPress={handleOpenTimePicker} time={timeLabel} />
 
               <AppText align='center' color='muted' size='bodySm'>
-                Toque em uma refeição para cadastrá-la.
+                {t('savedMeals.tapToLog')}
               </AppText>
             </View>
           ) : null
@@ -70,7 +72,7 @@ export function SavedMeals() {
         showsVerticalScrollIndicator={false}
       />
 
-      <DateTimePickerSheet {...timePickerSheetBindings} title='Horário da refeição' />
+      <DateTimePickerSheet {...timePickerSheetBindings} title={t('common.mealTimeTitle')} />
 
       <DeleteSavedMealSheet
         onDeleted={handleSavedMealDeleted}

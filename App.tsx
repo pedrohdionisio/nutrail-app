@@ -6,6 +6,7 @@ import {
 } from '@expo-google-fonts/host-grotesk';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { QueryClientProvider } from '@tanstack/react-query';
+import 'data/config/i18n';
 import { queryClient } from 'data/config/queryClient';
 import { AuthProvider } from 'data/contexts/AuthProvider/AuthProvider';
 import * as SplashScreen from 'expo-splash-screen';

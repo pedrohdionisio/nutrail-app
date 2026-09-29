@@ -1,13 +1,15 @@
 import ArrowRightIcon from 'lucide-react-native/icons/arrow-right';
+import { useTranslation } from 'react-i18next';
 import { Pressable } from 'react-native';
 import { COLORS } from 'shared/constants/colors';
 import { cn } from 'shared/utils/cn';
 import type { INextButtonProps } from './NextButtonTypes';
 
 export function NextButton({ disabled, onPress }: INextButtonProps) {
+  const { t } = useTranslation();
   return (
     <Pressable
-      accessibilityLabel='Continuar'
+      accessibilityLabel={t('common.continue')}
       accessibilityRole='button'
       accessibilityState={{ disabled }}
       className={cn(

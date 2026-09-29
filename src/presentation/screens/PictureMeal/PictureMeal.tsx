@@ -5,12 +5,14 @@ import { AiLoading } from 'presentation/components/AiLoading/AiLoading';
 import { DateTimePickerSheet } from 'presentation/components/DateTimePickerSheet/DateTimePickerSheet';
 import { MealTimeButton } from 'presentation/components/MealTimeButton/MealTimeButton';
 import { ReviewActions } from 'presentation/components/ReviewActions/ReviewActions';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { CaptureActions } from './components/CaptureActions/CaptureActions';
 import { PictureFrame } from './components/PictureFrame/PictureFrame';
 import { usePictureMealController } from './usePictureMealController';
 
 export function PictureMeal() {
+  const { t } = useTranslation();
   const {
     screenPadding,
     cameraRef,
@@ -34,9 +36,7 @@ export function PictureMeal() {
   } = usePictureMealController();
 
   if (shouldShowAnalyzing) {
-    return (
-      <AiLoading title='Estamos calculando seus macros com ajuda da inteligência artificial' />
-    );
+    return <AiLoading title={t('common.analyzingWithAi')} />;
   }
 
   return (
@@ -44,7 +44,7 @@ export function PictureMeal() {
       <StatusBar style='light' />
 
       <View className='px-5'>
-        <ActionButton accessibilityLabel='Fechar' icon={XIcon} onPress={handleClose} />
+        <ActionButton accessibilityLabel={t('common.close')} icon={XIcon} onPress={handleClose} />
       </View>
 
       <PictureFrame
@@ -60,8 +60,8 @@ export function PictureMeal() {
         <View className='gap-6'>
           <MealTimeButton onPress={handleOpenTimePicker} time={timeLabel} />
           <ReviewActions
-            confirmAccessibilityLabel='Confirmar foto'
-            discardAccessibilityLabel='Descartar foto'
+            confirmAccessibilityLabel={t('pictureMeal.confirm')}
+            discardAccessibilityLabel={t('pictureMeal.discard')}
             onConfirm={handleConfirm}
             onDiscard={handleDiscard}
           />
@@ -76,7 +76,7 @@ export function PictureMeal() {
         />
       )}
 
-      <DateTimePickerSheet {...timePickerSheetBindings} title='Horário da refeição' />
+      <DateTimePickerSheet {...timePickerSheetBindings} title={t('common.mealTimeTitle')} />
     </View>
   );
 }

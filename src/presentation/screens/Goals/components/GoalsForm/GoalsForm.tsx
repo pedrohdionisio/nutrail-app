@@ -1,5 +1,6 @@
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Input } from 'presentation/components/Input/Input';
+import { useTranslation } from 'react-i18next';
 import { ScrollView } from 'react-native';
 import { GoalsModeSelector } from '../GoalsModeSelector/GoalsModeSelector';
 import type { IGoalsFormProps } from './GoalsFormTypes';
@@ -11,6 +12,7 @@ export function GoalsForm({
   apiErrorMessage,
   onSelectMode
 }: IGoalsFormProps) {
+  const { t } = useTranslation();
   return (
     <ScrollView
       className='flex-1'
@@ -26,14 +28,13 @@ export function GoalsForm({
           <Input
             control={control}
             keyboardType='number-pad'
-            label='Calorias'
+            label={t('common.calories')}
             name='calories'
             unit='kcal'
           />
 
           <AppText color='muted' size='bodySm'>
-            Proteínas e gorduras continuam como estão; os carboidratos são ajustados para completar
-            as calorias.
+            {t('goals.byCaloriesHint')}
           </AppText>
         </>
       ) : (
@@ -41,21 +42,27 @@ export function GoalsForm({
           <Input
             control={control}
             keyboardType='number-pad'
-            label='Carboidratos'
+            label={t('common.carbohydrate')}
             name='carbohydrate'
             unit='g'
           />
           <Input
             control={control}
             keyboardType='number-pad'
-            label='Proteínas'
+            label={t('common.protein')}
             name='protein'
             unit='g'
           />
-          <Input control={control} keyboardType='number-pad' label='Gorduras' name='fat' unit='g' />
+          <Input
+            control={control}
+            keyboardType='number-pad'
+            label={t('common.fat')}
+            name='fat'
+            unit='g'
+          />
 
           <AppText color='muted' size='bodySm'>
-            As calorias passam a ser a soma dos macros.
+            {t('goals.byMacrosHint')}
           </AppText>
         </>
       )}

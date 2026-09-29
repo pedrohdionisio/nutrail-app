@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { SwipeableMethods } from 'react-native-gesture-handler/ReanimatedSwipeable';
 import { MEAL_CARD_FALLBACK_TITLES } from './constants/mealCardTitles';
 import type { IUseMealCardControllerParams } from './MealCardTypes';
@@ -11,6 +12,7 @@ export function useMealCardController({
   onDelete,
   onRetry
 }: IUseMealCardControllerParams) {
+  const { t } = useTranslation();
   const swipeableRef = useRef<SwipeableMethods>(null);
 
   const state = toMealCardState(meal.status);
@@ -31,7 +33,7 @@ export function useMealCardController({
   return {
     swipeableRef,
     state,
-    title: meal.name ?? MEAL_CARD_FALLBACK_TITLES[state],
+    title: meal.name ?? t(MEAL_CARD_FALLBACK_TITLES[state]),
     timeLabel: formatMealTime(meal.time),
     handlePress,
     handleDelete,

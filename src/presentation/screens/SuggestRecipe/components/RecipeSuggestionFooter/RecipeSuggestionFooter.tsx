@@ -1,4 +1,5 @@
 import { Button } from 'presentation/components/Button/Button';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { IRecipeSuggestionFooterProps } from './RecipeSuggestionFooterTypes';
@@ -10,6 +11,7 @@ export function RecipeSuggestionFooter({
   onSuggestAgain,
   onSave
 }: IRecipeSuggestionFooterProps) {
+  const { t } = useTranslation();
   const { bottom } = useSafeAreaInsets();
 
   return (
@@ -21,10 +23,10 @@ export function RecipeSuggestionFooter({
         className='flex-1'
         disabled={isSaving}
         onPress={onSuggestAgain}
-        title='Sugerir outra'
+        title={t('recipes.suggestAnother')}
         variant='secondary'
       />
-      <Button className='flex-1' isLoading={isSaving} onPress={onSave} title='Salvar receita' />
+      <Button className='flex-1' isLoading={isSaving} onPress={onSave} title={t('recipes.save')} />
     </View>
   );
 }

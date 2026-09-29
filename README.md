@@ -59,6 +59,7 @@ Pictures and voice notes are analyzed in the background: the meal shows up on th
 - Edit the goals by calories or by macros, each one kept consistent with the other.
 - Update the profile (which recalculates the goals), change the password, sign out or delete the
   account.
+- Switch the app between Portuguese and English.
 
 ## Highlights
 
@@ -73,9 +74,13 @@ Pictures and voice notes are analyzed in the background: the meal shows up on th
 - **The local day is the user's day.** Dates and times always come from the device clock, never
   from UTC, so a dinner at 10 p.m. in Brazil stays on the right day. Tests run in
   `America/Sao_Paulo` to keep it that way.
+- **Portuguese and English, end to end.** The language follows the device and can be switched
+  in the profile, instantly. Every request carries it, so the AI names the foods, writes the recipes
+  and sends the e-mails in the same language; dates are typed `DD/MM/YYYY` or `MM/DD/YYYY` to
+  match. Keys are typed: a text missing in one language fails the TypeScript build.
 - **Errors in the user's language, not the server's.** The API answers an error code; the app maps
-  each one to a Portuguese message, and forms validate with the same rules as the API before
-  sending.
+  each one to a message in the active language, and forms validate with the same rules as the API
+  before sending.
 - **Session in the secure store.** Tokens live in `expo-secure-store`, and a `401` triggers one
   shared refresh, however many requests fail at once, before signing out.
 - **Quality gate on every commit and push.** Husky and lint-staged run Biome and the TypeScript
@@ -135,8 +140,8 @@ yarn ios        # or: yarn android
 
 | Suite | Tool | What it covers |
 |---|---|---|
-| Unit | Jest | Masks, formatters, the item macro recalculation, Zod schemas, API error mapping and the `401` refresh interceptor |
-| Feature | Jest, React Native Testing Library, MSW | The whole app rendered with its real providers and navigation against a mocked API: session restore and refresh, onboarding and sign-in, password recovery, logging meals by picture, voice, text, saved meal and recipe, the analysis in progress and its failure, meal details and editing, recipes, goals and profile |
+| Unit | Jest | Masks, formatters, date input in both languages, the item macro recalculation, Zod schemas, API error mapping, the starting language and the `401` refresh interceptor |
+| Feature | Jest, React Native Testing Library, MSW | The whole app rendered with its real providers and navigation against a mocked API: session restore and refresh, onboarding and sign-in, password recovery, logging meals by picture, voice, text, saved meal and recipe, the analysis in progress and its failure, meal details and editing, recipes, goals and profile, and switching to English |
 
 ```bash
 yarn test            # unit and feature
@@ -152,7 +157,7 @@ the bottom sheets are replaced by test doubles. There are no end-to-end tests on
 ```
 src/
   data/
-    config/        axios instances, React Query client, API error messages, environment
+    config/        axios instances, React Query client, i18n and translations, API error codes, environment
     contexts/      authentication
     libs/          token storage, meal picture and audio helpers
     modules/       one folder per API resource: services, useCases, types, keys
@@ -167,14 +172,14 @@ src/
 tests/             mirrors src/, plus support/ with the MSW server, fixtures and mocks
 ```
 
-The interface is in Portuguese, for the Brazilian market. Code, identifiers and documentation are in
-English.
+The interface is in Portuguese and English, with the translations in `src/data/config/locales`.
+Code, identifiers and documentation are in English.
 
 ## Stack
 
 Expo SDK 57 · React Native 0.86 · React 19 · TypeScript · NativeWind 4 (Tailwind CSS 3.4) · React
 Navigation 7 · TanStack Query · axios · React Hook Form · Zod · expo-camera · expo-image-picker ·
-expo-image-manipulator · expo-audio · expo-secure-store · Gorhom Bottom Sheet · lucide · Jest ·
+expo-image-manipulator · expo-audio · expo-secure-store · expo-localization · i18next · react-i18next · Gorhom Bottom Sheet · lucide · Jest ·
 React Native Testing Library · MSW · Biome · Husky + lint-staged · GitHub Actions
 
 ## Author

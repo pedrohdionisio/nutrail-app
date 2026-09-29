@@ -8,6 +8,7 @@ import {
 import { useSaveMeal } from 'data/modules/savedMeal/useCases/saveMeal/useSaveMeal';
 import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 import { useScreenPadding } from 'shared/hooks/useScreenPadding';
 import type { IUseSaveMealSheetControllerParams } from './SaveMealSheetTypes';
@@ -18,6 +19,7 @@ export function useSaveMealSheetController({
   sheetRef,
   mealId
 }: IUseSaveMealSheetControllerParams) {
+  const { t } = useTranslation();
   const { paddingBottom } = useScreenPadding();
   const { saveMeal, isSavingMeal } = useSaveMeal();
   const [apiErrorMessage, setApiErrorMessage] = useState<string | null>(null);
@@ -41,7 +43,7 @@ export function useSaveMealSheetController({
     }
 
     sheetRef.current?.dismiss();
-    Alert.alert('Refeição salva', 'Cadastre de novo quando quiser, em "Refeição salva".');
+    Alert.alert(t('mealDetails.savedTitle'), t('mealDetails.savedMessage'));
   }
 
   function handleDismiss() {

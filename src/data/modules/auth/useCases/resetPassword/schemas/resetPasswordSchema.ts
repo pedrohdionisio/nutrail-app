@@ -2,16 +2,16 @@ import { z } from 'zod';
 
 export const resetPasswordSchema = z
   .object({
-    code: z.string().trim().min(1, 'Informe o código que chegou por e-mail').max(32),
+    code: z.string().trim().min(1, 'validation.codeRequired').max(32),
     password: z
       .string()
-      .min(8, 'A senha deve ter no mínimo 8 caracteres')
-      .max(256, 'A senha deve ter no máximo 256 caracteres'),
+      .min(8, 'validation.passwordTooShort')
+      .max(256, 'validation.passwordTooLong'),
     passwordConfirmation: z.string()
   })
   .refine((values) => values.password === values.passwordConfirmation, {
     path: ['passwordConfirmation'],
-    message: 'As senhas não conferem'
+    message: 'validation.passwordsMismatch'
   })
   .transform(({ code, password }) => ({ code, password }));
 

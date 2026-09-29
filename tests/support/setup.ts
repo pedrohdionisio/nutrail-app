@@ -1,10 +1,14 @@
 import 'react-native-gesture-handler/jestSetup';
 import { removeAccessToken, removeSessionHandlers } from 'data/config/api';
+import { i18n } from 'data/config/i18n';
 import { resetAudio } from './mocks/audio';
 import { clearSecureStore } from './mocks/secureStore';
 import { server } from './server';
 
 jest.mock('expo-secure-store', () => jest.requireActual('./mocks/secureStore').secureStoreMock);
+jest.mock('expo-localization', () => ({
+  getLocales: () => [{ languageCode: 'pt', languageTag: 'pt-BR' }]
+}));
 jest.mock('expo-audio', () => jest.requireActual('./mocks/audio').audioMock);
 jest.mock(
   '@react-native-community/datetimepicker',
@@ -23,7 +27,11 @@ jest.mock(
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 
-afterEach(() => {
+afterEach(async () => {
+  if (i18n.language !== 'pt-BR') {
+    await i18n.changeLanguage('pt-BR');
+  }
+
   jest.restoreAllMocks();
   server.resetHandlers();
   removeAccessToken();

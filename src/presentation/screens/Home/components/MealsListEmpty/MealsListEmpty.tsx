@@ -1,5 +1,6 @@
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Button } from 'presentation/components/Button/Button';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, View } from 'react-native';
 import { COLORS } from 'shared/constants/colors';
 import { MealSourceOptions } from '../MealSourceOptions/MealSourceOptions';
@@ -12,10 +13,11 @@ export function MealsListEmpty({
   onRetry,
   onSelectSource
 }: IMealsListEmptyProps) {
+  const { t } = useTranslation();
   if (isLoading) {
     return (
       <View className='items-center py-16'>
-        <ActivityIndicator accessibilityLabel='Carregando refeições' color={COLORS.lime[700]} />
+        <ActivityIndicator accessibilityLabel={t('home.loadingMeals')} color={COLORS.lime[700]} />
       </View>
     );
   }
@@ -25,18 +27,18 @@ export function MealsListEmpty({
       <View className='gap-6 py-10'>
         <View className='gap-2'>
           <AppText align='center' weight='medium'>
-            Não conseguimos carregar suas refeições
+            {t('home.mealsErrorTitle')}
           </AppText>
 
           <AppText align='center' color='muted' size='bodySm'>
-            Verifique sua conexão e tente de novo.
+            {t('common.connectionHint')}
           </AppText>
         </View>
 
         <Button
           isLoading={isRetrying}
           onPress={onRetry}
-          title='Tentar de novo'
+          title={t('common.retry')}
           variant='secondary'
         />
       </View>
@@ -45,9 +47,7 @@ export function MealsListEmpty({
 
   return (
     <View className='gap-4'>
-      <AppText color='muted'>
-        Nenhuma refeição registrada neste dia. Cadastre por uma das opções abaixo:
-      </AppText>
+      <AppText color='muted'>{t('home.emptyMeals')}</AppText>
 
       <MealSourceOptions onSelect={onSelectSource} />
     </View>

@@ -1,4 +1,5 @@
 import PlusIcon from 'lucide-react-native/icons/plus';
+import { useTranslation } from 'react-i18next';
 import { Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS } from 'shared/constants/colors';
@@ -15,11 +16,12 @@ const SHADOW = {
 };
 
 export function AddMealButton({ onPress }: IAddMealButtonProps) {
+  const { t } = useTranslation();
   const { bottom } = useSafeAreaInsets();
 
   return (
     <Pressable
-      accessibilityLabel='Cadastrar refeição'
+      accessibilityLabel={t('home.addMeal')}
       accessibilityRole='button'
       className='absolute right-5 h-14 w-14 items-center justify-center rounded-2xl bg-lime-500 active:opacity-80'
       onPress={onPress}

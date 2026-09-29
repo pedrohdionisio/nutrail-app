@@ -3,6 +3,7 @@ import PauseIcon from 'lucide-react-native/icons/pause';
 import PlayIcon from 'lucide-react-native/icons/play';
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Button } from 'presentation/components/Button/Button';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Pressable, View } from 'react-native';
 import { COLORS } from 'shared/constants/colors';
 import { cn } from 'shared/utils/cn';
@@ -18,31 +19,35 @@ export function RecordingPanel({
   onRequestPermission,
   onTogglePlayback
 }: IRecordingPanelProps) {
+  const { t } = useTranslation();
   const isRecording = recordingStep === 'RECORDING';
   const PlaybackIcon = isPlaying ? PauseIcon : PlayIcon;
 
   return (
     <View className='flex-1 items-center justify-center gap-8 px-8'>
       {microphoneStatus === 'LOADING' && (
-        <ActivityIndicator accessibilityLabel='Preparando o microfone' color={COLORS.lime[500]} />
+        <ActivityIndicator
+          accessibilityLabel={t('audioMeal.preparingMicrophone')}
+          color={COLORS.lime[500]}
+        />
       )}
 
       {microphoneStatus === 'DENIED' && (
         <View className='gap-6'>
           <AppText align='center' color='inverse'>
-            Permita o acesso ao microfone para gravar a descrição da sua refeição.
+            {t('audioMeal.microphonePermission')}
           </AppText>
 
           <Button
             onPress={onRequestPermission}
-            title={canAskPermission ? 'Permitir microfone' : 'Abrir ajustes'}
+            title={canAskPermission ? t('audioMeal.allowMicrophone') : t('common.openSettings')}
           />
         </View>
       )}
 
       {microphoneStatus === 'GRANTED' && recordingStep === 'RECORDED' && (
         <Pressable
-          accessibilityLabel={isPlaying ? 'Pausar áudio' : 'Ouvir áudio'}
+          accessibilityLabel={isPlaying ? t('audioMeal.pause') : t('audioMeal.play')}
           accessibilityRole='button'
           className='h-24 w-24 items-center justify-center rounded-full bg-black-700 active:opacity-80'
           onPress={onTogglePlayback}
@@ -73,7 +78,7 @@ export function RecordingPanel({
           </AppText>
 
           <AppText align='center' color='inverseMuted'>
-            {RECORDING_HINTS[recordingStep]}
+            {t(RECORDING_HINTS[recordingStep])}
           </AppText>
         </View>
       )}

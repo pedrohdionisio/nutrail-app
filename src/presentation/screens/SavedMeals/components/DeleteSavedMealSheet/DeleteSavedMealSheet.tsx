@@ -1,4 +1,5 @@
 import { DeleteSheet } from 'presentation/components/DeleteSheet/DeleteSheet';
+import { useTranslation } from 'react-i18next';
 import type { IDeleteSavedMealSheetProps } from './DeleteSavedMealSheetTypes';
 import { useDeleteSavedMealSheetController } from './useDeleteSavedMealSheetController';
 
@@ -7,19 +8,20 @@ export function DeleteSavedMealSheet({
   savedMealId,
   onDeleted
 }: IDeleteSavedMealSheetProps) {
+  const { t } = useTranslation();
   const { apiErrorMessage, isDeletingSavedMeal, handleConfirm, handleCancel, handleDismiss } =
     useDeleteSavedMealSheetController({ sheetRef, savedMealId, onDeleted });
 
   return (
     <DeleteSheet
       apiErrorMessage={apiErrorMessage}
-      description='Ela sai da sua lista de refeições salvas. As refeições já cadastradas continuam no diário.'
+      description={t('savedMeals.deleteDescription')}
       isDeleting={isDeletingSavedMeal}
       onCancel={handleCancel}
       onConfirm={handleConfirm}
       onDismiss={handleDismiss}
       sheetRef={sheetRef}
-      title='Excluir refeição salva?'
+      title={t('savedMeals.deleteTitle')}
     />
   );
 }

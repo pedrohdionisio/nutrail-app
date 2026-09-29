@@ -30,7 +30,8 @@ Da borda para a tela, para cada camada compilar contra a de baixo:
 2. `src/data/modules/<recurso>/` — `types/` (DTO), `keys/`, `services/` (uma função por endpoint),
    `mappers/` só se houver transformação, e `useCases/<acao>/` com o hook e o schema do formulário
    espelhando o da API.
-3. `src/data/config/apiError.ts` — mensagem em português para cada `code` novo que o usuário vê.
+3. `src/data/config/locales/` — todo texto novo nos dois dicionários (`ptBR.ts` e `enUS.ts`), e
+   cada `code` novo da API em `API_ERROR_CODES` e em `errors`.
 4. `src/shared/navigation/` — rota nova no param list **e** no `<Stack.Screen>`, juntos.
 5. `src/presentation/` — screen, componentes no escopo mais fechado, controllers, e os três estados
    (carregando, vazio, erro com "tentar de novo").
@@ -40,7 +41,8 @@ Da borda para a tela, para cada camada compilar contra a de baixo:
 - `date` e `time` da refeição saem do relógio local, nunca de `toISOString()`.
 - Nenhum texto de erro escrito no controller: `getApiErrorMessage(error)`.
 - Nenhum DTO em `presentation/`; `axios`, `useQuery` e `useMutation` só em `data/`.
-- Todo texto por `AppText`, toda cor e medida por token; todo bottom sheet por `BottomSheetModal`.
+- Todo texto por `AppText` e por `t()`, nunca literal; toda cor e medida por token; todo bottom
+  sheet por `BottomSheetModal`.
 - Nenhum `useState`, `useEffect` ou handler no `.tsx`.
 - Invalidação do cache certo depois de cada mutation (a lista do dia, o `/me`, a lista do recurso).
 

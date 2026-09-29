@@ -1,6 +1,8 @@
+import { getLanguage } from 'data/config/i18n';
 import type { UpdateProfileFormType } from 'data/modules/profile/useCases/updateProfile/schemas/updateProfileSchema';
 import type { IUserProfile } from 'shared/entities/IUserProfile';
-import { toBrazilianDate } from 'shared/utils/toBrazilianDate';
+import { toDateInput } from 'shared/utils/toDateInput';
+import { toDecimalInput } from 'shared/utils/toDecimalInput';
 
 export function toProfileFormValues({
   name,
@@ -13,9 +15,9 @@ export function toProfileFormValues({
 }: IUserProfile): UpdateProfileFormType {
   return {
     name,
-    birthDate: toBrazilianDate(birthDate),
+    birthDate: toDateInput(birthDate, getLanguage()),
     height: String(height),
-    weight: String(weight).replace('.', ','),
+    weight: toDecimalInput(weight, getLanguage()),
     gender,
     goal,
     activityLevel

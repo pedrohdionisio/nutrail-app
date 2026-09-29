@@ -12,6 +12,7 @@ import { useDeleteMeal } from 'data/modules/meal/useCases/deleteMeal/useDeleteMe
 import { useReprocessMeal } from 'data/modules/meal/useCases/reprocessMeal/useReprocessMeal';
 import { type CameraView, useCameraPermissions } from 'expo-camera';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Alert, Linking } from 'react-native';
 import type { IMealDetails } from 'shared/entities/IMealDetails';
 import { useMealTimePicker } from 'shared/hooks/useMealTimePicker';
@@ -21,6 +22,7 @@ import { toDevicePermissionStatus } from 'shared/utils/toDevicePermissionStatus'
 import type { IHandleFailedMealParams } from './PictureMealTypes';
 
 export function usePictureMealController() {
+  const { t } = useTranslation();
   const navigation = useNavigation<NativeStackNavigationProp<AppRoutesParamList>>();
   const { params } = useRoute<RouteProp<AppRoutesParamList, 'PictureMeal'>>();
   const screenPadding = useScreenPadding();
@@ -90,7 +92,7 @@ export function usePictureMealController() {
       const { uri, width } = await cameraRef.current.takePictureAsync({ quality: 1 });
       setPictureUri(await MealPictureManager.optimize({ uri, width }));
     } catch {
-      Alert.alert('Não foi possível tirar a foto', 'Tente de novo em alguns instantes.');
+      Alert.alert(t('pictureMeal.captureError'), t('common.tryAgainSoon'));
     } finally {
       setIsCapturing(false);
     }
@@ -106,7 +108,7 @@ export function usePictureMealController() {
         setPictureUri(pickedUri);
       }
     } catch {
-      Alert.alert('Não foi possível abrir suas fotos', 'Tente de novo em alguns instantes.');
+      Alert.alert(t('common.photosError'), t('common.tryAgainSoon'));
     } finally {
       setIsPicking(false);
     }
@@ -133,7 +135,7 @@ export function usePictureMealController() {
 
       showAnalysisResult(meal);
     } catch (error) {
-      Alert.alert('Não foi possível enviar a foto', getApiErrorMessage(error));
+      Alert.alert(t('common.uploadPictureError'), getApiErrorMessage(error));
     } finally {
       setIsAnalyzing(false);
     }
@@ -145,7 +147,7 @@ export function usePictureMealController() {
     try {
       showAnalysisResult(await reprocessMeal({ mealId }));
     } catch (error) {
-      Alert.alert('Não foi possível tentar de novo', getApiErrorMessage(error));
+      Alert.alert(t('common.retryFailed'), getApiErrorMessage(error));
     } finally {
       setIsAnalyzing(false);
     }
@@ -163,26 +165,19 @@ export function usePictureMealController() {
     }
 
     if (meal.status === 'FAILED') {
-      Alert.alert(
-        'Não conseguimos analisar a foto',
-        'Tente de novo ou use outra foto, com os alimentos bem visíveis.',
-        [
-          {
-            text: 'Cancelar',
-            style: 'cancel',
-            onPress: () => handleDiscardFailedMeal({ mealId: meal.id })
-          },
-          { text: 'Tentar de novo', onPress: () => handleReprocess({ mealId: meal.id }) }
-        ]
-      );
+      Alert.alert(t('pictureMeal.analysisFailedTitle'), t('pictureMeal.analysisFailedMessage'), [
+        {
+          text: t('common.cancel'),
+          style: 'cancel',
+          onPress: () => handleDiscardFailedMeal({ mealId: meal.id })
+        },
+        { text: t('common.retry'), onPress: () => handleReprocess({ mealId: meal.id }) }
+      ]);
 
       return;
     }
 
-    Alert.alert(
-      'A análise está demorando',
-      'Sua refeição vai aparecer na lista assim que ficar pronta.'
-    );
+    Alert.alert(t('common.analysisSlowTitle'), t('common.analysisSlowMessage'));
     setShouldLeave(true);
   }
 

@@ -18,6 +18,7 @@ import {
   useAudioRecorderState
 } from 'expo-audio';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Alert, Linking } from 'react-native';
 import type { IMealDetails } from 'shared/entities/IMealDetails';
 import { useMealTimePicker } from 'shared/hooks/useMealTimePicker';
@@ -28,6 +29,7 @@ import type { IHandleFailedMealParams, IRecording, RecordingStep } from './Audio
 import { formatRecordingDuration } from './utils/formatRecordingDuration';
 
 export function useAudioMealController() {
+  const { t } = useTranslation();
   const navigation = useNavigation<NativeStackNavigationProp<AppRoutesParamList>>();
   const { params } = useRoute<RouteProp<AppRoutesParamList, 'AudioMeal'>>();
   const screenPadding = useScreenPadding();
@@ -99,7 +101,7 @@ export function useAudioMealController() {
       await recorder.prepareToRecordAsync();
       recorder.record();
     } catch {
-      Alert.alert('Não foi possível gravar o áudio', 'Tente de novo em alguns instantes.');
+      Alert.alert(t('audioMeal.recordError'), t('common.tryAgainSoon'));
     } finally {
       setIsStartingRecording(false);
     }
@@ -116,7 +118,7 @@ export function useAudioMealController() {
         setRecording({ uri: recorder.uri, durationMillis });
       }
     } catch {
-      Alert.alert('Não foi possível salvar o áudio', 'Tente gravar de novo.');
+      Alert.alert(t('audioMeal.saveError'), t('audioMeal.recordAgain'));
     }
   }
 
@@ -156,7 +158,7 @@ export function useAudioMealController() {
 
       showAnalysisResult(meal);
     } catch (error) {
-      Alert.alert('Não foi possível enviar o áudio', getApiErrorMessage(error));
+      Alert.alert(t('audioMeal.uploadError'), getApiErrorMessage(error));
     } finally {
       setIsAnalyzing(false);
     }
@@ -168,7 +170,7 @@ export function useAudioMealController() {
     try {
       showAnalysisResult(await reprocessMeal({ mealId }));
     } catch (error) {
-      Alert.alert('Não foi possível tentar de novo', getApiErrorMessage(error));
+      Alert.alert(t('common.retryFailed'), getApiErrorMessage(error));
     } finally {
       setIsAnalyzing(false);
     }
@@ -186,26 +188,19 @@ export function useAudioMealController() {
     }
 
     if (meal.status === 'FAILED') {
-      Alert.alert(
-        'Não conseguimos entender o áudio',
-        'Tente de novo ou grave outra vez, dizendo os alimentos e as quantidades.',
-        [
-          {
-            text: 'Cancelar',
-            style: 'cancel',
-            onPress: () => handleDiscardFailedMeal({ mealId: meal.id })
-          },
-          { text: 'Tentar de novo', onPress: () => handleReprocess({ mealId: meal.id }) }
-        ]
-      );
+      Alert.alert(t('audioMeal.analysisFailedTitle'), t('audioMeal.analysisFailedMessage'), [
+        {
+          text: t('common.cancel'),
+          style: 'cancel',
+          onPress: () => handleDiscardFailedMeal({ mealId: meal.id })
+        },
+        { text: t('common.retry'), onPress: () => handleReprocess({ mealId: meal.id }) }
+      ]);
 
       return;
     }
 
-    Alert.alert(
-      'A análise está demorando',
-      'Sua refeição vai aparecer na lista assim que ficar pronta.'
-    );
+    Alert.alert(t('common.analysisSlowTitle'), t('common.analysisSlowMessage'));
     setShouldLeave(true);
   }
 

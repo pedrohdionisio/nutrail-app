@@ -1,4 +1,5 @@
 import { ScreenHeader } from 'presentation/components/ScreenHeader/ScreenHeader';
+import { useTranslation } from 'react-i18next';
 import { FlatList, View } from 'react-native';
 import { RecipeCard } from './components/RecipeCard/RecipeCard';
 import { RecipesFooter } from './components/RecipesFooter/RecipesFooter';
@@ -6,6 +7,7 @@ import { RecipesListEmpty } from './components/RecipesListEmpty/RecipesListEmpty
 import { useRecipesController } from './useRecipesController';
 
 export function Recipes() {
+  const { t } = useTranslation();
   const {
     recipes,
     isLoadingRecipes,
@@ -19,7 +21,7 @@ export function Recipes() {
 
   return (
     <View className='flex-1 bg-white'>
-      <ScreenHeader onBack={handleGoBack} title='Receitas' />
+      <ScreenHeader onBack={handleGoBack} title={t('recipes.title')} />
 
       <FlatList
         contentContainerClassName='grow gap-4 px-5 py-6'

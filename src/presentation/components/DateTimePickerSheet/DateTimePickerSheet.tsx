@@ -5,8 +5,10 @@ import {
   BottomSheetView
 } from '@gorhom/bottom-sheet';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { getLanguage } from 'data/config/i18n';
 import { AppText } from 'presentation/components/AppText/AppText';
 import { Button } from 'presentation/components/Button/Button';
+import { useTranslation } from 'react-i18next';
 import { Platform, View } from 'react-native';
 import { COLORS } from 'shared/constants/colors';
 import type { IDateTimePickerSheetProps } from './DateTimePickerSheetTypes';
@@ -36,6 +38,7 @@ export function DateTimePickerSheet({
   maximumDate,
   onSelect
 }: IDateTimePickerSheetProps) {
+  const { t } = useTranslation();
   const { paddingBottom, draftValue, handleChangeDraft, handleConfirm, handleDismiss } =
     useDateTimePickerSheetController({ sheetRef, value, onSelect });
 
@@ -60,7 +63,7 @@ export function DateTimePickerSheet({
           <DateTimePicker
             accentColor={COLORS.lime[700]}
             display={mode === 'date' ? 'inline' : 'spinner'}
-            locale='pt-BR'
+            locale={getLanguage()}
             maximumDate={maximumDate}
             mode={mode}
             onValueChange={(_, date) => handleChangeDraft({ date })}
@@ -68,7 +71,7 @@ export function DateTimePickerSheet({
             value={draftValue}
           />
 
-          <Button onPress={handleConfirm} title='Confirmar' />
+          <Button onPress={handleConfirm} title={t('common.confirm')} />
         </View>
       </BottomSheetView>
     </BottomSheetModal>

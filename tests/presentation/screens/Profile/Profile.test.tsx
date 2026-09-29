@@ -1,5 +1,6 @@
 import { screen, waitFor } from '@testing-library/react-native';
 import { AuthTokensManager } from 'data/libs/AuthTokensManager';
+import * as SecureStore from 'expo-secure-store';
 import { HttpResponse, http } from 'msw';
 import { spyOnAlert } from 'tests/support/alert';
 import { apiUrl } from 'tests/support/apiUrl';
@@ -210,5 +211,59 @@ describe('Profile', () => {
 
     await waitForHome();
     expect(bodies).toEqual([]);
+  });
+
+  it('should switch to English, keep the choice and fill the dates the American way', async () => {
+    const languages: (string | null)[] = [];
+    const bodies = mockUpdateProfile(() => HttpResponse.json({ goals: RECALCULATED_GOALS }));
+    server.events.on('request:start', ({ request }) => {
+      languages.push(request.headers.get('Accept-Language'));
+    });
+    const { user, unmount } = await openProfile();
+
+    expect(screen.getByRole('radio', { name: 'Português' })).toBeChecked();
+    await user.press(screen.getByRole('radio', { name: 'English' }));
+
+    expect(await screen.findByRole('header', { name: 'Profile' })).toBeOnTheScreen();
+    expect(screen.getByRole('radio', { name: 'English' })).toBeChecked();
+    expect(screen.getByRole('radio', { name: 'Female' })).toBeChecked();
+    expect(screen.getByDisplayValue('03/07/1990')).toBeOnTheScreen();
+    expect(screen.getByDisplayValue('62.5')).toBeOnTheScreen();
+    expect(SecureStore.getItem('nutrail.settings.language')).toBe('en-US');
+
+    const birthDate = screen.getByDisplayValue('03/07/1990');
+    await user.clear(birthDate);
+    await user.type(birthDate, '02302000');
+    await user.press(screen.getByRole('button', { name: 'Save' }));
+
+    expect(await screen.findByText('Enter a valid date')).toBeOnTheScreen();
+
+    await user.clear(birthDate);
+    await user.type(birthDate, '02192000');
+    await user.press(screen.getByRole('button', { name: 'Save' }));
+
+    await waitFor(() => expect(bodies).toHaveLength(1));
+    expect(bodies[0]).toMatchObject({ birthDate: '2000-02-19', weight: 62.5 });
+    expect(languages.at(-1)).toBe('en-US');
+
+    server.events.removeAllListeners();
+    unmount();
+  });
+
+  it('should show the API error in English', async () => {
+    mockUpdateProfile(() =>
+      HttpResponse.json(
+        { error: { code: 'USER_NOT_FOUND', message: 'User not found.' } },
+        { status: 404 }
+      )
+    );
+    const { user, unmount } = await openProfile();
+
+    await user.press(screen.getByRole('radio', { name: 'English' }));
+    await user.press(await screen.findByRole('button', { name: 'Save' }));
+
+    expect(await screen.findByText('User not found.')).toBeOnTheScreen();
+
+    unmount();
   });
 });

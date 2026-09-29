@@ -1,3 +1,4 @@
+import type { TranslationKey } from 'data/config/i18n';
 import type { SignUpFormType } from 'data/modules/auth/useCases/signUp/schemas/signUpSchema';
 import type { FieldPath } from 'react-hook-form';
 
@@ -8,8 +9,8 @@ export type OnboardingStepId = (typeof ONBOARDING_STEP_IDS)[number];
 export type OnboardingContentAlignment = 'start' | 'center' | 'end';
 
 export interface IOnboardingStep {
-  title: string;
-  description?: string;
+  title: TranslationKey;
+  description?: TranslationKey;
   fields: FieldPath<SignUpFormType>[];
   contentAlignment: OnboardingContentAlignment;
 }
