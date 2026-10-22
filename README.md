@@ -158,6 +158,19 @@ npx eas-cli build --profile preview --platform android      # Nutrail Dev APK
 npx eas-cli build --profile production --platform android   # Nutrail APK
 ```
 
+JavaScript-only changes reach installed apps through EAS Update, without a new APK. Each build
+profile listens to its own channel, and the runtime version is a fingerprint of the native code,
+so an update only reaches builds with the same native code; a native change needs a new build.
+
+```bash
+yarn update:preview      # to Nutrail Dev
+yarn update:production   # to Nutrail
+```
+
+The scripts set the variant and the API URL themselves, because `eas update` bundles on the local
+machine, where `.env` points to the development API and the `eas.json` build variables do not
+apply.
+
 ## Testing
 
 | Suite | Tool | What it covers |

@@ -2,6 +2,7 @@ import type { ExpoConfig } from 'expo/config';
 
 const IS_PRODUCTION = process.env.APP_VARIANT === 'production';
 const BRAND_BACKGROUND = '#022C22';
+const EAS_PROJECT_ID = '69df0e5d-043e-4ac2-862e-3ded530589d0';
 
 const CAMERA_PERMISSION =
   'Nutrail uses the camera to take pictures of your meals and calculate the macros.';
@@ -17,6 +18,12 @@ const config: ExpoConfig = {
   orientation: 'portrait',
   icon: './assets/icon.png',
   userInterfaceStyle: 'light',
+  runtimeVersion: {
+    policy: 'fingerprint'
+  },
+  updates: {
+    url: `https://u.expo.dev/${EAS_PROJECT_ID}`
+  },
   ios: {
     bundleIdentifier: IS_PRODUCTION ? 'com.nutrail.app' : 'com.nutrail.app.dev',
     supportsTablet: false,
@@ -42,7 +49,7 @@ const config: ExpoConfig = {
   },
   extra: {
     eas: {
-      projectId: '69df0e5d-043e-4ac2-862e-3ded530589d0'
+      projectId: EAS_PROJECT_ID
     }
   },
   plugins: [

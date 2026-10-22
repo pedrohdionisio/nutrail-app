@@ -115,5 +115,9 @@ src/shared/         navigation, utils, constants, entities, hooks, assets
   (`com.nutrail.app.dev`, API de `dev`, o padrão local) e "Nutrail" (`com.nutrail.app`,
   `https://api.nutrail.app`). Os builds são do EAS (`eas.json`): `preview` gera o APK do dev e
   `production` o de produção, com a URL da API definida no perfil.
+- EAS Update: o perfil `preview` escuta o canal `preview` e o `production`, o canal `production`,
+  com `runtimeVersion` por fingerprint. Publicar só com `yarn update:preview` ou
+  `yarn update:production`, que fixam a variante e a URL da API; um `eas update` direto usaria o
+  `.env` local e mandaria a URL de dev para o app de produção.
 - Ícone e splash (`assets/`): a logo inteira sobre o verde-escuro da marca (`#022C22`), com ícone
   adaptativo e monocromático no Android. As duas variantes usam o mesmo ícone.
