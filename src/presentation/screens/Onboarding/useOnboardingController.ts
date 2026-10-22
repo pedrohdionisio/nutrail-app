@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation, usePreventRemove } from '@react-navigation/native';
-import { getApiErrorMessage } from 'data/config/apiError';
+import { getApiErrorCode, getApiErrorMessage } from 'data/config/apiError';
 import { useAuth } from 'data/contexts/AuthProvider/AuthProvider';
 import {
   type SignUpFormType,
@@ -18,14 +18,19 @@ export function useOnboardingController() {
   const navigation = useNavigation();
   const { activateSession, enterApp } = useAuth();
   const { signUp, isSigningUp } = useSignUp();
-  const [stepId, setStepId] = useState<OnboardingStepId>('goal');
+  const [stepId, setStepId] = useState<OnboardingStepId>('invite');
   const [hasSignedUp, setHasSignedUp] = useState(false);
   const [apiErrorMessage, setApiErrorMessage] = useState<string | null>(null);
   const { me, isMeError, refetchMe } = useGetMe({ enabled: hasSignedUp });
 
-  const { control, trigger, handleSubmit } = useForm<SignUpFormType, unknown, SignUpPayloadType>({
+  const { control, trigger, handleSubmit, setError } = useForm<
+    SignUpFormType,
+    unknown,
+    SignUpPayloadType
+  >({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
+      inviteCode: '',
       birthDate: '',
       height: '',
       weight: '',
@@ -73,6 +78,13 @@ export function useOnboardingController() {
       await activateSession(await signUp(payload));
       setHasSignedUp(true);
     } catch (error) {
+      if (getApiErrorCode(error) === 'INVALID_INVITE_CODE') {
+        setStepId('invite');
+        setError('inviteCode', { message: 'errors.INVALID_INVITE_CODE' });
+
+        return;
+      }
+
       setApiErrorMessage(getApiErrorMessage(error));
     }
   }

@@ -103,6 +103,8 @@ src/shared/         navigation, utils, constants, entities, hooks, assets
 ## Decisões de produto
 
 - Login obrigatório, com refresh de sessão e recuperação de senha.
+- Beta fechado: o cadastro exige código de convite, pedido no primeiro passo do onboarding. Se a
+  API recusar o código (`INVALID_INVITE_CODE`), o app volta para esse passo com o erro no campo.
 - Sem bottom tab.
 - Português e inglês, trocados no Perfil. Sem escolha, vale o idioma do aparelho (pt → português,
   qualquer outro → inglês). A API recebe o idioma no `Accept-Language` e responde a IA e os e-mails

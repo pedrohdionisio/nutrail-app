@@ -13,9 +13,15 @@ async function openOnboarding() {
   const rendered = await renderApp();
 
   await rendered.user.press(await screen.findByRole('button', { name: 'Criar Conta' }));
-  await screen.findByText('Qual é seu objetivo?');
+  await screen.findByText('Você tem um convite?');
 
   return rendered;
+}
+
+async function answerInvite(user: User, code = ' nutrail-beta ') {
+  await user.type(screen.getByLabelText('Código de convite'), code);
+  await user.press(screen.getByRole('button', { name: 'Continuar' }));
+  await screen.findByText('Qual é seu objetivo?');
 }
 
 async function pressContinue(user: User) {
@@ -23,6 +29,7 @@ async function pressContinue(user: User) {
 }
 
 async function answerProfileSteps(user: User) {
+  await answerInvite(user);
   await user.press(screen.getByRole('radio', { name: 'Perder peso' }));
   await pressContinue(user);
 
@@ -84,6 +91,7 @@ describe('Onboarding', () => {
     expect(screen.getByText('56g')).toBeOnTheScreen();
     expect(bodies).toEqual([
       {
+        inviteCode: 'NUTRAIL-BETA',
         account: { email: 'ana@nutrail.test', password: 'senha-forte' },
         profile: {
           goal: 'LOSE',
@@ -112,6 +120,10 @@ describe('Onboarding', () => {
 
     expect(screen.getByRole('button', { name: 'Continuar' })).toBeDisabled();
 
+    await answerInvite(user);
+
+    expect(screen.getByRole('button', { name: 'Continuar' })).toBeDisabled();
+
     await user.press(screen.getByRole('radio', { name: 'Manter peso' }));
 
     expect(screen.getByRole('radio', { name: 'Manter peso' })).toBeChecked();
@@ -121,6 +133,7 @@ describe('Onboarding', () => {
   it('should go back through the steps keeping the answers and leave from the first one', async () => {
     const { user } = await openOnboarding();
 
+    await answerInvite(user);
     await user.press(screen.getByRole('radio', { name: 'Ganhar peso' }));
     await pressContinue(user);
     await screen.findByText('Qual o seu gênero biológico?');
@@ -131,11 +144,57 @@ describe('Onboarding', () => {
 
     await user.press(screen.getByRole('button', { name: 'Voltar' }));
 
+    expect(await screen.findByLabelText('Código de convite')).toHaveDisplayValue(' nutrail-beta ');
+
+    await user.press(screen.getByRole('button', { name: 'Voltar' }));
+
     await waitForWelcome();
+  });
+
+  it('should refuse an invite code with an invalid format', async () => {
+    const { user } = await openOnboarding();
+
+    await user.type(screen.getByLabelText('Código de convite'), 'ab');
+    await pressContinue(user);
+
+    expect(await screen.findByText('Informe um código de convite válido')).toBeOnTheScreen();
+    expect(screen.getByText('Você tem um convite?')).toBeOnTheScreen();
+  });
+
+  it('should go back to the invite step when the API refuses the code', async () => {
+    const bodies: unknown[] = [];
+    server.use(
+      http.post(apiUrl('/auth/sign-up'), async ({ request }) => {
+        bodies.push(await request.json());
+
+        return HttpResponse.json(
+          {
+            error: {
+              code: 'INVALID_INVITE_CODE',
+              message: 'The invite code does not exist or was already used.'
+            }
+          },
+          { status: 403 }
+        );
+      })
+    );
+
+    const { user } = await openOnboarding();
+
+    await answerProfileSteps(user);
+    await fillAccount(user);
+
+    expect(await screen.findByText('Este convite não existe ou já foi usado.')).toBeOnTheScreen();
+    expect(screen.getByText('Você tem um convite?')).toBeOnTheScreen();
+    expect(screen.getByLabelText('Código de convite')).toHaveDisplayValue(' nutrail-beta ');
+    expect(bodies).toHaveLength(1);
+    expect(await AuthTokensManager.load()).toBeNull();
   });
 
   it('should refuse birth dates that do not exist or are in the future', async () => {
     const { user } = await openOnboarding();
+
+    await answerInvite(user);
 
     await user.press(screen.getByRole('radio', { name: 'Perder peso' }));
     await pressContinue(user);

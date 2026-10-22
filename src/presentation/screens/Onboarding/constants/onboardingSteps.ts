@@ -1,6 +1,7 @@
 import type { IOnboardingStep, OnboardingStepId } from '../OnboardingTypes';
 
 export const ONBOARDING_STEP_IDS = [
+  'invite',
   'goal',
   'gender',
   'birthDate',
@@ -11,6 +12,12 @@ export const ONBOARDING_STEP_IDS = [
 ] as const;
 
 export const ONBOARDING_STEPS: Record<OnboardingStepId, IOnboardingStep> = {
+  invite: {
+    title: 'onboarding.steps.invite.title',
+    description: 'onboarding.steps.invite.description',
+    fields: ['inviteCode'],
+    contentAlignment: 'center'
+  },
   goal: {
     title: 'onboarding.steps.goal.title',
     description: 'onboarding.steps.goal.description',

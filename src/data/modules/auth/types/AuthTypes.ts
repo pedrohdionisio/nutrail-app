@@ -25,6 +25,7 @@ export interface IResetPasswordPayload {
 }
 
 export interface ISignUpPayload {
+  inviteCode: string;
   account: {
     email: string;
     password: string;

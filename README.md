@@ -30,8 +30,10 @@ have at home.
 
 **Getting started**
 
-- An onboarding in steps — goal, gender, birth date, height, weight and activity level — that ends
-  by creating the account and showing the daily plan the API calculated.
+- An onboarding in steps — invite code, goal, gender, birth date, height, weight and activity level
+  — that ends by creating the account and showing the daily plan the API calculated. Nutrail is a
+  closed beta: the invite comes first, so nobody fills the whole onboarding to be refused at the
+  end, and a code the API refuses sends the user back to that step.
 - Sign in, and password recovery with a code sent by e-mail.
 
 **Logging meals**

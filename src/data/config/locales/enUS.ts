@@ -81,6 +81,7 @@ export const enUS: typeof ptBR = {
     }
   },
   validation: {
+    inviteCodeInvalid: 'Enter a valid invite code',
     nameRequired: 'Enter your name',
     nameTooLong: 'The name is too long',
     invalidDate: 'Enter a valid date',
@@ -139,7 +140,9 @@ export const enUS: typeof ptBR = {
     GOALS_BELOW_MACROS: 'The calories do not cover your protein and fat goals.',
     RECIPE_NOT_FOUND: 'Recipe not found.',
     SAVED_MEAL_NOT_FOUND: 'Saved meal not found.',
-    RECIPE_GENERATION_FAILED: 'We could not generate a recipe. Try again.'
+    RECIPE_GENERATION_FAILED: 'We could not generate a recipe. Try again.',
+    INVALID_INVITE_CODE: 'This invite does not exist or was already used.',
+    DAILY_LIMIT_REACHED: "You reached today's AI limit. Try again tomorrow."
   },
   profile: {
     title: 'Profile',
@@ -190,6 +193,10 @@ export const enUS: typeof ptBR = {
   },
   onboarding: {
     steps: {
+      invite: {
+        title: 'Do you have an invite?',
+        description: 'Nutrail is in closed beta. Enter the invite code you received.'
+      },
       goal: {
         title: 'What is your goal?',
         description: 'What do you want to achieve with your diet?'
@@ -219,6 +226,7 @@ export const enUS: typeof ptBR = {
       }
     },
     createAccount: 'Create account',
+    inviteCodeLabel: 'Invite code',
     heightLabel: 'Height (cm)',
     weightLabel: 'Weight (kg)',
     name: 'Name',

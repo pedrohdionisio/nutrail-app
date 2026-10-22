@@ -25,6 +25,20 @@ describe('apiError', () => {
     expect(getApiErrorMessage(error)).toBe('E-mail ou senha incorretos.');
   });
 
+  it('should translate the invite and daily limit codes', () => {
+    const invite = buildResponseError(403, {
+      error: { code: 'INVALID_INVITE_CODE', message: 'The invite code does not exist.' }
+    });
+    const dailyLimit = buildResponseError(429, {
+      error: { code: 'DAILY_LIMIT_REACHED', message: 'The daily limit was reached.' }
+    });
+
+    expect(getApiErrorMessage(invite)).toBe('Este convite não existe ou já foi usado.');
+    expect(getApiErrorMessage(dailyLimit)).toBe(
+      'Você atingiu o limite diário da IA. Tente de novo amanhã.'
+    );
+  });
+
   it('should fall back to a generic message for codes the app does not know', () => {
     const error = buildResponseError(500, {
       error: { code: 'INTERNAL', message: 'Internal server error.' }
