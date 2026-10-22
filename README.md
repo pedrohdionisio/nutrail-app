@@ -21,8 +21,7 @@ have at home.
 - [What it does](#what-it-does)
 - [Highlights](#highlights)
 - [Architecture](#architecture)
-- [Running locally](#running-locally)
-- [Builds](#builds)
+- [Run it yourself](#run-it-yourself)
 - [Testing](#testing)
 - [Project layout](#project-layout)
 - [Stack](#stack)
@@ -31,10 +30,8 @@ have at home.
 
 **Getting started**
 
-- An onboarding in steps — invite code, goal, gender, birth date, height, weight and activity level
-  — that ends by creating the account and showing the daily plan the API calculated. Nutrail is a
-  closed beta: the invite comes first, so nobody fills the whole onboarding to be refused at the
-  end, and a code the API refuses sends the user back to that step.
+- An onboarding in steps — goal, gender, birth date, height, weight and activity level — that ends
+  by creating the account and showing the daily plan the API calculated.
 - Sign in, and password recovery with a code sent by e-mail.
 
 **Logging meals**
@@ -115,21 +112,54 @@ flowchart LR
     controller -. "picture or audio" .-> s3[("S3<br/>presigned POST")]
 ```
 
-## Running locally
+## Run it yourself
 
-Requirements: Node.js (see `.nvmrc`), Yarn 1, and Xcode or Android Studio: `yarn ios` and
-`yarn android` make a native build, which the camera and the microphone need.
+The app talks to your own deployment of [nutrail-api](https://github.com/pedrohdionisio/nutrail-api):
+deploy it first, following [Run it on your own AWS account](https://github.com/pedrohdionisio/nutrail-api#run-it-on-your-own-aws-account),
+and keep the `HttpApiUrl` it prints.
+
+### What you need
+
+- **Node.js** (see `.nvmrc`) and **Yarn 1**.
+- **Xcode** for iOS or **Android Studio** for Android. The app runs as a native build, not in Expo
+  Go, because the camera and the microphone need native modules.
+
+### Run
 
 ```bash
 yarn install
-cp .env.example .env
-yarn ios        # or: yarn android
+cp .env.example .env     # set EXPO_PUBLIC_API_URL to your HttpApiUrl
+yarn ios                 # iOS simulator; or: yarn android
 ```
 
 | Variable | What it is |
 |---|---|
-| `EXPO_PUBLIC_API_URL` | The API Gateway URL of a deployed [nutrail-api](https://github.com/pedrohdionisio/nutrail-api) stage. The example points to the development stage. |
+| `EXPO_PUBLIC_API_URL` | The URL of your deployed API (`HttpApiUrl`, or `https://api.<DOMAIN>` on a `prod` stage with a domain). |
 | `EXPO_PUBLIC_REQUEST_DELAY_MS` | Delays every request in development, to see the loading states. `0` turns it off. |
+
+Create the account in the app itself; the onboarding ends with the sign-up. While your AWS account
+is in the SES sandbox, use the e-mail you verified in SES to get the welcome e-mail.
+
+### On your own phone
+
+The simulator has no camera, so logging a meal by picture needs a device.
+
+- **iPhone**, with a free Apple ID: plug it in, then run
+  `npx expo run:ios --device --configuration Release` and pick it. The first time, sign in to your
+  Apple ID in Xcode (Settings → Accounts) and choose your Personal Team for signing; on the iPhone,
+  turn on Developer Mode (Settings → Privacy & Security) and trust your developer profile (Settings
+  → General → VPN & Device Management). Apps signed by a free account expire after 7 days; run the
+  command again to reinstall. If Xcode says the bundle identifier is taken, change
+  `ios.bundleIdentifier` in `app.config.ts` to one of your own.
+- **Android**, with USB debugging on: `npx expo run:android --device --variant release`.
+
+`--configuration Release` and `--variant release` bundle the JavaScript into the app, so it runs
+without the Metro bundler and keeps working away from your computer.
+
+### Icon and splash
+
+`assets/` holds the icon, the Android adaptive and monochrome icons and the splash: the logo on the
+brand's dark green (`#022C22`), rendered from `src/shared/assets/logo.svg`.
 
 | Script | What it does |
 |---|---|
@@ -138,38 +168,6 @@ yarn ios        # or: yarn android
 | `yarn typecheck` | `tsc --noEmit` |
 | `yarn lint` · `yarn format` | Biome check, and check with fixes |
 | `yarn test` · `yarn test:coverage` | Jest, and Jest with coverage |
-
-## Builds
-
-The app has two variants, picked by `APP_VARIANT` in `app.config.ts`, so both can be installed on
-the same phone:
-
-| Variant | Name | Package | API |
-|---|---|---|---|
-| development (default) | Nutrail Dev | `com.nutrail.app.dev` | the `dev` stage |
-| production | Nutrail | `com.nutrail.app` | `https://api.nutrail.app` |
-
-EAS Build signs and builds them (`eas.json`); a local `yarn ios` or `yarn android` is always the
-development variant. The icon, the Android adaptive and monochrome icons and the splash in `assets/`
-are the logo on the brand's dark green (`#022C22`), rendered from `src/shared/assets/logo.svg`.
-
-```bash
-npx eas-cli build --profile preview --platform android      # Nutrail Dev APK
-npx eas-cli build --profile production --platform android   # Nutrail APK
-```
-
-JavaScript-only changes reach installed apps through EAS Update, without a new APK. Each build
-profile listens to its own channel, and the runtime version is a fingerprint of the native code,
-so an update only reaches builds with the same native code; a native change needs a new build.
-
-```bash
-yarn update:preview      # to Nutrail Dev
-yarn update:production   # to Nutrail
-```
-
-The scripts set the variant and the API URL themselves, because `eas update` bundles on the local
-machine, where `.env` points to the development API and the `eas.json` build variables do not
-apply.
 
 ## Testing
 

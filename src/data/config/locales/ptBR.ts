@@ -79,7 +79,6 @@ export const ptBR = {
     }
   },
   validation: {
-    inviteCodeInvalid: 'Informe um código de convite válido',
     nameRequired: 'Informe seu nome',
     nameTooLong: 'O nome é muito longo',
     invalidDate: 'Informe uma data válida',
@@ -139,7 +138,6 @@ export const ptBR = {
     RECIPE_NOT_FOUND: 'Receita não encontrada.',
     SAVED_MEAL_NOT_FOUND: 'Refeição salva não encontrada.',
     RECIPE_GENERATION_FAILED: 'Não conseguimos gerar uma receita. Tente de novo.',
-    INVALID_INVITE_CODE: 'Este convite não existe ou já foi usado.',
     DAILY_LIMIT_REACHED: 'Você atingiu o limite diário da IA. Tente de novo amanhã.'
   },
   profile: {
@@ -191,10 +189,6 @@ export const ptBR = {
   },
   onboarding: {
     steps: {
-      invite: {
-        title: 'Você tem um convite?',
-        description: 'O Nutrail está em beta fechado. Digite o código de convite que você recebeu.'
-      },
       goal: {
         title: 'Qual é seu objetivo?',
         description: 'O que você pretende alcançar com a dieta?'
@@ -224,7 +218,6 @@ export const ptBR = {
       }
     },
     createAccount: 'Criar conta',
-    inviteCodeLabel: 'Código de convite',
     heightLabel: 'Altura (cm)',
     weightLabel: 'Peso (kg)',
     name: 'Nome',

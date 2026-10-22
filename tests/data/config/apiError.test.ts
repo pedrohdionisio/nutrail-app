@@ -25,16 +25,12 @@ describe('apiError', () => {
     expect(getApiErrorMessage(error)).toBe('E-mail ou senha incorretos.');
   });
 
-  it('should translate the invite and daily limit codes', () => {
-    const invite = buildResponseError(403, {
-      error: { code: 'INVALID_INVITE_CODE', message: 'The invite code does not exist.' }
-    });
-    const dailyLimit = buildResponseError(429, {
+  it('should translate the daily limit of the AI', () => {
+    const error = buildResponseError(429, {
       error: { code: 'DAILY_LIMIT_REACHED', message: 'The daily limit was reached.' }
     });
 
-    expect(getApiErrorMessage(invite)).toBe('Este convite não existe ou já foi usado.');
-    expect(getApiErrorMessage(dailyLimit)).toBe(
+    expect(getApiErrorMessage(error)).toBe(
       'Você atingiu o limite diário da IA. Tente de novo amanhã.'
     );
   });

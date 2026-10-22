@@ -63,19 +63,6 @@ export function Onboarding() {
       progress={progress}
       title={t(currentStep.title)}
     >
-      {stepId === 'invite' && (
-        <Input
-          autoCapitalize='characters'
-          autoCorrect={false}
-          autoFocus
-          control={control}
-          label={t('onboarding.inviteCodeLabel')}
-          maxLength={32}
-          name='inviteCode'
-          placeholder='XXXX-XXXX'
-        />
-      )}
-
       {stepId === 'goal' && (
         <OptionsField control={control} name='goal' options={GOAL_OPTIONS} orientation='row' />
       )}

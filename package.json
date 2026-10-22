@@ -14,9 +14,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "prepare": "husky",
-    "update:preview": "APP_VARIANT=development EXPO_PUBLIC_API_URL=https://3addw8c8ni.execute-api.us-east-1.amazonaws.com npx eas-cli update --channel preview --auto",
-    "update:production": "APP_VARIANT=production EXPO_PUBLIC_API_URL=https://api.nutrail.app npx eas-cli update --channel production --auto"
+    "prepare": "husky"
   },
   "dependencies": {
     "@expo-google-fonts/host-grotesk": "^0.4.1",
@@ -40,7 +38,6 @@
     "expo-secure-store": "~57.0.4",
     "expo-splash-screen": "~57.0.9",
     "expo-status-bar": "~57.0.1",
-    "expo-updates": "~57.0.26",
     "i18next": "^26.4.2",
     "lucide-react-native": "^1.45.0",
     "nativewind": "^4.2.7",

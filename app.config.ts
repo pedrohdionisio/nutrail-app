@@ -1,8 +1,6 @@
 import type { ExpoConfig } from 'expo/config';
 
-const IS_PRODUCTION = process.env.APP_VARIANT === 'production';
 const BRAND_BACKGROUND = '#022C22';
-const EAS_PROJECT_ID = '69df0e5d-043e-4ac2-862e-3ded530589d0';
 
 const CAMERA_PERMISSION =
   'Nutrail uses the camera to take pictures of your meals and calculate the macros.';
@@ -10,29 +8,22 @@ const MICROPHONE_PERMISSION =
   'Nutrail uses the microphone to record the description of your meals and calculate the macros.';
 
 const config: ExpoConfig = {
-  name: IS_PRODUCTION ? 'Nutrail' : 'Nutrail Dev',
+  name: 'Nutrail',
   slug: 'nutrail',
-  owner: 'pedrohdionisio',
-  scheme: IS_PRODUCTION ? 'nutrail' : 'nutrail-dev',
+  scheme: 'nutrail',
   version: '1.0.0',
   orientation: 'portrait',
   icon: './assets/icon.png',
   userInterfaceStyle: 'light',
-  runtimeVersion: {
-    policy: 'fingerprint'
-  },
-  updates: {
-    url: `https://u.expo.dev/${EAS_PROJECT_ID}`
-  },
   ios: {
-    bundleIdentifier: IS_PRODUCTION ? 'com.nutrail.app' : 'com.nutrail.app.dev',
+    bundleIdentifier: 'com.nutrail.app',
     supportsTablet: false,
     infoPlist: {
       CFBundleAllowMixedLocalizations: true
     }
   },
   android: {
-    package: IS_PRODUCTION ? 'com.nutrail.app' : 'com.nutrail.app.dev',
+    package: 'com.nutrail.app',
     adaptiveIcon: {
       foregroundImage: './assets/adaptive-icon.png',
       monochromeImage: './assets/monochrome-icon.png',
@@ -52,11 +43,6 @@ const config: ExpoConfig = {
   },
   experiments: {
     tsconfigPaths: true
-  },
-  extra: {
-    eas: {
-      projectId: EAS_PROJECT_ID
-    }
   },
   plugins: [
     'expo-font',

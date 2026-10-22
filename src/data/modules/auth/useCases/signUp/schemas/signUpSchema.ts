@@ -6,11 +6,6 @@ import { z } from 'zod';
 
 export const signUpSchema = z
   .object({
-    inviteCode: z
-      .string()
-      .trim()
-      .toUpperCase()
-      .regex(/^[A-Z0-9-]{4,32}$/, 'validation.inviteCodeInvalid'),
     goal: z.enum(GOALS, 'validation.goalRequired'),
     gender: z.enum(GENDERS, 'validation.genderRequired'),
     birthDate: z
@@ -60,8 +55,7 @@ export const signUpSchema = z
     path: ['passwordConfirmation'],
     message: 'validation.passwordsMismatch'
   })
-  .transform(({ inviteCode, email, password, passwordConfirmation: _, ...profile }) => ({
-    inviteCode,
+  .transform(({ email, password, passwordConfirmation: _, ...profile }) => ({
     account: { email, password },
     profile
   }));
