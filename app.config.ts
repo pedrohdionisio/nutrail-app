@@ -10,6 +10,7 @@ const MICROPHONE_PERMISSION =
 const config: ExpoConfig = {
   name: IS_PRODUCTION ? 'Nutrail' : 'Nutrail Dev',
   slug: 'nutrail',
+  owner: 'pedrohdionisio',
   scheme: IS_PRODUCTION ? 'nutrail' : 'nutrail-dev',
   version: '1.0.0',
   orientation: 'portrait',
@@ -31,6 +32,11 @@ const config: ExpoConfig = {
   },
   experiments: {
     tsconfigPaths: true
+  },
+  extra: {
+    eas: {
+      projectId: '69df0e5d-043e-4ac2-862e-3ded530589d0'
+    }
   },
   plugins: [
     'expo-font',
