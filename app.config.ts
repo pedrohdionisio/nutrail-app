@@ -1,6 +1,7 @@
 import type { ExpoConfig } from 'expo/config';
 
 const IS_PRODUCTION = process.env.APP_VARIANT === 'production';
+const BRAND_BACKGROUND = '#022C22';
 
 const CAMERA_PERMISSION =
   'Nutrail uses the camera to take pictures of your meals and calculate the macros.';
@@ -14,6 +15,7 @@ const config: ExpoConfig = {
   scheme: IS_PRODUCTION ? 'nutrail' : 'nutrail-dev',
   version: '1.0.0',
   orientation: 'portrait',
+  icon: './assets/icon.png',
   userInterfaceStyle: 'light',
   ios: {
     bundleIdentifier: IS_PRODUCTION ? 'com.nutrail.app' : 'com.nutrail.app.dev',
@@ -24,6 +26,11 @@ const config: ExpoConfig = {
   },
   android: {
     package: IS_PRODUCTION ? 'com.nutrail.app' : 'com.nutrail.app.dev',
+    adaptiveIcon: {
+      foregroundImage: './assets/adaptive-icon.png',
+      monochromeImage: './assets/monochrome-icon.png',
+      backgroundColor: BRAND_BACKGROUND
+    },
     predictiveBackGestureEnabled: false
   },
   locales: {
@@ -40,7 +47,14 @@ const config: ExpoConfig = {
   },
   plugins: [
     'expo-font',
-    'expo-splash-screen',
+    [
+      'expo-splash-screen',
+      {
+        image: './assets/splash-icon.png',
+        imageWidth: 200,
+        backgroundColor: BRAND_BACKGROUND
+      }
+    ],
     'expo-secure-store',
     [
       'expo-camera',

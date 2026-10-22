@@ -150,7 +150,8 @@ the same phone:
 | production | Nutrail | `com.nutrail.app` | `https://api.nutrail.app` |
 
 EAS Build signs and builds them (`eas.json`); a local `yarn ios` or `yarn android` is always the
-development variant.
+development variant. The icon, the Android adaptive and monochrome icons and the splash in `assets/`
+are the logo on the brand's dark green (`#022C22`), rendered from `src/shared/assets/logo.svg`.
 
 ```bash
 npx eas-cli build --profile preview --platform android      # Nutrail Dev APK
