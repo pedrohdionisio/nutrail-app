@@ -38,6 +38,12 @@ const config: ExpoConfig = {
       monochromeImage: './assets/monochrome-icon.png',
       backgroundColor: BRAND_BACKGROUND
     },
+    blockedPermissions: [
+      'android.permission.READ_EXTERNAL_STORAGE',
+      'android.permission.WRITE_EXTERNAL_STORAGE',
+      'android.permission.SYSTEM_ALERT_WINDOW',
+      'android.permission.VIBRATE'
+    ],
     predictiveBackGestureEnabled: false
   },
   locales: {

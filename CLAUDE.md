@@ -119,5 +119,9 @@ src/shared/         navigation, utils, constants, entities, hooks, assets
   com `runtimeVersion` por fingerprint. Publicar só com `yarn update:preview` ou
   `yarn update:production`, que fixam a variante e a URL da API; um `eas update` direto usaria o
   `.env` local e mandaria a URL de dev para o app de produção.
+- Permissões do Android: só `INTERNET`, `ACCESS_NETWORK_STATE` (EAS Update), `CAMERA`,
+  `RECORD_AUDIO` e `MODIFY_AUDIO_SETTINGS`. O `app.config.ts` bloqueia (`blockedPermissions`)
+  armazenamento, `SYSTEM_ALERT_WINDOW` e `VIBRATE`, que o template e as libs trazem: a galeria usa o
+  seletor do sistema, que dispensa permissão. Lib nova que precise de outra permissão entra aqui.
 - Ícone e splash (`assets/`): a logo inteira sobre o verde-escuro da marca (`#022C22`), com ícone
   adaptativo e monocromático no Android. As duas variantes usam o mesmo ícone.
