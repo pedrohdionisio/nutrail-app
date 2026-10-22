@@ -111,3 +111,7 @@ src/shared/         navigation, utils, constants, entities, hooks, assets
   nele; o que o usuário já cadastrou fica no idioma original.
 - Mensagens de erro mapeadas no app pelo `code` da API.
 - Light-only.
+- Duas variantes no `app.config.ts`, escolhidas por `APP_VARIANT`: "Nutrail Dev"
+  (`com.nutrail.app.dev`, API de `dev`, o padrão local) e "Nutrail" (`com.nutrail.app`,
+  `https://api.nutrail.app`). Os builds são do EAS (`eas.json`): `preview` gera o APK do dev e
+  `production` o de produção, com a URL da API definida no perfil.

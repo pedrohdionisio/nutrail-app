@@ -198,5 +198,5 @@ toque (`active:opacity-*`).
 
 ## Dark mode
 
-Ausente de propósito: `userInterfaceStyle` é `light` no `app.json`. Sem `dark:` e sem
+Ausente de propósito: `userInterfaceStyle` é `light` no `app.config.ts`. Sem `dark:` e sem
 `useColorScheme`.

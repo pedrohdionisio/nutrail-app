@@ -22,6 +22,7 @@ have at home.
 - [Highlights](#highlights)
 - [Architecture](#architecture)
 - [Running locally](#running-locally)
+- [Builds](#builds)
 - [Testing](#testing)
 - [Project layout](#project-layout)
 - [Stack](#stack)
@@ -137,6 +138,24 @@ yarn ios        # or: yarn android
 | `yarn typecheck` | `tsc --noEmit` |
 | `yarn lint` · `yarn format` | Biome check, and check with fixes |
 | `yarn test` · `yarn test:coverage` | Jest, and Jest with coverage |
+
+## Builds
+
+The app has two variants, picked by `APP_VARIANT` in `app.config.ts`, so both can be installed on
+the same phone:
+
+| Variant | Name | Package | API |
+|---|---|---|---|
+| development (default) | Nutrail Dev | `com.nutrail.app.dev` | the `dev` stage |
+| production | Nutrail | `com.nutrail.app` | `https://api.nutrail.app` |
+
+EAS Build signs and builds them (`eas.json`); a local `yarn ios` or `yarn android` is always the
+development variant.
+
+```bash
+npx eas-cli build --profile preview --platform android      # Nutrail Dev APK
+npx eas-cli build --profile production --platform android   # Nutrail APK
+```
 
 ## Testing
 
