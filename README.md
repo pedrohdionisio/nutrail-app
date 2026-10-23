@@ -8,12 +8,13 @@
 Mobile app of **Nutrail**, an AI-first food diary. Take a picture of the plate, record a voice note
 or type what you ate, and the app shows the foods with calories and macros, against daily goals
 calculated from your profile. When you do not know what to cook, it suggests a recipe with what you
-have at home.
+have at home. See it in use at **[nutrail.app](https://nutrail.app)**.
 
 | Repository | What it is |
 |---|---|
 | [nutrail-api](https://github.com/pedrohdionisio/nutrail-api) | Serverless REST API, meal processing pipeline and AI integration on AWS |
 | **nutrail-app** (this one) | React Native (Expo) app |
+| [nutrail-web](https://github.com/pedrohdionisio/nutrail-web) | The website at [nutrail.app](https://nutrail.app), in Next.js |
 | [nutrail](https://github.com/pedrohdionisio/nutrail) | The product overview |
 
 ## Contents
