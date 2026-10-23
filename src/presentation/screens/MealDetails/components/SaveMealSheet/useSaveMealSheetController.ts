@@ -51,13 +51,17 @@ export function useSaveMealSheetController({
     setApiErrorMessage(null);
   }
 
+  function handleSubmitForm() {
+    return handleSubmit(onSubmit)();
+  }
+
   return {
     paddingBottom,
     control,
     apiErrorMessage,
     isSavingMeal,
     isSubmitDisabled: !name?.trim(),
-    handleSubmit: handleSubmit(onSubmit),
+    handleSubmit: handleSubmitForm,
     handleDismiss
   };
 }

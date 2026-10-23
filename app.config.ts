@@ -46,6 +46,7 @@ const config: ExpoConfig = {
   },
   plugins: [
     'expo-font',
+    'expo-status-bar',
     [
       'expo-splash-screen',
       {

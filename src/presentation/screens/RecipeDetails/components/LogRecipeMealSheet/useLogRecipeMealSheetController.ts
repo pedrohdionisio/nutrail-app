@@ -63,13 +63,17 @@ export function useLogRecipeMealSheetController({
     setApiErrorMessage(null);
   }
 
+  function handleSubmitForm() {
+    return handleSubmit(onSubmit)();
+  }
+
   return {
     paddingBottom,
     control,
     apiErrorMessage,
     isCreatingMealFromRecipe,
     isSubmitDisabled: !date || !time,
-    handleSubmit: handleSubmit(onSubmit),
+    handleSubmit: handleSubmitForm,
     handleDismiss
   };
 }

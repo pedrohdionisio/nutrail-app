@@ -37,11 +37,15 @@ export function useAddMealItemFieldController({ onAdd }: IUseAddMealItemFieldCon
     }
   }
 
+  function handleAdd() {
+    return handleSubmit(onSubmit)();
+  }
+
   return {
     control,
     apiErrorMessage,
     isAnalyzingMealItems,
     isAddDisabled: !text?.trim(),
-    handleAdd: handleSubmit(onSubmit)
+    handleAdd
   };
 }

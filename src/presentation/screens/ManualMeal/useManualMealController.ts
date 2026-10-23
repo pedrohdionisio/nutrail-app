@@ -77,12 +77,16 @@ export function useManualMealController() {
     navigation.goBack();
   }
 
+  function handleSubmitForm() {
+    return handleSubmit(onSubmit)();
+  }
+
   return {
     control,
     shouldShowAnalyzing: isAnalyzing || hasFinished,
     apiErrorMessage,
     isSubmitDisabled: !text?.trim() || !date || !time,
     handleGoBack,
-    handleSubmit: handleSubmit(onSubmit)
+    handleSubmit: handleSubmitForm
   };
 }

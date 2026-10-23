@@ -52,6 +52,10 @@ export function useGoalsController() {
     navigation.goBack();
   }
 
+  function handleSave() {
+    return handleSubmit(onSubmit)();
+  }
+
   return {
     control,
     mode,
@@ -63,6 +67,6 @@ export function useGoalsController() {
       : !values.carbohydrate || !values.protein || !values.fat,
     handleSelectMode,
     handleGoBack,
-    handleSave: handleSubmit(onSubmit)
+    handleSave
   };
 }

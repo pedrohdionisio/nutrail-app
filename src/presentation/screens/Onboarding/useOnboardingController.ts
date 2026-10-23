@@ -81,6 +81,10 @@ export function useOnboardingController() {
     refetchMe();
   }
 
+  function handleCreateAccount() {
+    return handleSubmit(onSubmit)();
+  }
+
   return {
     stepId,
     currentStep,
@@ -94,7 +98,7 @@ export function useOnboardingController() {
     apiErrorMessage,
     handleGoBack,
     handleNext,
-    handleCreateAccount: handleSubmit(onSubmit),
+    handleCreateAccount,
     handleRetry,
     handleStart: enterApp
   };

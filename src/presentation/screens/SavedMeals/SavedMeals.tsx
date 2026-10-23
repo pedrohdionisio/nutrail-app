@@ -58,7 +58,7 @@ export function SavedMeals() {
                 {t('savedMeals.tapToLog')}
               </AppText>
             </View>
-          ) : null
+          ) : undefined
         }
         renderItem={({ item }) => (
           <SavedMealCard

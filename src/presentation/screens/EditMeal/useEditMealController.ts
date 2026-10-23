@@ -54,6 +54,10 @@ export function useEditMealController() {
     append(items.map(toEditableItem));
   }
 
+  function handleSave() {
+    return handleSubmit(onSubmit)();
+  }
+
   return {
     control,
     items: fields,
@@ -64,6 +68,6 @@ export function useEditMealController() {
     handleGoBack,
     handleRemoveItem,
     handleAddItems,
-    handleSave: handleSubmit(onSubmit)
+    handleSave
   };
 }

@@ -73,7 +73,7 @@ export function MealDetails() {
         contentContainerStyle={{ paddingBottom: listPaddingBottom }}
         data={items}
         keyExtractor={(item, index) => `${index}-${item.name}`}
-        ListEmptyComponent={isLoadingMeal ? <MealItemsSkeleton /> : null}
+        ListEmptyComponent={isLoadingMeal ? <MealItemsSkeleton /> : undefined}
         ListHeaderComponent={
           <View className='-mx-5'>
             <MacrosPanel macros={meal} />

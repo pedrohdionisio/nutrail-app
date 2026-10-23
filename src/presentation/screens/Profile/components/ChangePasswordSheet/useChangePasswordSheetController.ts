@@ -61,13 +61,17 @@ export function useChangePasswordSheetController({
     setApiErrorMessage(null);
   }
 
+  function handleSubmitForm() {
+    return handleSubmit(onSubmit)();
+  }
+
   return {
     paddingBottom,
     control,
     apiErrorMessage,
     isChangingPassword,
     isSubmitDisabled: !currentPassword || !newPassword || !newPasswordConfirmation,
-    handleSubmit: handleSubmit(onSubmit),
+    handleSubmit: handleSubmitForm,
     handleDismiss
   };
 }

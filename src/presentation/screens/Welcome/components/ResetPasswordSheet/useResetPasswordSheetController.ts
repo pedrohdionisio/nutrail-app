@@ -61,6 +61,10 @@ export function useResetPasswordSheetController({
     }
   }
 
+  function handleSubmitForm() {
+    return handleSubmit(onSubmit)();
+  }
+
   return {
     description: t('welcome.resetPasswordDescription', { email }),
     control,
@@ -69,6 +73,6 @@ export function useResetPasswordSheetController({
     isRequestingPasswordReset,
     isSubmitDisabled: !code || !password || !passwordConfirmation,
     handleResendCode,
-    handleSubmit: handleSubmit(onSubmit)
+    handleSubmit: handleSubmitForm
   };
 }

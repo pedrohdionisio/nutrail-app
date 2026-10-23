@@ -48,6 +48,11 @@ export function useHomeController() {
 - Chamadas a `data/` entram aqui, não no `.tsx`. Estado de request (`isLoading`, `error`) é estado
   de controller.
 - Controller não renderiza nada e não importa JSX.
+- Envio de formulário é uma função declarada sem parâmetro que chama `handleSubmit(onSubmit)()`
+  (`function handleSave() { return handleSubmit(onSubmit)(); }`), nunca `handleSubmit(onSubmit)`
+  exposto direto: no React Native 0.88 o tipo do evento do `onPress` não é compatível com o
+  parâmetro opcional do React Hook Form. Quando a chave devolvida é `handleSubmit`, a função se chama
+  `handleSubmitForm`, para não sombrear a do `useForm`.
 - Controller de componente pode receber params — um objeto tipado, mesma regra dos handlers.
   Controller de screen não recebe nada: o que ele precisa vem da rota, via `useRoute`.
 

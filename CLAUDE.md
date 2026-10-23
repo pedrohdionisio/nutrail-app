@@ -50,7 +50,8 @@ yarn typecheck && yarn lint && yarn test
 
 ## Stack
 
-- Expo SDK 57 + React Native 0.86 + React 19 + TypeScript strict
+- Expo SDK 58 + React Native 0.88 + React 19 + TypeScript strict · Node 24 (`.nvmrc`; o Expo 58
+  não instala no Node 25)
 - NativeWind 4 (Tailwind **3.4**) + `class-variance-authority` + `tailwind-merge`
 - React Query 5 + axios · React Navigation 7 (native stack)
 - `@gorhom/bottom-sheet` para **todo** bottom sheet · React Hook Form + Zod

@@ -35,11 +35,15 @@ export function useSignInSheetController() {
     }
   }
 
+  function handleSubmitForm() {
+    return handleSubmit(onSubmit)();
+  }
+
   return {
     control,
     apiErrorMessage,
     isSigningIn,
     isSubmitDisabled: !email || !password,
-    handleSubmit: handleSubmit(onSubmit)
+    handleSubmit: handleSubmitForm
   };
 }

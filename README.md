@@ -1,8 +1,8 @@
 # Nutrail App
 
 [![CI](https://github.com/pedrohdionisio/nutrail-app/actions/workflows/ci.yml/badge.svg)](https://github.com/pedrohdionisio/nutrail-app/actions/workflows/ci.yml)
-![Expo SDK 57](https://img.shields.io/badge/expo-SDK%2057-000020?logo=expo&logoColor=white)
-![React Native](https://img.shields.io/badge/react%20native-0.86-61DAFB?logo=react&logoColor=black)
+![Expo SDK 58](https://img.shields.io/badge/expo-SDK%2058-000020?logo=expo&logoColor=white)
+![React Native](https://img.shields.io/badge/react%20native-0.88-61DAFB?logo=react&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/typescript-strict-3178C6?logo=typescript&logoColor=white)
 
 Mobile app of **Nutrail**, an AI-first food diary. Take a picture of the plate, record a voice note
@@ -211,7 +211,7 @@ Code, identifiers and documentation are in English.
 
 ## Stack
 
-Expo SDK 57 · React Native 0.86 · React 19 · TypeScript · NativeWind 4 (Tailwind CSS 3.4) · React
+Expo SDK 58 · React Native 0.88 · React 19 · TypeScript · NativeWind 4 (Tailwind CSS 3.4) · React
 Navigation 7 · TanStack Query · axios · React Hook Form · Zod · expo-camera · expo-image-picker ·
 expo-image-manipulator · expo-audio · expo-secure-store · expo-localization · i18next · react-i18next · Gorhom Bottom Sheet · lucide · Jest ·
 React Native Testing Library · MSW · Biome · Husky + lint-staged · GitHub Actions

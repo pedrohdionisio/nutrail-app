@@ -33,11 +33,15 @@ export function useForgotPasswordSheetController({
     }
   }
 
+  function handleSubmitForm() {
+    return handleSubmit(onSubmit)();
+  }
+
   return {
     control,
     apiErrorMessage,
     isRequestingPasswordReset,
     isSubmitDisabled: !email,
-    handleSubmit: handleSubmit(onSubmit)
+    handleSubmit: handleSubmitForm
   };
 }

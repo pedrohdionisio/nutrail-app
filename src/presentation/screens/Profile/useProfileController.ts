@@ -70,6 +70,10 @@ export function useProfileController() {
     deleteAccountSheetRef.current?.present();
   }
 
+  function handleSave() {
+    return handleSubmit(onSubmit)();
+  }
+
   return {
     control,
     initials: getInitials(name ?? me?.profile.name ?? ''),
@@ -79,7 +83,7 @@ export function useProfileController() {
     isSaveDisabled: !name?.trim() || !birthDate || !height || !weight,
     handleSelectLanguage,
     handleGoBack,
-    handleSave: handleSubmit(onSubmit),
+    handleSave,
     handleSignOut: signOut,
     deleteAccountSheetRef,
     changePasswordSheetRef,

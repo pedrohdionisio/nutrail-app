@@ -84,6 +84,10 @@ export function useSuggestRecipeController() {
     }
   }
 
+  function handleSubmitForm() {
+    return handleSubmit(onSubmit)();
+  }
+
   return {
     control,
     suggestion,
@@ -92,7 +96,7 @@ export function useSuggestRecipeController() {
     isSavingRecipe,
     shouldShowLoading: isSuggestingRecipe,
     handleGoBack,
-    handleSubmit: handleSubmit(onSubmit),
+    handleSubmit: handleSubmitForm,
     handleSave
   };
 }
