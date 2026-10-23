@@ -8,7 +8,15 @@ export function MacroShareColumn({ share }: IMacroShareColumnProps) {
   const { t } = useTranslation();
   return (
     <View className='flex-1 items-center gap-3'>
-      <AppText color='muted'>{t(share.label)}</AppText>
+      <AppText
+        adjustsFontSizeToFit
+        color='muted'
+        minimumFontScale={0.85}
+        numberOfLines={1}
+        size='bodySm'
+      >
+        {t(share.label)}
+      </AppText>
 
       {share.value ? (
         <AppText className={share.textClassName} weight='medium'>

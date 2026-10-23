@@ -29,7 +29,7 @@ export function MacrosPanel({ macros }: IMacrosPanelProps) {
       </View>
 
       <View className='gap-6 px-5 pt-6 pb-10'>
-        <View className='flex-row gap-6'>
+        <View className='flex-row gap-4'>
           {shares.map((share) => (
             <MacroShareColumn key={share.key} share={share} />
           ))}
