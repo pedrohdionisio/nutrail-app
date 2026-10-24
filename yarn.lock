@@ -703,59 +703,71 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@biomejs/biome@^2.5.14":
-  version "2.5.14"
-  resolved "https://registry.yarnpkg.com/@biomejs/biome/-/biome-2.5.14.tgz#aeb4426c7f90bee410496ff1248665c8895c0f5e"
-  integrity sha512-0FabLIjd4M/dm8VFI86RMaLLdgepzbdfiAL2R8cr7V81OYYrP1w7Z73KfAwPK5h9SrEBXTzNG2y+mBwPo9xRnw==
+"@biomejs/biome@^2.6.2":
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/@biomejs/biome/-/biome-2.6.2.tgz#f38aa9d1ca225b1e53e9f4b632d77aae97c8c682"
+  integrity sha512-JLTFAFF9vfJcWwLhwuL4ZHflLg+XfTEC4IUnAlJRX1cMRt57++Xd1Ysb9Fdmlh9YUrvyCXfPEHjjEIqKJGdPKw==
   optionalDependencies:
-    "@biomejs/cli-darwin-arm64" "2.5.14"
-    "@biomejs/cli-darwin-x64" "2.5.14"
-    "@biomejs/cli-linux-arm64" "2.5.14"
-    "@biomejs/cli-linux-arm64-musl" "2.5.14"
-    "@biomejs/cli-linux-x64" "2.5.14"
-    "@biomejs/cli-linux-x64-musl" "2.5.14"
-    "@biomejs/cli-win32-arm64" "2.5.14"
-    "@biomejs/cli-win32-x64" "2.5.14"
+    "@biomejs/cli-android-arm64" "2.6.2"
+    "@biomejs/cli-android-x64" "2.6.2"
+    "@biomejs/cli-darwin-arm64" "2.6.2"
+    "@biomejs/cli-darwin-x64" "2.6.2"
+    "@biomejs/cli-linux-arm64" "2.6.2"
+    "@biomejs/cli-linux-arm64-musl" "2.6.2"
+    "@biomejs/cli-linux-x64" "2.6.2"
+    "@biomejs/cli-linux-x64-musl" "2.6.2"
+    "@biomejs/cli-win32-arm64" "2.6.2"
+    "@biomejs/cli-win32-x64" "2.6.2"
 
-"@biomejs/cli-darwin-arm64@2.5.14":
-  version "2.5.14"
-  resolved "https://registry.yarnpkg.com/@biomejs/cli-darwin-arm64/-/cli-darwin-arm64-2.5.14.tgz#962210cf03173155a37fab1d55de396afad75f37"
-  integrity sha512-UnzaXO65L4tsZimFITFP2M121GyhDcWFrT3pL5ZJ5U4XcS/0L5VHYytVohdCf/gnDUFHgl2I9xnt5bV/J1kxHQ==
+"@biomejs/cli-android-arm64@2.6.2":
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/@biomejs/cli-android-arm64/-/cli-android-arm64-2.6.2.tgz#12a81f1714097fa4577f9bd74f5f46a32d5125be"
+  integrity sha512-dMpdpH7zFEL5FxuIA9LJW+RoNyC3oeDB7PJyjqVVwtMNoKB5uo8OZYmrVSBikn71txzYwy/3xga7UME6bJQZ6A==
 
-"@biomejs/cli-darwin-x64@2.5.14":
-  version "2.5.14"
-  resolved "https://registry.yarnpkg.com/@biomejs/cli-darwin-x64/-/cli-darwin-x64-2.5.14.tgz#4365c6d81ecdc9dafc3dc788df7621966f3094a3"
-  integrity sha512-kiy8qA16K93J7uvFfWi4LgjqDpnRKyePAna6A0Y4jxyUga35SYpIZ2cNWlhy0lsfgqRenCpfymnJWEZ6mgpRgA==
+"@biomejs/cli-android-x64@2.6.2":
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/@biomejs/cli-android-x64/-/cli-android-x64-2.6.2.tgz#d4f836ad2ab88c176704d9e4bd8cb8f56e5a099b"
+  integrity sha512-XCwEhPBGYzuRA502dRkCcQ+5cefQwuxQR7f9wa4do92dvIcuBL6VMLMFB/fL9hlpZ4dGSfHdpGFSIDlp52mg0A==
 
-"@biomejs/cli-linux-arm64-musl@2.5.14":
-  version "2.5.14"
-  resolved "https://registry.yarnpkg.com/@biomejs/cli-linux-arm64-musl/-/cli-linux-arm64-musl-2.5.14.tgz#021551f04111173a5c1cb50e0cd09f01184c4711"
-  integrity sha512-SJ9PrZkBnnH9dHJDnxk34vKs0GB2dbsioaft6/hPhWJ7AHpwYH83Isnhj0FSRpFkGgpVfJ1lds23ApB2czUDLQ==
+"@biomejs/cli-darwin-arm64@2.6.2":
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/@biomejs/cli-darwin-arm64/-/cli-darwin-arm64-2.6.2.tgz#89242804cf94f8974a659fa2d95058193be8e94c"
+  integrity sha512-rpXtabRgyZNz3aCjd/cRoSZGYi92R9eAXdUUe1sigIsRDyfMwgThaa98Yxt1fiZ7mxquqkAyIHIo08N/e1ToBA==
 
-"@biomejs/cli-linux-arm64@2.5.14":
-  version "2.5.14"
-  resolved "https://registry.yarnpkg.com/@biomejs/cli-linux-arm64/-/cli-linux-arm64-2.5.14.tgz#108b8246e9d5d1c01bd1638db14f1a3a2704f208"
-  integrity sha512-vO/9BaU1n30CiFNLx49gMTMtbCAAqlo/EqFoG0BU3deQInTbJrmXSmTQ9e3FoDZIKQnvSLDVNL4lx1ci7y1T1Q==
+"@biomejs/cli-darwin-x64@2.6.2":
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/@biomejs/cli-darwin-x64/-/cli-darwin-x64-2.6.2.tgz#3be1a62f050353411487e1133fd3b44c402a4958"
+  integrity sha512-7GGzlm1GxUKoQ9CNV8tQZ+XXad4sz+v+uzNsWlhaGjsnZqUOVBw1OmAMpG3uNV/Mr0UrCpRJvSK0qvfuqSQOjg==
 
-"@biomejs/cli-linux-x64-musl@2.5.14":
-  version "2.5.14"
-  resolved "https://registry.yarnpkg.com/@biomejs/cli-linux-x64-musl/-/cli-linux-x64-musl-2.5.14.tgz#6d11ae7625587df9ce7d783b6c208abce561f064"
-  integrity sha512-2kI5PrMgW5dcEZYrstLPmUmCwkUwZY39rP4BN93Vxbwcs2O57LDQOktUZZYPvvspN5i0mhGr3TJtF5sU26NUWg==
+"@biomejs/cli-linux-arm64-musl@2.6.2":
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/@biomejs/cli-linux-arm64-musl/-/cli-linux-arm64-musl-2.6.2.tgz#7fe53da2a396cbea6f9ae75e79e85d4ae967d847"
+  integrity sha512-I+FYCLVSmR3cYfKcQ+KNeLOZ5w0wRd9fQFlw3JbSvy7bkegvTqdHaBRRcJzHQB/1ldldTLIcG21ka6X2cTWmJw==
 
-"@biomejs/cli-linux-x64@2.5.14":
-  version "2.5.14"
-  resolved "https://registry.yarnpkg.com/@biomejs/cli-linux-x64/-/cli-linux-x64-2.5.14.tgz#1aa47c3ac2f0a680c22193a579ddb84d9318c9e2"
-  integrity sha512-VHZRa7CCQBUWKxNwUvHJeuW03WFRgN5NWO//SDGOitc9QIeNyfA42V9zlKm+x82xFSG9Bzi5fi+hbhm9anO8yA==
+"@biomejs/cli-linux-arm64@2.6.2":
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/@biomejs/cli-linux-arm64/-/cli-linux-arm64-2.6.2.tgz#89d0ba4bc55b91e8a6b515d2b17ac7f4950a0498"
+  integrity sha512-Qs4CofCE8MdkjZFfEjswh2NAcbyQ7IVYtGSzQBvLqFlla/CSXroGbktUFndWG/kVSTywadauzAspYWtSfqAc2g==
 
-"@biomejs/cli-win32-arm64@2.5.14":
-  version "2.5.14"
-  resolved "https://registry.yarnpkg.com/@biomejs/cli-win32-arm64/-/cli-win32-arm64-2.5.14.tgz#f304d06084bc69c94e187c01b28dcf671f564dc2"
-  integrity sha512-pHgAFffmZtaYoxavEsWEYNvcA7NwOIjLyqw2HXyLbt16xYryX0L4fMV2u0G9ag6LNYPIoqWaWqzUcnc6rLGGXg==
+"@biomejs/cli-linux-x64-musl@2.6.2":
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/@biomejs/cli-linux-x64-musl/-/cli-linux-x64-musl-2.6.2.tgz#4c8e69b019ccc33dbc755fdfc6932661595445a2"
+  integrity sha512-wnjEXAK2pDd2j8r9gKI3L+44sIxjkYzS5aHmD1+K57RNJ3sFyT4n22NH6QFPqqeVdRBxN54H3kckUUCrFKCcJw==
 
-"@biomejs/cli-win32-x64@2.5.14":
-  version "2.5.14"
-  resolved "https://registry.yarnpkg.com/@biomejs/cli-win32-x64/-/cli-win32-x64-2.5.14.tgz#56822df752475023f8f7c874bdda990096067c2f"
-  integrity sha512-oJWmBhoHsnhUKIke+0gXDX0mltJrWHA1UyHsrTlXwX0TL64ilVZAo+TYZm97baecV0esBdpzy3k96q+09JaZUQ==
+"@biomejs/cli-linux-x64@2.6.2":
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/@biomejs/cli-linux-x64/-/cli-linux-x64-2.6.2.tgz#1f8a67a1fd1bea0295beced74c31bd930d146689"
+  integrity sha512-FJKsb95418139xDdbv9XnNJsIIwvsgR21Of0aE9B9U+nQlOtRq5gJl2ps0jZUmYBxTaOlP9BKo8N+Ff8+Rui1g==
+
+"@biomejs/cli-win32-arm64@2.6.2":
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/@biomejs/cli-win32-arm64/-/cli-win32-arm64-2.6.2.tgz#e6f2cc3ad307f9144c0282e681727ed03804c0a3"
+  integrity sha512-/PEOo6evlgrQOfKhMNtC/4Gk8ai3hySXXEtjUzCqZe/4iAbMdqelpp7qvZEDyLxlZS+BjOMQFpq2gXI/BPaAqw==
+
+"@biomejs/cli-win32-x64@2.6.2":
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/@biomejs/cli-win32-x64/-/cli-win32-x64-2.6.2.tgz#6aa70bc2420c58f03d87856b149d16af2b19cbed"
+  integrity sha512-FVlWD+mDDz8nN5LWKRWUhhb7wKIK0VE3oXQvQBX7Fwwj00CvqMVhMyiz1iz8O5aZGmnkhFlKSwJPrUvMh5prQw==
 
 "@csstools/color-helpers@^5.1.0":
   version "5.1.0"
@@ -1975,54 +1987,53 @@
     invariant "^2.2.4"
     nullthrows "^1.1.1"
 
-"@react-navigation/core@^7.22.1":
-  version "7.22.1"
-  resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-7.22.1.tgz#fccef2d325620665067a1823e09d8079eb535d1a"
-  integrity sha512-6JAaYM4u6RPtVMUjN5ovX5DNBdBZtDqebk7kEwlncUP6fP4P94+qEYv1bRmtxSFs7UxiZwQQs+jzTsBaW2WeyA==
+"@react-navigation/core@^7.24.0":
+  version "7.24.0"
+  resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-7.24.0.tgz#d6104ebcf8696f7858772c158822e553170a6d6f"
+  integrity sha512-PPMHGSgLB65eqWOBHeD/nGyzGJV3rcZ5sZbsCXlaC37HnLmwTEjB4CaOQn8CBVVv/Sc0Kl/W5dpPLls9Stk2WA==
   dependencies:
-    "@react-navigation/routers" "^7.6.4"
+    "@react-navigation/routers" "^7.6.5"
     escape-string-regexp "^4.0.0"
     fast-deep-equal "^3.1.3"
-    nanoid "^3.3.11"
     react-is "^19.1.0"
     use-latest-callback "^0.2.4"
     use-sync-external-store "^1.5.0"
 
-"@react-navigation/elements@^2.9.43":
-  version "2.9.43"
-  resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-2.9.43.tgz#55adfac3ca360139cebad305744e5112d5246056"
-  integrity sha512-XOYpRfgT9RPV2VIoXeEfTVdmXwEPpHwkezDkZVsVNEN6rTWDo07BPyLmWsvXooczyMf3jHe9AB2p/U9lJArtiQ==
+"@react-navigation/elements@^2.9.45":
+  version "2.9.45"
+  resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-2.9.45.tgz#bc87d3476813db3ce481841b37ab6d78e9353392"
+  integrity sha512-r64qCgjA6asQo4Zlv2lAl68ARkfPbV+BNRm3n9JlMoFr4Ma2A+92Z+sWT1coJRoSXkAwVNb70+LjpM6fo6/D4A==
   dependencies:
     color "^4.2.3"
     use-latest-callback "^0.2.4"
     use-sync-external-store "^1.5.0"
 
-"@react-navigation/native-stack@^7.18.8":
-  version "7.19.2"
-  resolved "https://registry.yarnpkg.com/@react-navigation/native-stack/-/native-stack-7.19.2.tgz#fd6aace989b41c0fd33df70c5465ef64ac809826"
-  integrity sha512-D6hmtgpMZz1x8R0PLbfqqKh5ajEkb13DguE7X/MNNKYL4riY4zD3TrjbcesUC2EZklpQ/EoJ6h6HAhMNfCCsoQ==
+"@react-navigation/native-stack@^7.21.0":
+  version "7.21.0"
+  resolved "https://registry.yarnpkg.com/@react-navigation/native-stack/-/native-stack-7.21.0.tgz#eba3f81d04ab2d91bc8638da45dc79f0565a6018"
+  integrity sha512-bYrNW87nDtbMXAJsosYwu59xwTqeuaurfCDA+62MQ6hY4+2Iv71+Sik3ulW92fOqg8s2SZinOJosHEWoi9Ayqw==
   dependencies:
-    "@react-navigation/elements" "^2.9.43"
+    "@react-navigation/elements" "^2.9.45"
     color "^4.2.3"
     sf-symbols-typescript "^2.1.0"
     warn-once "^0.1.1"
 
-"@react-navigation/native@^7.3.18":
-  version "7.4.1"
-  resolved "https://registry.yarnpkg.com/@react-navigation/native/-/native-7.4.1.tgz#8868fad209014adea59b5e687e639e56701df1ac"
-  integrity sha512-pEnu5XzAXV6RWr6A6pmZ7qLB+O6TJWMhBO25AjckMdr596UWulMPHQCtBcnOUfg6K+2h9ZUctHF2E5Xu4vcOrQ==
+"@react-navigation/native@^7.5.1":
+  version "7.5.1"
+  resolved "https://registry.yarnpkg.com/@react-navigation/native/-/native-7.5.1.tgz#8af9e9c9b9e40379d27aed94a3be99139275a558"
+  integrity sha512-p9xOvhG8q8rq0FPAoh0JC22ALbyRZt7U2uH8XrHRDjvqOEFrumME7szM6LaWW2WctolAVeZAfOTV+pUKULI/kQ==
   dependencies:
-    "@react-navigation/core" "^7.22.1"
+    "@react-navigation/core" "^7.24.0"
     escape-string-regexp "^4.0.0"
     fast-deep-equal "^3.1.3"
     nanoid "^3.3.11"
     standard-navigation "^0.0.8"
     use-latest-callback "^0.2.4"
 
-"@react-navigation/routers@^7.6.4":
-  version "7.6.4"
-  resolved "https://registry.yarnpkg.com/@react-navigation/routers/-/routers-7.6.4.tgz#7b0dfa19f9fef0ab1588c9dbfc7f7616fced3ff8"
-  integrity sha512-GI7eJm8/KsZUQaYcXvEExikKurRZRgEsSzyZ7faENfi65yqJBCXjDMwyN1pF6pNW1MoLH1ErDwDivFxY6BzD3w==
+"@react-navigation/routers@^7.6.5":
+  version "7.6.5"
+  resolved "https://registry.yarnpkg.com/@react-navigation/routers/-/routers-7.6.5.tgz#c7c4dde9e42d7a10540b5bf675e0a01ae0005051"
+  integrity sha512-hpvpVFt6wu3U014F/0Qy45VZCErlUvIV8kN1L6HovN5P9OpbXAzFTaRQmG7VW6czg2tSkUL5S3dZA0HIu5QirQ==
   dependencies:
     nanoid "^3.3.11"
 
@@ -2062,22 +2073,22 @@
   resolved "https://registry.yarnpkg.com/@standard-schema/utils/-/utils-0.3.0.tgz#3d5e608f16c2390c10528e98e59aef6bf73cae7b"
   integrity sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==
 
-"@tanstack/query-core@5.103.2":
-  version "5.103.2"
-  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.103.2.tgz#9dd1792b42046808c1e8e997807b83137012dedd"
-  integrity sha512-I8DkFXls5jXLqtm8+QpOhEmG07hIblhSZFzafg9wHsMSEvMzULy9hK17wU1T/ahfhMbtITJhbxutwwCoihkR7A==
+"@tanstack/query-core@5.104.5":
+  version "5.104.5"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.104.5.tgz#251e241c537fb065ae188d0332e62cf413db863c"
+  integrity sha512-Q94gI8Opd+CbdVNOdj8ZCyV8WqLYitrDq1t96Xc8WZT6lY0r5iRnJLXYDxMex7EEf2v+mXvn4FcjaBKSxXZQ9A==
 
-"@tanstack/react-query@^5.102.8":
-  version "5.103.2"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.103.2.tgz#1d063909424ecf259fd88f974a4ecafe32edcfed"
-  integrity sha512-B+fWiYZBc+0uUD5zDZAeLw9dKj7XEsdnuu6zRZ+no6LNKpeE3P3bJ+N6HINjcIlWR6fW3vUoTneEaGa2V6ehqw==
+"@tanstack/react-query@^5.104.5":
+  version "5.104.5"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.104.5.tgz#a7c4d9317fbbdab79a1cb0c6191d3fe689a823f8"
+  integrity sha512-RORgFe052U+93weaNuqg7qHq7vNVNzXN/VrXqD4bbAuQCWUqOl2lV5Ui9flWk5CVvMyL/Bh27QWhzwH0aaOx9g==
   dependencies:
-    "@tanstack/query-core" "5.103.2"
+    "@tanstack/query-core" "5.104.5"
 
-"@testing-library/react-native@^14.0.1":
-  version "14.0.1"
-  resolved "https://registry.yarnpkg.com/@testing-library/react-native/-/react-native-14.0.1.tgz#3f6c64f7174715818190f283e12c375eb9e7bc0a"
-  integrity sha512-2r2e2y8SkUNRWKRXlUGqDYunB+AkbdXUPn49Bs5rpv9oxRb0K3USBVugbPbAKJjfj4w5Ba91NJ8LcQCZyopUZA==
+"@testing-library/react-native@^14.1.0":
+  version "14.1.0"
+  resolved "https://registry.yarnpkg.com/@testing-library/react-native/-/react-native-14.1.0.tgz#e4449beacb10c0dab5421b1fcbc802d043e569e6"
+  integrity sha512-tWOam5U3aUE8XqStdWAN/OuUUdGRzh/vJMg7SfCaqXNKx7orRh04590Jp4JbORctYjORoRYfJSg04I2//wnxYw==
   dependencies:
     jest-matcher-utils "^30.4.1"
     picocolors "^1.1.1"
@@ -2183,6 +2194,11 @@
   version "0.33.0"
   resolved "https://registry.yarnpkg.com/@types/react-reconciler/-/react-reconciler-0.33.0.tgz#d27edab907998b3d9f18bc24e422d9aac34b741d"
   integrity sha512-HZOXsKT0tGI9LlUw2LuedXsVeB88wFa536vVL0M6vE8zN63nI+sSr1ByxmPToP5K5bukaVscyeCJcF9guVNJ1g==
+
+"@types/react-reconciler@~0.34.0":
+  version "0.34.1"
+  resolved "https://registry.yarnpkg.com/@types/react-reconciler/-/react-reconciler-0.34.1.tgz#5948986c39f5546f656e455ff4223b148f3a1e87"
+  integrity sha512-XAzeH3rARrfApMETpkcFmfJQRS3rPpXsSR/XA8H3sV8WgA0bp6UE7sLNM92l1ZbCclUKmrH28Ik2fSejh9UxRg==
 
 "@types/react-test-renderer@^19.1.0":
   version "19.3.0"
@@ -4060,10 +4076,10 @@ husky@^9.1.7:
   resolved "https://registry.yarnpkg.com/husky/-/husky-9.1.7.tgz#d46a38035d101b46a70456a850ff4201344c0b2d"
   integrity sha512-5gs5ytaNjBrh5Ow3zrvdUUY+0VxIuWVL4i9irt6friV+BqdCfmV11CQTWMiBYWHbXhco+J1kHfTOUkePhCDvMA==
 
-i18next@^26.4.2:
-  version "26.4.2"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-26.4.2.tgz#824233630f147359296bcaddf1404945d2b211bf"
-  integrity sha512-RX+R0VLg13IbvRuJSxnqykUFS9vQZTl8wYpWPCIUDWVrSGjsQywB5Y+pjzrkboxGAuYfJZVH1InFTdgBdxq6ug==
+i18next@^26.5.4:
+  version "26.5.4"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-26.5.4.tgz#0cf3327bdc75b061a701ad5bd1cb4f4b1b71fceb"
+  integrity sha512-Wg0O1u2xmnsve9gICDwGekLkMe9SIC7+ZiuLYfWUGb/A3TQdRKygQ4OY9ros4raf5D66ZnW9JMrTDtGP2b8a7Q==
 
 iconv-lite@0.6.3:
   version "0.6.3"
@@ -5006,16 +5022,16 @@ lines-and-columns@^1.1.6:
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.2.4.tgz#eca284f75d2965079309dc0ad9255abb2ebc1632"
   integrity sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==
 
-lint-staged@^17.5.1:
-  version "17.5.1"
-  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-17.5.1.tgz#a9222014fc2680934837b5b2214e98c050d2ea3e"
-  integrity sha512-7EDuco1xnBMeVpvAbeMq1U5KXwJGLmY8q6l+Ye78r36C4mPc+Vg1Z2SK8gHyRTyvPro90A0q5/FAZ+Au23d6QQ==
+lint-staged@^17.6.0:
+  version "17.6.0"
+  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-17.6.0.tgz#756fa50b4d4d9032ab05f64ef899eee81e44d421"
+  integrity sha512-nOhBfYkZEwkFtNzD5pK9s9LkcWoxJ+whLzEnhqi9nl7zTB5n7tg8+9iYgMGx2Wm3VlLu8cbNj0RACzY+nWi5iQ==
   dependencies:
     picomatch "^4.0.7"
     string-argv "^0.3.2"
     tinyexec "^1.3.1"
   optionalDependencies:
-    yaml "^2.9.0"
+    yaml "^2.9.1"
 
 locate-path@^5.0.0:
   version "5.0.0"
@@ -5070,10 +5086,10 @@ lru-cache@^5.1.1:
   dependencies:
     yallist "^3.0.2"
 
-lucide-react-native@^1.45.0:
-  version "1.48.0"
-  resolved "https://registry.yarnpkg.com/lucide-react-native/-/lucide-react-native-1.48.0.tgz#55df335f13757cb9d2dd493f359d6dc15307baa6"
-  integrity sha512-/URnAnnF+Nshnu1OXSvSuT+boZ7pjr+zYLjQtW4GL72IxzcecIT5mC7X5i35mWBz4bHrnIDGitIR8Wt9clN9Hw==
+lucide-react-native@^1.61.0:
+  version "1.61.0"
+  resolved "https://registry.yarnpkg.com/lucide-react-native/-/lucide-react-native-1.61.0.tgz#a1ddde3c2d0d26e4d265b5d6cb3b9a88aa2cece2"
+  integrity sha512-y4BwRjROTIOGBOIVztPbgopuozw3uJ2Q8vTdSmcvNH7L+y1FBzSj0OcJrqwr1CF8oNUuEUYdD9jm5IDXaaf9JA==
 
 make-dir@^4.0.0:
   version "4.0.0"
@@ -5433,12 +5449,7 @@ mz@^2.7.0:
     object-assign "^4.0.1"
     thenify-all "^1.0.0"
 
-nanoid@^3.3.1, nanoid@^3.3.11, nanoid@^3.3.18:
-  version "3.3.19"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.19.tgz#336d4aa4bcd4fb24d2cddede7ffeae40bec03f0a"
-  integrity sha512-Y2tUNy4ouw6tq5oDSKeQYGOyhkUBhNOcGV/02KC+6kd9eDGqdZd++mjMiIDilrBYvjEnCYvVtsuHCuP+okSfug==
-
-nanoid@^3.3.20:
+nanoid@^3.3.1, nanoid@^3.3.11, nanoid@^3.3.18, nanoid@^3.3.20:
   version "3.3.20"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.20.tgz#dfd4444d85aa10111ef66ba85ed72e08ba0855d8"
   integrity sha512-uKdg2G3GNCKQn9byYOpxbGqrT2fGO5KRt5J/8b3pok8rT6qxGWF6hxMyJiEYtAf+FVyYuD9hRaDqX5uPFYJ4ZQ==
@@ -5928,15 +5939,15 @@ react-freeze@^1.0.0:
   resolved "https://registry.yarnpkg.com/react-freeze/-/react-freeze-1.0.4.tgz#cbbea2762b0368b05cbe407ddc9d518c57c6f3ad"
   integrity sha512-r4F0Sec0BLxWicc7HEyo2x3/2icUTrRmDjaaRyzzn+7aDyFZliszMDOgLVwSnQnYENOlL1o569Ze2HZefk8clA==
 
-react-hook-form@^7.88.0:
-  version "7.88.0"
-  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.88.0.tgz#887e669339ff940a5a5cd1d0d00055954d05c2a9"
-  integrity sha512-QRaLOWhX93YCnMiRfnOFRSwWXZNt8qhm2JTZwypoDvKpSffTJHmpzMXt8U6PV5UThvL3IiiLDUWe2nHMtz6Mmw==
+react-hook-form@^7.90.0:
+  version "7.90.0"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.90.0.tgz#166fc35a3f6df7cd62bc880789aba6ea16e5d443"
+  integrity sha512-+NdG0FLzCPhFOp2NNxaUYLF9fyZhNjx9FTBBSYWF71/l6BBlmIc/j6xlp3DbaHWLJbIG7Zd8oznA19xJClU97w==
 
-react-i18next@^17.0.15:
-  version "17.0.15"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-17.0.15.tgz#ca219789bf83b556fd0404df4cfbe31b05e4e253"
-  integrity sha512-7uYpx/oBkesLto7cOzOmfITlUBaXHCAcFahmgETMfWr8nbbWRRnVGvz8wsH/xpbNcyoH+NpCcnOQEqWPMO6/hw==
+react-i18next@^17.1.0:
+  version "17.1.0"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-17.1.0.tgz#e39d8d7e7ab830489d0db2e5d0f561fdf061f6e6"
+  integrity sha512-4VouOnTDyvhvqXx6WZ+s3/cgSiaLutILdYkO3P1Ms+4qcKR7At+JP4Vi7IeHkVLyVV+DmN1l23Pn73UcwSGGPA==
   dependencies:
     "@babel/runtime" "^7.29.7"
     html-parse-stringify "^4.0.1"
@@ -6063,13 +6074,6 @@ react-native@0.88.0:
     ws "^7.5.10"
     yargs "^17.6.2"
 
-react-reconciler@~0.33.0:
-  version "0.33.0"
-  resolved "https://registry.yarnpkg.com/react-reconciler/-/react-reconciler-0.33.0.tgz#9dd20208d45baa5b0b4701781f858236657f15e1"
-  integrity sha512-KetWRytFv1epdpJc3J4G75I4WrplZE5jOL7Yq0p34+OVOKF4Se7WrdIdVC45XsSSmUTlht2FM/fM1FZb1mfQeA==
-  dependencies:
-    scheduler "^0.27.0"
-
 react-reconciler@~0.34.0:
   version "0.34.0"
   resolved "https://registry.yarnpkg.com/react-reconciler/-/react-reconciler-0.34.0.tgz#07b160468e2605747ee09af1624d28c3b8419f25"
@@ -6082,10 +6086,10 @@ react-refresh@^0.14.0, react-refresh@^0.14.2:
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.14.2.tgz#3833da01ce32da470f1f936b9d477da5c7028bf9"
   integrity sha512-jCvmsr+1IUSMUyzOkRcvnVbX3ZYC6g9TDrDbFuFmRDq7PD4yaGbLKNQL6k2jnArV8hjYxh7hVhAZB6s9HDGpZA==
 
-react@19.3.0:
-  version "19.3.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-19.3.0.tgz#e20aa3a14687075ce863351b5878b0608c3fbfb2"
-  integrity sha512-E8LUcbtBWt20bbl2YoHfx4ZDBdxVTfOKtCZn9cDSJ4l6/nuoApcpIBcj47t2wZoVX8g2ZHuMHbiShgCR1T5Sog==
+react@19.3.1:
+  version "19.3.1"
+  resolved "https://registry.yarnpkg.com/react/-/react-19.3.1.tgz#26e9523fc36ea06be5050ebb780249a133260ad7"
+  integrity sha512-QNhWdt7nrgVWWQG58QuGsAR3jv3Hbe4mb4vz7w2csnHavciZJgda1CPNaldF6eVxv90ud3jUXpKlHL69gO38yw==
 
 read-cache@^1.0.0:
   version "1.0.2"
@@ -6246,11 +6250,6 @@ scheduler@0.28.0, scheduler@^0.28.0:
   version "0.28.0"
   resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.28.0.tgz#03d3ca348aeaf8b7502f64468f217b27523f9695"
   integrity sha512-juorfCmIkIw8tT+p5BXSm6PJjQF/ycEYmKyzURCIt/RaZIhL+PulbQ9Yu2z1HdOJDdqDTlxA1+xKBmHXJsczAw==
-
-scheduler@^0.27.0:
-  version "0.27.0"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.27.0.tgz#0c4ef82d67d1e5c1e359e8fc76d3a87f045fe5bd"
-  integrity sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q==
 
 semver@^6.3.0, semver@^6.3.1:
   version "6.3.1"
@@ -6728,13 +6727,13 @@ test-renderer@1.3.0:
     "@types/react-reconciler" "~0.33.0"
     react-reconciler "~0.34.0"
 
-test-renderer@~1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/test-renderer/-/test-renderer-1.2.0.tgz#b106039bd4df8a40ea3de3718a6f346df184957b"
-  integrity sha512-JYiEGbgBGtmHAWX8Kf99gGRL1HtjcRVHLrmJNTZL4vFs9XrnWcuL45Iszw/pO4094+JR7havSrN+ds6YTOpSQA==
+test-renderer@~1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/test-renderer/-/test-renderer-1.3.1.tgz#b12a3c368d277b2e60c29a6368d8fa45c2e67600"
+  integrity sha512-jL/PxpZJhKuryZkvsWdRRX8Fez229amt6CnoxC+Fs4lbuIbWqMtZBPfBM/FMjg1ovv7ZyGef2ltQD64f/RxkbA==
   dependencies:
-    "@types/react-reconciler" "~0.33.0"
-    react-reconciler "~0.33.0"
+    "@types/react-reconciler" "~0.34.0"
+    react-reconciler "~0.34.0"
 
 thenify-all@^1.0.0:
   version "1.6.0"
@@ -7168,7 +7167,7 @@ yallist@^3.0.2:
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-3.1.1.tgz#dbb7daf9bfd8bac9ab45ebf602b8cbad0d5d08fd"
   integrity sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==
 
-yaml@^2.9.0:
+yaml@^2.9.1:
   version "2.9.1"
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.9.1.tgz#c16233fb31944e705cfefaff38795587f57588ce"
   integrity sha512-3NxN8+78OdzbT7C/WjGsyfPAtJaN3FNDsWxv7Y7mcDsT/oOmgW8BpyQQFFBnvZE3j9Y2Sdz1ULFLezL7Eb2yFw==
@@ -7201,10 +7200,10 @@ zod@^3.25.76:
   resolved "https://registry.yarnpkg.com/zod/-/zod-3.25.76.tgz#26841c3f6fd22a6a2760e7ccb719179768471e34"
   integrity sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==
 
-zod@^4.6.4:
-  version "4.6.5"
-  resolved "https://registry.yarnpkg.com/zod/-/zod-4.6.5.tgz#e3af3edbdc260239c52f73caad05dbbffe6e82cd"
-  integrity sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==
+zod@^4.6.7:
+  version "4.6.7"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-4.6.7.tgz#e806cf64a7f4e37635ce9f2f52c04c3766f75e5b"
+  integrity sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg==
 
 zxing-wasm@3.1.3:
   version "3.1.3"
