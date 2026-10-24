@@ -138,7 +138,10 @@ export const ptBR = {
     RECIPE_NOT_FOUND: 'Receita não encontrada.',
     SAVED_MEAL_NOT_FOUND: 'Refeição salva não encontrada.',
     RECIPE_GENERATION_FAILED: 'Não conseguimos gerar uma receita. Tente de novo.',
-    DAILY_LIMIT_REACHED: 'Você atingiu o limite diário da IA. Tente de novo amanhã.'
+    DAILY_LIMIT_REACHED: 'Você atingiu o limite diário da IA. Tente de novo amanhã.',
+    ALREADY_SUBSCRIBED: 'Sua assinatura Premium já está ativa.',
+    SUBSCRIPTION_NOT_FOUND: 'Você ainda não tem uma assinatura.',
+    BILLING_UNAVAILABLE: 'Os pagamentos não estão disponíveis agora.'
   },
   profile: {
     title: 'Perfil',
@@ -163,7 +166,19 @@ export const ptBR = {
     deleteAccountTitle: 'Excluir conta?',
     deleteAccountDescription:
       'Seu perfil, suas refeições, fotos e receitas serão apagados para sempre. Essa ação não pode ser desfeita.',
-    goalsRecalculatedShort: 'Ao salvar, suas metas diárias são recalculadas.'
+    goalsRecalculatedShort: 'Ao salvar, suas metas diárias são recalculadas.',
+    planTitle: 'Plano',
+    planFree: 'Gratuito',
+    planPremium: 'Premium',
+    planLimits: '{{mealAnalyses}} análises de refeição e {{recipes}} receitas por dia',
+    premiumUntil: 'Premium até {{date}}',
+    subscribe: 'Assinar o Premium',
+    manageSubscription: 'Gerenciar assinatura',
+    premiumActivatedTitle: 'Bem-vindo ao Premium',
+    premiumActivatedMessage: 'Seus novos limites diários já valem.',
+    premiumPendingTitle: 'Pagamento recebido',
+    premiumPendingMessage: 'Estamos ativando o seu Premium. Em instantes ele aparece aqui.',
+    planError: 'Não foi possível abrir o pagamento'
   },
   welcome: {
     title: 'Controle sua dieta de forma simples',

@@ -13,6 +13,8 @@ export function buildMe(overrides: Partial<IMe['profile']> = {}): IMe {
       activityLevel: 'LIGHT',
       ...overrides
     },
-    goals: { calories: 2000, protein: 175, carbohydrate: 200, fat: 56 }
+    goals: { calories: 2000, protein: 175, carbohydrate: 200, fat: 56 },
+    subscription: { plan: 'FREE', cancelAt: null, available: true },
+    dailyLimits: { mealAnalyses: 20, recipes: 5 }
   };
 }

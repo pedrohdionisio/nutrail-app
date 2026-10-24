@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
 import { maskDate } from 'shared/utils/maskDate';
 import { LanguageField } from '../LanguageField/LanguageField';
+import { PlanSection } from '../PlanSection/PlanSection';
 import type { IProfileFormProps } from './ProfileFormTypes';
 
 export function ProfileForm({
@@ -19,6 +20,8 @@ export function ProfileForm({
   initials,
   apiErrorMessage,
   language,
+  plan,
+  onManagePlan,
   onSelectLanguage,
   onChangePassword,
   onDeleteAccount
@@ -95,6 +98,8 @@ export function ProfileForm({
       </AppText>
 
       <LanguageField language={language} onSelectLanguage={onSelectLanguage} />
+
+      {!!plan && <PlanSection onPress={onManagePlan} plan={plan} />}
 
       {!!apiErrorMessage && (
         <AppText color='error' size='bodySm'>

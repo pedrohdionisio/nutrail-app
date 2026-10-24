@@ -3,6 +3,7 @@ import { removeAccessToken, removeSessionHandlers } from 'data/config/api';
 import { i18n } from 'data/config/i18n';
 import { resetAudio } from './mocks/audio';
 import { clearSecureStore } from './mocks/secureStore';
+import { resetWebBrowser } from './mocks/webBrowser';
 import { server } from './server';
 
 jest.mock('expo-secure-store', () => jest.requireActual('./mocks/secureStore').secureStoreMock);
@@ -10,6 +11,7 @@ jest.mock('expo-localization', () => ({
   getLocales: () => [{ languageCode: 'pt', languageTag: 'pt-BR' }]
 }));
 jest.mock('expo-audio', () => jest.requireActual('./mocks/audio').audioMock);
+jest.mock('expo-web-browser', () => jest.requireActual('./mocks/webBrowser').webBrowserMock);
 jest.mock(
   '@react-native-community/datetimepicker',
   () => jest.requireActual('./mocks/dateTimePicker').dateTimePickerMock
@@ -38,6 +40,7 @@ afterEach(async () => {
   removeSessionHandlers();
   clearSecureStore();
   resetAudio();
+  resetWebBrowser();
 });
 
 afterAll(() => server.close());

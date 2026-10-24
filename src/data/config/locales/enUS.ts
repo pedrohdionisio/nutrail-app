@@ -140,7 +140,10 @@ export const enUS: typeof ptBR = {
     RECIPE_NOT_FOUND: 'Recipe not found.',
     SAVED_MEAL_NOT_FOUND: 'Saved meal not found.',
     RECIPE_GENERATION_FAILED: 'We could not generate a recipe. Try again.',
-    DAILY_LIMIT_REACHED: "You reached today's AI limit. Try again tomorrow."
+    DAILY_LIMIT_REACHED: "You reached today's AI limit. Try again tomorrow.",
+    ALREADY_SUBSCRIBED: 'Your Premium subscription is already active.',
+    SUBSCRIPTION_NOT_FOUND: "You don't have a subscription yet.",
+    BILLING_UNAVAILABLE: 'Payments are not available right now.'
   },
   profile: {
     title: 'Profile',
@@ -165,7 +168,19 @@ export const enUS: typeof ptBR = {
     deleteAccountTitle: 'Delete account?',
     deleteAccountDescription:
       'Your profile, meals, pictures and recipes will be deleted forever. This cannot be undone.',
-    goalsRecalculatedShort: 'When you save, your daily goals are recalculated.'
+    goalsRecalculatedShort: 'When you save, your daily goals are recalculated.',
+    planTitle: 'Plan',
+    planFree: 'Free',
+    planPremium: 'Premium',
+    planLimits: '{{mealAnalyses}} meal analyses and {{recipes}} recipes a day',
+    premiumUntil: 'Premium until {{date}}',
+    subscribe: 'Get Premium',
+    manageSubscription: 'Manage subscription',
+    premiumActivatedTitle: 'Welcome to Premium',
+    premiumActivatedMessage: 'Your new daily limits apply now.',
+    premiumPendingTitle: 'Payment received',
+    premiumPendingMessage: 'We are activating your Premium. It will show up here in a moment.',
+    planError: "Couldn't open the payment page"
   },
   welcome: {
     title: 'Track your diet the simple way',

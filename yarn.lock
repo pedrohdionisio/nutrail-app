@@ -3615,6 +3615,11 @@ expo-status-bar@~58.0.4:
   resolved "https://registry.yarnpkg.com/expo-status-bar/-/expo-status-bar-58.0.4.tgz#a7264f706a2882a2c451cd792100d7a06121c59a"
   integrity sha512-e6JJHziSSNb1v1VSzmDrAPf6GFoPRdVOIDrTCcK3bHfbJEAZGZ3YZXfqlorZtUFDT0z6NcjaZf0mPWifJZcqew==
 
+expo-web-browser@~58.0.6:
+  version "58.0.6"
+  resolved "https://registry.yarnpkg.com/expo-web-browser/-/expo-web-browser-58.0.6.tgz#40ef0cc6b52b9a3756f5a69ac87f72d3057a99f8"
+  integrity sha512-6/QtDqTOaTqM/ysYYdEZG4XDrWloOo1wVYCn4g3IgayF+1lZWTwMqa5j4kcn2TA1UBer8O7zbMQYLfSMppQ/zg==
+
 expo@^58.0.0:
   version "58.0.17"
   resolved "https://registry.yarnpkg.com/expo/-/expo-58.0.17.tgz#44b2bf40afc4c4005be55a8e8bab639befc6154d"

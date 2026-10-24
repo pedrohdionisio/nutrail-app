@@ -56,7 +56,8 @@ yarn typecheck && yarn lint && yarn test
 - React Query 5 + axios · React Navigation 7 (native stack)
 - `@gorhom/bottom-sheet` para **todo** bottom sheet · React Hook Form + Zod
 - `expo-camera`, `expo-image-picker`, `expo-image-manipulator` e `expo-audio` para a foto e o áudio
-  da refeição · `expo-secure-store` para a sessão
+  da refeição · `expo-secure-store` para a sessão · `expo-web-browser` para o Checkout e o Portal
+  da Stripe
 - Biome · yarn 1 · Husky + lint-staged · Jest (`jest-expo`) + RNTL + MSW · GitHub Actions
 
 Dependência entra quando a primeira feature precisa dela, não antes.

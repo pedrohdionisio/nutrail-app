@@ -13,7 +13,7 @@ export function useUpdateProfile() {
     onSuccess: ({ goals }, profile) => {
       queryClient.setQueryData<IMe>(
         [ME_QUERY_KEYS.ME],
-        (me) => me && { profile: { ...me.profile, ...profile }, goals }
+        (me) => me && { ...me, profile: { ...me.profile, ...profile }, goals }
       );
     }
   });

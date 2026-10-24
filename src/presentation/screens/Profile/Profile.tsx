@@ -17,6 +17,8 @@ export function Profile() {
     initials,
     apiErrorMessage,
     language,
+    plan,
+    handleManagePlan,
     isUpdatingProfile,
     isSaveDisabled,
     handleSelectLanguage,
@@ -46,8 +48,10 @@ export function Profile() {
         control={control}
         initials={initials}
         language={language}
+        plan={plan}
         onChangePassword={handleChangePassword}
         onDeleteAccount={handleDeleteAccount}
+        onManagePlan={handleManagePlan}
         onSelectLanguage={handleSelectLanguage}
       />
       <ProfileFooter

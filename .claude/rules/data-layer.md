@@ -44,7 +44,7 @@ src/data/modules/meal/
     └── schemas/listMealsByDaySchema.ts    # zod, quando o caso de uso tem formulário
 ```
 
-Um módulo por recurso da API: `auth`, `me`, `profile`, `goals`, `meal`, `recipe`.
+Um módulo por recurso da API: `auth`, `me`, `profile`, `goals`, `meal`, `recipe`, `billing`.
 
 Arquivo que exporta objeto nomeado repete o nome em PascalCase (`MealService.ts`); arquivo que
 exporta função ou constante solta fica em camelCase (`useListMealsByDay.ts`).

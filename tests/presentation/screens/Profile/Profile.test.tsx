@@ -1,9 +1,11 @@
-import { screen, waitFor } from '@testing-library/react-native';
+import { act, screen, waitFor } from '@testing-library/react-native';
 import { AuthTokensManager } from 'data/libs/AuthTokensManager';
 import * as SecureStore from 'expo-secure-store';
 import { HttpResponse, http } from 'msw';
 import { spyOnAlert } from 'tests/support/alert';
 import { apiUrl } from 'tests/support/apiUrl';
+import { buildMe } from 'tests/support/fixtures/me';
+import { authSessionCalls, authSessionReturn } from 'tests/support/mocks/webBrowser';
 import { renderApp, seedSession } from 'tests/support/render';
 import { waitForHome, waitForWelcome } from 'tests/support/screens';
 import { server } from 'tests/support/server';
@@ -33,6 +35,35 @@ async function openProfile() {
   await screen.findByRole('header', { name: 'Perfil' });
 
   return rendered;
+}
+
+const FREE = buildMe();
+const PREMIUM = {
+  ...buildMe(),
+  subscription: { plan: 'PREMIUM' as const, cancelAt: null, available: true },
+  dailyLimits: { mealAnalyses: 100, recipes: 30 }
+};
+
+function mockMe(...responses: ReturnType<typeof buildMe>[]) {
+  const queue = [...responses];
+
+  server.use(
+    http.get(apiUrl('/me'), () => HttpResponse.json(queue.length > 1 ? queue.shift() : queue[0]))
+  );
+}
+
+function mockBillingSession(path: '/billing/checkout' | '/billing/portal', url: string) {
+  const calls = { count: 0 };
+
+  server.use(
+    http.post(apiUrl(path), () => {
+      calls.count++;
+
+      return HttpResponse.json({ url });
+    })
+  );
+
+  return calls;
 }
 
 describe('Profile', () => {
@@ -265,5 +296,129 @@ describe('Profile', () => {
     expect(await screen.findByText('User not found.')).toBeOnTheScreen();
 
     unmount();
+  });
+
+  describe('plan', () => {
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('should show the free plan with its limits', async () => {
+      await openProfile();
+
+      expect(screen.getByText('Gratuito')).toBeOnTheScreen();
+      expect(screen.getByText('20 análises de refeição e 5 receitas por dia')).toBeOnTheScreen();
+      expect(screen.getByRole('button', { name: 'Assinar o Premium' })).toBeOnTheScreen();
+    });
+
+    it('should hide the plan when the API has no billing', async () => {
+      mockMe({ ...FREE, subscription: { ...FREE.subscription, available: false } });
+      await openProfile();
+
+      expect(screen.queryByText('Plano')).not.toBeOnTheScreen();
+      expect(screen.queryByRole('button', { name: 'Assinar o Premium' })).not.toBeOnTheScreen();
+    });
+
+    it('should open the checkout in the browser and show the premium plan when the payment is done', async () => {
+      mockMe(FREE, PREMIUM);
+      const checkout = mockBillingSession('/billing/checkout', 'https://checkout.stripe.test/cs_1');
+      authSessionReturn.current = 'nutrail://billing?status=success';
+      const { alertSpy } = spyOnAlert();
+      const { user } = await openProfile();
+
+      await user.press(screen.getByRole('button', { name: 'Assinar o Premium' }));
+
+      await waitFor(() =>
+        expect(alertSpy).toHaveBeenCalledWith(
+          'Bem-vindo ao Premium',
+          'Seus novos limites diários já valem.'
+        )
+      );
+      expect(checkout.count).toBe(1);
+      expect(authSessionCalls).toEqual([
+        {
+          url: 'https://checkout.stripe.test/cs_1',
+          redirectUrl: 'nutrail://billing',
+          options: { preferEphemeralSession: true }
+        }
+      ]);
+      expect(screen.getByText('Premium')).toBeOnTheScreen();
+      expect(screen.getByText('100 análises de refeição e 30 receitas por dia')).toBeOnTheScreen();
+      expect(screen.getByRole('button', { name: 'Gerenciar assinatura' })).toBeOnTheScreen();
+    });
+
+    it('should tell the user the payment is being activated when the plan takes long to change', async () => {
+      jest.useFakeTimers({ advanceTimers: true });
+      mockMe(FREE);
+      mockBillingSession('/billing/checkout', 'https://checkout.stripe.test/cs_1');
+      authSessionReturn.current = 'nutrail://billing?status=success';
+      const { alertSpy } = spyOnAlert();
+      const { user } = await openProfile();
+
+      await user.press(screen.getByRole('button', { name: 'Assinar o Premium' }));
+      await act(() => jest.advanceTimersByTimeAsync(6000));
+
+      await waitFor(() =>
+        expect(alertSpy).toHaveBeenCalledWith(
+          'Pagamento recebido',
+          'Estamos ativando o seu Premium. Em instantes ele aparece aqui.'
+        )
+      );
+      expect(screen.getByText('Gratuito')).toBeOnTheScreen();
+    });
+
+    it('should stay on the free plan without alerts when the checkout is closed', async () => {
+      mockBillingSession('/billing/checkout', 'https://checkout.stripe.test/cs_1');
+      const { alertSpy } = spyOnAlert();
+      const { user } = await openProfile();
+
+      await user.press(screen.getByRole('button', { name: 'Assinar o Premium' }));
+
+      await waitFor(() => expect(authSessionCalls).toHaveLength(1));
+      await waitFor(() =>
+        expect(screen.getByRole('button', { name: 'Assinar o Premium' })).toBeEnabled()
+      );
+      expect(alertSpy).not.toHaveBeenCalled();
+      expect(screen.getByText('Gratuito')).toBeOnTheScreen();
+    });
+
+    it('should open the portal of a premium user and show when the plan ends', async () => {
+      mockMe(PREMIUM, {
+        ...PREMIUM,
+        subscription: { ...PREMIUM.subscription, cancelAt: '2026-11-25T15:00:00.000Z' }
+      });
+      const portal = mockBillingSession('/billing/portal', 'https://billing.stripe.test/p_1');
+      authSessionReturn.current = 'nutrail://billing';
+      const { user } = await openProfile();
+
+      await user.press(screen.getByRole('button', { name: 'Gerenciar assinatura' }));
+
+      expect(await screen.findByText('Premium até 25/11/2026')).toBeOnTheScreen();
+      expect(portal.count).toBe(1);
+      expect(authSessionCalls[0]?.url).toBe('https://billing.stripe.test/p_1');
+    });
+
+    it('should explain an error of the API', async () => {
+      server.use(
+        http.post(apiUrl('/billing/checkout'), () =>
+          HttpResponse.json(
+            { error: { code: 'ALREADY_SUBSCRIBED', message: 'Already subscribed.' } },
+            { status: 409 }
+          )
+        )
+      );
+      const { alertSpy } = spyOnAlert();
+      const { user } = await openProfile();
+
+      await user.press(screen.getByRole('button', { name: 'Assinar o Premium' }));
+
+      await waitFor(() =>
+        expect(alertSpy).toHaveBeenCalledWith(
+          'Não foi possível abrir o pagamento',
+          'Sua assinatura Premium já está ativa.'
+        )
+      );
+      expect(authSessionCalls).toEqual([]);
+    });
   });
 });

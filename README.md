@@ -61,6 +61,9 @@ Pictures and voice notes are analyzed in the background: the meal shows up on th
 - Update the profile (which recalculates the goals), change the password, sign out or delete the
   account.
 - Switch the app between Portuguese and English.
+- Subscribe to Premium for higher daily AI limits, or manage the subscription. Checkout and the
+  customer portal open in an in-app browser on Stripe's own pages, and the plan appears as soon as
+  the API's webhook records it. Shown only when the API has billing configured.
 
 ## Highlights
 
@@ -213,7 +216,7 @@ Code, identifiers and documentation are in English.
 
 Expo SDK 58 · React Native 0.88 · React 19 · TypeScript · NativeWind 4 (Tailwind CSS 3.4) · React
 Navigation 7 · TanStack Query · axios · React Hook Form · Zod · expo-camera · expo-image-picker ·
-expo-image-manipulator · expo-audio · expo-secure-store · expo-localization · i18next · react-i18next · Gorhom Bottom Sheet · lucide · Jest ·
+expo-image-manipulator · expo-audio · expo-secure-store · expo-web-browser · expo-localization · i18next · react-i18next · Gorhom Bottom Sheet · lucide · Jest ·
 React Native Testing Library · MSW · Biome · Husky + lint-staged · GitHub Actions
 
 ## Author
